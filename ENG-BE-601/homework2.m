@@ -69,7 +69,7 @@ Tfinal(end)       = Tinf;     % Neumann boundary conditions
 Tfinal(2:end-1)   = full(T);
 
 % plot the result
-figure;
+figure('OuterPosition',[0 0 1200 800],'PaperUnits','points','PaperSize',[1200 800]);
 plot([-hx x x(end)+hx], Tfinal)
 xlabel('length (m)')
 ylabel('temperature (K)')
