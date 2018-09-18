@@ -55,12 +55,19 @@ b(1)                = G(1) * Tsource;
 % enforce Neumann boundary conditions
 b(end)              = Ginf * Tinf;
 
+disp('The steady state ''G'' matrix')
+disp(A)
+disp('The target vector ''b''')
+disp(b)
+
 % make the matrices sparse
 A = sparse(A);
 b = sparse(b);
 
 % solve for the temperature
 T = A \ b;
+disp('The heat profile ''T''')
+disp(T)
 
 % prepend and append boundary conditions
 Tfinal            = zeros(length(T)+2,1);
@@ -68,12 +75,16 @@ Tfinal(1)         = Tsource;  % Dirichlet boundary conditions
 Tfinal(end)       = Tinf;     % Neumann boundary conditions
 Tfinal(2:end-1)   = full(T);
 
+disp('The post-processed vector ''T''')
+disp(T)
+
 % plot the result
 figure('OuterPosition',[0 0 1200 800],'PaperUnits','points','PaperSize',[1200 800]);
-plot([-hx x x(end)+hx], Tfinal)
+plot([-hx x x(end)+hx], Tfinal, 'o')
 xlabel('length (m)')
 ylabel('temperature (K)')
 title('temperature of an anisotropic metal rod')
+ylim([288 408])
 box off
 
 prettyFig()
