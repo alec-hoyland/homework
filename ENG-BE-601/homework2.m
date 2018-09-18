@@ -84,7 +84,6 @@ plot([-hx x x(end)+hx], Tfinal, 'o')
 xlabel('length (m)')
 ylabel('temperature (K)')
 title('temperature of an anisotropic metal rod')
-ylim([288 408])
 box off
 
 prettyFig()
