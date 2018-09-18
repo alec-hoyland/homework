@@ -94,19 +94,19 @@ Opt.Input = 'file';
 disp(dataHash(strcat(mfilename,'.m'),Opt))
 
 
-% %
-% % This file should be in this commit:
-% [status,m]=unix('git rev-parse HEAD');
-% if ~status
-% 	disp(m)
-% end
+%%
+% This file should be in this commit:
+[status,m]=unix('git rev-parse HEAD');
+if ~status
+	disp(m)
+end
 
 t = toc;
 
 
 %%
 % This file has the following external dependencies:
-% showDependencyHash(mfilename);
+showDependencyHash(mfilename);
 
 
 %%
