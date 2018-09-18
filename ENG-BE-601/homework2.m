@@ -92,6 +92,42 @@ if being_published
   delete(gcf)
 end
 
+%% Problem #2
+
+% finite-difference simulation grids
+hx      = 5;    % um
+hy      = 5;    % um
+hz      = 35;   % um
+a       = 40;   % um
+b       = 35;   % um
+x       = 0:hx:a;
+y       = 0:hy:b;
+
+% diffusion coefficients
+Dcell   = 100;  % um^2/s
+Dout    = 800;  % um^2/s
+
+% ambient concentration
+Cinf    = 0;    % M
+gamma   = 40;   % um/s
+
+% conductances
+Gcell   = Dcell * hz;
+Gout    = Dout * hz;
+Ginfx   = gamma * hy * hz;
+Ginfy   = gamma * hx * hz;
+
+disp('The intracellular conductance is')
+disp(Gcell)
+disp('The extracellular conductance is')
+disp(Gout)
+disp('The y-face convection conductance is')
+disp(Ginfy)
+disp('Units are cubic microns per second')
+
+% set up the matrices
+G       = zeros(length(y), length(x));
+
 
 %% Version Info
 % The file that generated this document is called:
