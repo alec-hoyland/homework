@@ -146,20 +146,18 @@ for ii = [9:13 30:34 37:41]
   row(ii+7) = Gout;
   G(ii, :)  = row;
 end
-% c8
-row         = zeros(1, 49);
-row(8-7)    = 1/2 * Gout;
-row(8+7)    = 1/2 * Gout;
-row(8+1)    = Gout;
-row(8)      = -2 * Gout;
-G(8, :)     = row;
-% c14
-row         = zeros(1, 49);
-row(14-7)   = 1/2 * Gout;
-row(14+7)   = 1/2 * Gout;
-row(14-1)   = Gout;
-row(14)     = -2 * Gout;
-G(14, :)    = row;
+% c8 & c14
+for ii = [8, 14]
+  row         = zeros(1, 49);
+  row(ii-7)   = Gout;
+  row(ii+7)   = Gout;
+  if mod(ii, 7) == 0
+    row(ii-1) = Gout;
+  else
+    row(ii+1) = Gout;
+  end
+  row(ii)     = -3 * Gout;
+end
 % c1 & c7
 for ii = [1, 7]
   row         = zeros(1, 49);
@@ -171,6 +169,19 @@ for ii = [1, 7]
   end
   row(ii)     = -2 * Gout;
 end
+% columns 1 & 7 edges
+for ii = [22:7:43 28:7:49]
+  row       = zeros(1, 49);
+  row(ii-7) = 1/2 * Gcell;
+  row(ii+7) = 1/2 * Gcell;
+  if mod(ii, 7) == 0
+    row(ii-1) = Gcell;
+  else
+    row(ii+1) = Gcell;
+  end
+  row(ii)   = -2 * Gcell;
+end
+
 
 
 %% Version Info
