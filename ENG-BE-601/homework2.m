@@ -174,8 +174,6 @@ for ii = [9:13 30:34 37:41]
   row(ii+7) = Gtemp;
   G(ii, :)  = row;
 end
-
-
 % columns 1 & 7 edges
 for ii = [22:7:43 28:7:49]
   row       = zeros(1, 49);
