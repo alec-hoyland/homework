@@ -127,6 +127,17 @@ disp('Units are cubic microns per second')
 
 % set up the matrices
 G       = zeros(49, 49);
+% c1 & c7
+for ii = [1, 7]
+  row         = zeros(1, 49);
+  row(ii+7)   = Gout;
+  if mod(ii, 7) == 0
+    row(ii-1) = Gout;
+  else
+    row(ii+1) = Gout;
+  end
+  row(ii)     = -2 * Gout;
+end
 % row 1 edges
 for ii = 2:6
   row       = zeros(1,49);
@@ -135,6 +146,18 @@ for ii = 2:6
   row(ii+1) = Gout;
   row(ii+7) = Gout;
   G(ii, :)  = row;
+end
+% c8 & c14
+for ii = [8, 14]
+  row         = zeros(1, 49);
+  row(ii-7)   = Gout;
+  row(ii+7)   = Gout;
+  if mod(ii, 7) == 0
+    row(ii-1) = Gout;
+  else
+    row(ii+1) = Gout;
+  end
+  row(ii)     = -3 * Gout;
 end
 % row 2, 5, 6 internal
 for ii = [9:13 30:34 37:41]
@@ -151,29 +174,8 @@ for ii = [9:13 30:34 37:41]
   row(ii+7) = Gtemp;
   G(ii, :)  = row;
 end
-% c8 & c14
-for ii = [8, 14]
-  row         = zeros(1, 49);
-  row(ii-7)   = Gout;
-  row(ii+7)   = Gout;
-  if mod(ii, 7) == 0
-    row(ii-1) = Gout;
-  else
-    row(ii+1) = Gout;
-  end
-  row(ii)     = -3 * Gout;
-end
-% c1 & c7
-for ii = [1, 7]
-  row         = zeros(1, 49);
-  row(ii+7)   = Gout;
-  if mod(ii, 7) == 0
-    row(ii-1) = Gout;
-  else
-    row(ii+1) = Gout;
-  end
-  row(ii)     = -2 * Gout;
-end
+
+
 % columns 1 & 7 edges
 for ii = [22:7:43 28:7:49]
   row       = zeros(1, 49);
