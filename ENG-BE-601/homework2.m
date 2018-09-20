@@ -302,8 +302,16 @@ if being_published
 end
 
 % calculate the concentration profile
-C = G \ b;
+C       = G \ b;
+% produce a matrix of the same topography as the investigated system
+Cfinal  = reshape(C', [7 7]);
+dirichletSides = [0.1*ones(3,1); NaN(4,1)];
+Cfinal  = [dirichletSides Cfinal dirichletSides];
+Cfinal  = [0.1*ones(1,9); Cfinal];
 
+% concentration matrix with the boundary conditions
+disp('The final concentration matrix')
+disp(Cfinal)
 
 %% Version Info
 % The file that generated this document is called:
