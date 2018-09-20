@@ -126,8 +126,42 @@ disp(Ginfy)
 disp('Units are cubic microns per second')
 
 % set up the matrices
-G       = zeros(length(y), length(x));
-
+G       = zeros(49, 49);
+% row 1 edges
+for ii = 2:6
+  row       = zeros(1,49);
+  row(ii-1) = Gout;
+  row(ii)   = -3 * Gout;
+  row(ii+1) = Gout;
+  row(ii+7) = Gout;
+  G(ii, :)  = row;
+end
+% row 2, 5, 6 internal
+for ii = [9:13 30:34 37:41]
+  row       = zeros(1,49);
+  row(ii-1) = Gout;
+  row(ii)   = -4 * Gout;
+  row(ii+1) = Gout;
+  row(ii-7) = Gout;
+  row(ii+7) = Gout;
+  G(ii, :)  = row;
+end
+% c8
+row         = zeros(1, 49);
+row(8-7)    = 1/2 * Gout;
+row(8+7)    = 1/2 * Gout;
+row(8+1)    = Gout;
+row(8)      = -2 * Gout;
+G(8, :)     = row;
+% c14
+row         = zeros(1, 49);
+row(14-7)   = 1/2 * Gout;
+row(14+7)   = 1/2 * Gout;
+row(14-1)   = Gout;
+row(14)     = -2 * Gout;
+G(14, :)    = row;
+% c1
+row         = zeros(1, 49);
 
 %% Version Info
 % The file that generated this document is called:
