@@ -158,6 +158,7 @@ for ii = [8, 14]
     row(ii+1) = Gout;
   end
   row(ii)     = -3 * Gout;
+  G(ii, :)    = row;
 end
 % row 2, 5, 6 internal
 for ii = [9:13 30:34 37:41]
@@ -185,8 +186,21 @@ for ii = [22:7:43 28:7:49]
     row(ii+1) = Gcell;
   end
   row(ii)   = -2 * Gcell;
+  G(ii, :)  = row;
 end
-
+% c15 & c21
+for ii = [15, 21]
+  row       = zeros(1, 49);
+  row(ii-7) = Gout;
+  row(ii+7) = 1/2 * Gcell;
+  if mod(ii, 7) == 0
+    row(ii-1) = 1/2 * (Gout + Gcell);
+  else
+    row(ii+1) = 1/2 * (Gout + Gcell);
+  end
+  row(ii)   = 3/2 * Gout + Gcell;
+  G(ii, :)  = row;
+end
 
 
 
