@@ -160,8 +160,18 @@ row(14+7)   = 1/2 * Gout;
 row(14-1)   = Gout;
 row(14)     = -2 * Gout;
 G(14, :)    = row;
-% c1
-row         = zeros(1, 49);
+% c1 & c7
+for ii = [1, 7]
+  row         = zeros(1, 49);
+  row(ii+7)   = Gout;
+  if mod(ii, 7) == 0
+    row(ii-1) = Gout;
+  else
+    row(ii+1) = Gout;
+  end
+  row(ii)     = -2 * Gout;
+end
+
 
 %% Version Info
 % The file that generated this document is called:
