@@ -160,8 +160,8 @@ for ii = [8, 14]
   row(ii)     = -3 * Gout;
   G(ii, :)    = row;
 end
-% row 2, 5, 6 internal
-for ii = [9:13 30:34 37:41]
+% row 2, 4, 5, 6 internal
+for ii = [9:13 23 27 30:34 37:41]
   row       = zeros(1,49);
   if ii > 29
     Gtemp = Gcell;
@@ -185,7 +185,7 @@ for ii = [22:7:43 28:7:49]
   else
     row(ii+1) = Gcell;
   end
-  row(ii)   = -2 * Gcell;
+  row(ii)   = -sum(row);
   G(ii, :)  = row;
 end
 % c15 & c21
@@ -201,7 +201,16 @@ for ii = [15, 21]
   row(ii)   = 3/2 * Gout + Gcell;
   G(ii, :)  = row;
 end
-
+% c16 & c20
+for ii = [16, 20]
+  row       = row(1, 49);
+  row(ii-7) = Gout;
+  row(ii+7) = Gcell;
+  row(ii-1) = 1/2 * (Gout + Gcell);
+  row(ii+1) = 1/2 * (Gout + Gcell);
+  row(ii)   = -sum(row);
+  G(ii, :)  = row;
+end
 
 
 %% Version Info
