@@ -275,10 +275,34 @@ G(44, :)    = row;
 
 % generate b matrix
 b           = zeros(49, 1);
-b([1:8, 14] = 100;  % mM
+b([1:8 14]) = 100;  % mM
 b(15:7:36)  = Ginfx * Cinf;
 b(21:7:42)  = Ginfx * Cinf;
 b([43, 39]) = Cinf * 1/2 * (Ginfx + Ginfy);
+
+% convert to sparse matrix form and display
+disp('The sparse matrix form of ''G''')
+disp(sparse(G))
+disp('The sparse matrix form of ''b''')
+disp(sparse(b))
+
+% plot the sparse matrix representation
+figure('OuterPosition',[0 0 1200 800],'PaperUnits','points','PaperSize',[1200 800]);
+[L, U, P] = lu(G);
+subplot(2,2,1); spy(G); title('spy(G)')
+subplot(2,2,2); spy(L); title('spy(L)')
+subplot(2,2,3); spy(U); title('spy(U)')
+subplot(2,2,4); spy(P); title('spy(P)')
+
+prettyFig()
+
+if being_published
+  snapnow
+  delete(gcf)
+end
+
+% calculate the concentration profile
+C = G \ b;
 
 
 %% Version Info
