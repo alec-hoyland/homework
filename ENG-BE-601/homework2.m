@@ -139,11 +139,16 @@ end
 % row 2, 5, 6 internal
 for ii = [9:13 30:34 37:41]
   row       = zeros(1,49);
-  row(ii-1) = Gout;
-  row(ii)   = -4 * Gout;
-  row(ii+1) = Gout;
-  row(ii-7) = Gout;
-  row(ii+7) = Gout;
+  if ii > 29
+    Gtemp = Gcell;
+  else
+    Gtemp = Gout;
+  end
+  row(ii-1) = Gtemp;
+  row(ii)   = -4 * Gtemp;
+  row(ii+1) = Gtemp;
+  row(ii-7) = Gtemp;
+  row(ii+7) = Gtemp;
   G(ii, :)  = row;
 end
 % c8 & c14
@@ -181,6 +186,7 @@ for ii = [22:7:43 28:7:49]
   end
   row(ii)   = -2 * Gcell;
 end
+
 
 
 
