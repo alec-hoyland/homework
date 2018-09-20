@@ -176,7 +176,7 @@ for ii = [9:13 18 23 27 30:34 37:41]
   G(ii, :)  = row;
 end
 % columns 1 & 7 edges
-for ii = [22:7:43 28:7:49]
+for ii = [22:7:42 28:7:48]
   row       = zeros(1, 49);
   row(ii-7) = 1/2 * Gcell;
   row(ii+7) = 1/2 * Gcell;
@@ -203,7 +203,7 @@ for ii = [15, 21]
 end
 % c16 & c20
 for ii = [16, 20]
-  row       = row(1, 49);
+  row       = zeros(1, 49);
   row(ii-7) = Gout;
   row(ii+7) = Gcell;
   row(ii-1) = 1/2 * (Gout + Gcell);
