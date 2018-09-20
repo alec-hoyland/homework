@@ -160,8 +160,8 @@ for ii = [8, 14]
   row(ii)     = -3 * Gout;
   G(ii, :)    = row;
 end
-% row 2, 4, 5, 6 internal
-for ii = [9:13 23 27 30:34 37:41]
+% row 2, 3, 4, 5, 6 internal
+for ii = [9:13 18 23 27 30:34 37:41]
   row       = zeros(1,49);
   if ii > 29
     Gtemp = Gcell;
@@ -211,6 +211,67 @@ for ii = [16, 20]
   row(ii)   = -sum(row);
   G(ii, :)  = row;
 end
+% c17
+row       = zeros(1, 49);
+row(17-7) = Gout;
+row(17+7) = 1/2 * (Gout + Gcell);
+row(17-1) = 1/2 * (Gout + Gcell);
+row(17+1) = Gout;
+row(17)   = -sum(row);
+G(17, :)  = row;
+% c19
+row       = zeros(1, 49);
+row(19-7) = Gout;
+row(19+7) = 1/2 * (Gout + Gcell);
+row(19+1) = 1/2 * (Gout + Gcell);
+row(19-1) = Gout;
+row(19)   = -sum(row);
+G(19, :)  = row;
+% c24
+row       = zeros(1, 49);
+row(24-7) = 1/2 * (Gout + Gcell);
+row(24+7) = Gcell;
+row(24-1) = Gcell;
+row(24+1) = 1/2 * (Gout + Gcell);
+row(24)   = -sum(row);
+G(24, :)  = row;
+% c25
+row       = zeros(1, 49);
+row(25-7) = Gout;
+row(25+7) = Gcell;
+row(25-1) = 1/2 * (Gout + Gcell);
+row(25+1) = 1/2 * (Gout + Gcell);
+row(25)   = -sum(row);
+G(25, :)  = row;
+% c26
+row       = zeros(1, 49);
+row(26-7) = 1/2 * (Gout + Gcell);
+row(26+7) = Gcell;
+row(26+1) = Gcell;
+row(26-1) = 1/2 * (Gout + Gcell);
+row(26)   = -sum(row);
+G(26, :)  = row;
+% row 7 edges
+for ii = 44:48
+  row         = zeros(1, 49);
+  row(ii-7)   = Gcell;
+  row(ii-1)   = 1/2 * Gcell;
+  row(ii+1)   = 1/2 * Gcell;
+  row(ii)     = -sum(row) - Ginfy;
+  G(ii, :)    = row;
+end
+% c44
+row         = zeros(1, 49);
+row(44-7)   = 1/2 * Gcell;
+row(44+1)   = 1/2 * Gcell;
+row(44)     = -sum(row) - 1/2 * (Ginfx + Ginfy);
+G(44, :)    = row;
+% c49
+row         = zeros(1, 49);
+row(44-7)   = 1/2 * Gcell;
+row(44-1)   = 1/2 * Gcell;
+row(44)     = -sum(row) - 1/2 * (Ginfx + Ginfy);
+G(44, :)    = row;
 
 
 %% Version Info
