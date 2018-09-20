@@ -273,6 +273,13 @@ row(44-1)   = 1/2 * Gcell;
 row(44)     = -sum(row) - 1/2 * (Ginfx + Ginfy);
 G(44, :)    = row;
 
+% generate b matrix
+b           = zeros(49, 1);
+b([1:8, 14] = 100;  % mM
+b(15:7:36)  = Ginfx * Cinf;
+b(21:7:42)  = Ginfx * Cinf;
+b([43, 39]) = Cinf * 1/2 * (Ginfx + Ginfy);
+
 
 %% Version Info
 % The file that generated this document is called:
