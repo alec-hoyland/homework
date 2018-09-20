@@ -185,7 +185,7 @@ for ii = [22:7:43 28:7:49]
   else
     row(ii+1) = Gcell;
   end
-  row(ii)   = -sum(row);
+  row(ii)   = -sum(row) - Ginfx;
   G(ii, :)  = row;
 end
 % c15 & c21
@@ -198,7 +198,7 @@ for ii = [15, 21]
   else
     row(ii+1) = 1/2 * (Gout + Gcell);
   end
-  row(ii)   = 3/2 * Gout + Gcell;
+  row(ii)   = -sum(row);
   G(ii, :)  = row;
 end
 % c16 & c20
