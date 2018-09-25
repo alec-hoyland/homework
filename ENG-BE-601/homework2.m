@@ -164,7 +164,7 @@ end
 % row 2, 3, 4, 5, 6 internal
 for ii = [9:13 18 23 27 30:34 37:41]
   row       = zeros(1,49);
-  if ii > 29
+  if ii > 21
     Gtemp = Gintra;
   else
     Gtemp = Gextra;
@@ -176,7 +176,7 @@ for ii = [9:13 18 23 27 30:34 37:41]
   row(ii+7) = Gtemp;
   G(ii, :)  = row;
 end
-% columns 1 & 7 edges
+% columns 1 & 7 intracellular edges
 for ii = [22:7:42 28:7:48]
   row       = zeros(1, 49);
   row(ii-7) = 1/2 * Gintra;
@@ -263,10 +263,10 @@ for ii = 44:48
 end
 % c44
 row         = zeros(1, 49);
-row(44-7)   = 1/2 * Gintra;
-row(44+1)   = 1/2 * Gintra;
-row(44)     = -sum(row) - 1/2 * (Ginfx + Ginfy);
-G(44, :)    = row;
+row(43-7)   = 1/2 * Gintra;
+row(43+1)   = 1/2 * Gintra;
+row(43)     = -sum(row) - 1/2 * (Ginfx + Ginfy);
+G(43, :)    = row;
 % c49
 row         = zeros(1, 49);
 row(49-7)   = 1/2 * Gintra;
@@ -277,9 +277,10 @@ G(49, :)    = row;
 % generate b matrix
 b           = zeros(49, 1);
 b([1:8 14]) = 100;  % mM
-b(15:7:36)  = Ginfx * Cinf;
-b(21:7:42)  = Ginfx * Cinf;
-b([43, 39]) = Cinf * 1/2 * (Ginfx + Ginfy);
+b([15:7:36])  = Ginfx * Cinf; % 0
+b([21:7:42])  = Ginfx * Cinf; % 0
+b([44:46])    = Ginfy * Cinf; % 0
+b([43, 49]) = Cinf * 1/2 * (Ginfx + Ginfy);
 
 % convert to sparse matrix form and display
 disp('The sparse matrix form of ''G''')
