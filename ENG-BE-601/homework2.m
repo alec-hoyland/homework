@@ -289,7 +289,7 @@ disp('The sparse matrix form of ''b''')
 disp(sparse(b))
 
 % plot the sparse matrix representation
-figure('OuterPosition',[0 0 1200 800],'PaperUnits','points','PaperSize',[1200 800]);
+figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1600]);
 [L, U, P] = lu(G);
 subplot(2,2,1); spy(G); title('spy(G)')
 subplot(2,2,2); spy(L); title('spy(L)')
