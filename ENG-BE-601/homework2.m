@@ -137,6 +137,7 @@ for ii = [1, 7]
     row(ii+1) = Gextra;
   end
   row(ii)     = -2 * Gextra;
+  G(ii, :)    = row;
 end
 % row 1 edges
 for ii = 2:6
@@ -268,10 +269,10 @@ row(44)     = -sum(row) - 1/2 * (Ginfx + Ginfy);
 G(44, :)    = row;
 % c49
 row         = zeros(1, 49);
-row(44-7)   = 1/2 * Gintra;
-row(44-1)   = 1/2 * Gintra;
-row(44)     = -sum(row) - 1/2 * (Ginfx + Ginfy);
-G(44, :)    = row;
+row(49-7)   = 1/2 * Gintra;
+row(49-1)   = 1/2 * Gintra;
+row(49)     = -sum(row) - 1/2 * (Ginfx + Ginfy);
+G(49, :)    = row;
 
 % generate b matrix
 b           = zeros(49, 1);
