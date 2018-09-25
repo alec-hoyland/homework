@@ -306,14 +306,56 @@ end
 % calculate the concentration profile
 C       = G \ b;
 % produce a matrix of the same topography as the investigated system
-Cfinal  = reshape(C', [7 7]);
-dirichletSides = [0.1*ones(3,1); NaN(4,1)];
-Cfinal  = [dirichletSides Cfinal dirichletSides];
-Cfinal  = [0.1*ones(1,9); Cfinal];
+Ctotal  = reshape(C, [7 7])';
+dirichletSides = [0*ones(3,1); NaN(4,1)]; % mM
+Cfinal  = [dirichletSides Ctotal dirichletSides];
+Cfinal  = [0*ones(1,9); Cfinal]; % mM
 
 % concentration matrix with the boundary conditions
 disp('The final concentration matrix')
 disp(Cfinal)
+
+% plot the concentration matrix Cfinal
+figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1600]);
+x = hx * (1:9);
+y = hy * (1:8);
+h = pcolor(x,y,Cfinal);
+xlabel('x-position (um)')
+ylabel('y-position (um)')
+c = colorbar;
+c.Label.String = 'concentration (mM)';
+title('concentration of glucose inside epithelial cell/lumen')
+% caxis([0 100]);
+
+prettyFig()
+
+if being_published
+  snapnow
+  delete(gcf)
+end
+return
+% set up effective concentration gradient
+[X, Y]    = meshgrid(1:8, 1:9);
+dx        = diff(X(1, 1:2));
+dy        = diff(Y(1:2, 1));
+[Px, Py]  = gradient(Cfinal, dx, dy);
+
+% plot the effective concentration gradient
+figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1600]);
+quiver(X, Y, -Px, -Py, 1, 'blue');
+hold on
+[C, h] = contour(X, Y, Cfinal, [0.05:0.005:0.1])
+c = colorbar;
+c.Label.String = 'concentration (mM)';
+clabel(C, h);
+caxis([0 100]);
+
+prettyFig()
+
+if being_published
+  snapnow
+  delete(gcf)
+end
 
 %% Version Info
 % The file that generated this document is called:
