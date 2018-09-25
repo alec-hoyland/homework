@@ -104,23 +104,23 @@ x       = 0:hx:a;
 y       = 0:hy:b;
 
 % diffusion coefficients
-Dcell   = 100;  % um^2/s
-Dout    = 800;  % um^2/s
+Dintra   = 100;  % um^2/s
+Dextra    = 800;  % um^2/s
 
 % ambient concentration
 Cinf    = 0;    % M
 gamma   = 40;   % um/s
 
 % conductances
-Gcell   = Dcell * hz;
-Gout    = Dout * hz;
+Gintra  = Dintra * hz;
+Gextra  = Dextra * hz;
 Ginfx   = gamma * hy * hz;
 Ginfy   = gamma * hx * hz;
 
 disp('The intracellular conductance is')
-disp(Gcell)
+disp(Gintra)
 disp('The extracellular conductance is')
-disp(Gout)
+disp(Gextra)
 disp('The y-face convection conductance is')
 disp(Ginfy)
 disp('Units are cubic microns per second')
@@ -130,43 +130,43 @@ G       = zeros(49, 49);
 % c1 & c7
 for ii = [1, 7]
   row         = zeros(1, 49);
-  row(ii+7)   = Gout;
+  row(ii+7)   = Gextra;
   if mod(ii, 7) == 0
-    row(ii-1) = Gout;
+    row(ii-1) = Gextra;
   else
-    row(ii+1) = Gout;
+    row(ii+1) = Gextra;
   end
-  row(ii)     = -2 * Gout;
+  row(ii)     = -2 * Gextra;
 end
 % row 1 edges
 for ii = 2:6
   row       = zeros(1,49);
-  row(ii-1) = Gout;
-  row(ii)   = -3 * Gout;
-  row(ii+1) = Gout;
-  row(ii+7) = Gout;
+  row(ii-1) = Gextra;
+  row(ii)   = -3 * Gextra;
+  row(ii+1) = Gextra;
+  row(ii+7) = Gextra;
   G(ii, :)  = row;
 end
 % c8 & c14
 for ii = [8, 14]
   row         = zeros(1, 49);
-  row(ii-7)   = Gout;
-  row(ii+7)   = Gout;
+  row(ii-7)   = Gextra;
+  row(ii+7)   = Gextra;
   if mod(ii, 7) == 0
-    row(ii-1) = Gout;
+    row(ii-1) = Gextra;
   else
-    row(ii+1) = Gout;
+    row(ii+1) = Gextra;
   end
-  row(ii)     = -3 * Gout;
+  row(ii)     = -3 * Gextra;
   G(ii, :)    = row;
 end
 % row 2, 3, 4, 5, 6 internal
 for ii = [9:13 18 23 27 30:34 37:41]
   row       = zeros(1,49);
   if ii > 29
-    Gtemp = Gcell;
+    Gtemp = Gintra;
   else
-    Gtemp = Gout;
+    Gtemp = Gextra;
   end
   row(ii-1) = Gtemp;
   row(ii)   = -4 * Gtemp;
@@ -178,12 +178,12 @@ end
 % columns 1 & 7 edges
 for ii = [22:7:42 28:7:48]
   row       = zeros(1, 49);
-  row(ii-7) = 1/2 * Gcell;
-  row(ii+7) = 1/2 * Gcell;
+  row(ii-7) = 1/2 * Gintra;
+  row(ii+7) = 1/2 * Gintra;
   if mod(ii, 7) == 0
-    row(ii-1) = Gcell;
+    row(ii-1) = Gintra;
   else
-    row(ii+1) = Gcell;
+    row(ii+1) = Gintra;
   end
   row(ii)   = -sum(row) - Ginfx;
   G(ii, :)  = row;
@@ -191,12 +191,12 @@ end
 % c15 & c21
 for ii = [15, 21]
   row       = zeros(1, 49);
-  row(ii-7) = Gout;
-  row(ii+7) = 1/2 * Gcell;
+  row(ii-7) = Gextra;
+  row(ii+7) = 1/2 * Gintra;
   if mod(ii, 7) == 0
-    row(ii-1) = 1/2 * (Gout + Gcell);
+    row(ii-1) = 1/2 * (Gextra + Gintra);
   else
-    row(ii+1) = 1/2 * (Gout + Gcell);
+    row(ii+1) = 1/2 * (Gextra + Gintra);
   end
   row(ii)   = -sum(row);
   G(ii, :)  = row;
@@ -204,72 +204,72 @@ end
 % c16 & c20
 for ii = [16, 20]
   row       = zeros(1, 49);
-  row(ii-7) = Gout;
-  row(ii+7) = Gcell;
-  row(ii-1) = 1/2 * (Gout + Gcell);
-  row(ii+1) = 1/2 * (Gout + Gcell);
+  row(ii-7) = Gextra;
+  row(ii+7) = Gintra;
+  row(ii-1) = 1/2 * (Gextra + Gintra);
+  row(ii+1) = 1/2 * (Gextra + Gintra);
   row(ii)   = -sum(row);
   G(ii, :)  = row;
 end
 % c17
 row       = zeros(1, 49);
-row(17-7) = Gout;
-row(17+7) = 1/2 * (Gout + Gcell);
-row(17-1) = 1/2 * (Gout + Gcell);
-row(17+1) = Gout;
+row(17-7) = Gextra;
+row(17+7) = 1/2 * (Gextra + Gintra);
+row(17-1) = 1/2 * (Gextra + Gintra);
+row(17+1) = Gextra;
 row(17)   = -sum(row);
 G(17, :)  = row;
 % c19
 row       = zeros(1, 49);
-row(19-7) = Gout;
-row(19+7) = 1/2 * (Gout + Gcell);
-row(19+1) = 1/2 * (Gout + Gcell);
-row(19-1) = Gout;
+row(19-7) = Gextra;
+row(19+7) = 1/2 * (Gextra + Gintra);
+row(19+1) = 1/2 * (Gextra + Gintra);
+row(19-1) = Gextra;
 row(19)   = -sum(row);
 G(19, :)  = row;
 % c24
 row       = zeros(1, 49);
-row(24-7) = 1/2 * (Gout + Gcell);
-row(24+7) = Gcell;
-row(24-1) = Gcell;
-row(24+1) = 1/2 * (Gout + Gcell);
+row(24-7) = 1/2 * (Gextra + Gintra);
+row(24+7) = Gintra;
+row(24-1) = Gintra;
+row(24+1) = 1/2 * (Gextra + Gintra);
 row(24)   = -sum(row);
 G(24, :)  = row;
 % c25
 row       = zeros(1, 49);
-row(25-7) = Gout;
-row(25+7) = Gcell;
-row(25-1) = 1/2 * (Gout + Gcell);
-row(25+1) = 1/2 * (Gout + Gcell);
+row(25-7) = Gextra;
+row(25+7) = Gintra;
+row(25-1) = 1/2 * (Gextra + Gintra);
+row(25+1) = 1/2 * (Gextra + Gintra);
 row(25)   = -sum(row);
 G(25, :)  = row;
 % c26
 row       = zeros(1, 49);
-row(26-7) = 1/2 * (Gout + Gcell);
-row(26+7) = Gcell;
-row(26+1) = Gcell;
-row(26-1) = 1/2 * (Gout + Gcell);
+row(26-7) = 1/2 * (Gextra + Gintra);
+row(26+7) = Gintra;
+row(26+1) = Gintra;
+row(26-1) = 1/2 * (Gextra + Gintra);
 row(26)   = -sum(row);
 G(26, :)  = row;
 % row 7 edges
 for ii = 44:48
   row         = zeros(1, 49);
-  row(ii-7)   = Gcell;
-  row(ii-1)   = 1/2 * Gcell;
-  row(ii+1)   = 1/2 * Gcell;
+  row(ii-7)   = Gintra;
+  row(ii-1)   = 1/2 * Gintra;
+  row(ii+1)   = 1/2 * Gintra;
   row(ii)     = -sum(row) - Ginfy;
   G(ii, :)    = row;
 end
 % c44
 row         = zeros(1, 49);
-row(44-7)   = 1/2 * Gcell;
-row(44+1)   = 1/2 * Gcell;
+row(44-7)   = 1/2 * Gintra;
+row(44+1)   = 1/2 * Gintra;
 row(44)     = -sum(row) - 1/2 * (Ginfx + Ginfy);
 G(44, :)    = row;
 % c49
 row         = zeros(1, 49);
-row(44-7)   = 1/2 * Gcell;
-row(44-1)   = 1/2 * Gcell;
+row(44-7)   = 1/2 * Gintra;
+row(44-1)   = 1/2 * Gintra;
 row(44)     = -sum(row) - 1/2 * (Ginfx + Ginfy);
 G(44, :)    = row;
 
