@@ -362,6 +362,7 @@ clabel(C, h);
 caxis([0 0.1]);
 xlabel('x-position (\mum)')
 ylabel('y-position (\mum)')
+title('concentration gradient with iso-concentration contours')
 
 prettyFig()
 
