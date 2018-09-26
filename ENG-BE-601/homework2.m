@@ -331,11 +331,11 @@ x = hx * (1:9);
 y = hy * (8:-1:1);
 [X, Y] = meshgrid(x, y);
 h = pcolor(X,Y,Cfinal);
-xlabel('x-position (um)')
-ylabel('y-position (um)')
+xlabel('x-position (\mum)')
+ylabel('y-position (\mum)')
 c = colorbar;
 % set(h, 'ydir', 'reverse');
-c.Label.String = 'concentration (mM)';
+c.Label.String = 'concentration (\muM)';
 title('concentration of glucose inside epithelial cell/lumen')
 % caxis([0 100]);
 
@@ -355,11 +355,13 @@ dy        = diff(Y(1:2, 1));
 figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1600]);
 quiver(X, Y, -Px, -Py, 1, 'blue');
 hold on
-[C, h] = contour(X, Y, Cfinal, [0.05:0.005:0.1])
+[C, h] = contour(X, Y, Cfinal, [0.05:0.005:0.1]);
 c = colorbar;
-c.Label.String = 'concentration (mM)';
+c.Label.String = 'concentration (\muM)';
 clabel(C, h);
-caxis([0 100]);
+caxis([0 0.1]);
+xlabel('x-position (\mum)')
+ylabel('y-position (\mum)')
 
 prettyFig()
 
