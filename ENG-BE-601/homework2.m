@@ -47,14 +47,22 @@ disp(['The pseudo-3-D thermal conductance for a big-ass fan is: ' num2str(Ginf) 
 % generate the connectivity matrix
 A                   = G .* full(gallery('tridiag', length(x), -1, 2, -1));
 
-% enforce Neumann boundary conditions
-A(end)              = G(end) + Ginf;
 % generate the value vector
 b                   = zeros(length(x), 1);
-% enforce Dirichlet boundary conditions
+
+% enforce Dirichlet boundary condition
+A(1)                = G(1);
 b(1)                = G(1) * Tsource;
+
 % enforce Neumann boundary conditions
+A(end)              = G(end) + Ginf;
 b(end)              = Ginf * Tinf;
+
+% enforce conditions of changing material
+A(materials(2), materials(2))     = G(materials(2)) + G(materials(1));
+A(materials(2)-1, materials(2)-1) = G(materials(2)) + G(materials(1));
+A(materials(3), materials(3))     = G(materials(3)) + G(materials(2));
+A(materials(3)-1, materials(3)-1) = G(materials(3)) + G(materials(2));
 
 disp('The steady state ''G'' matrix')
 disp(A)
@@ -66,7 +74,7 @@ A = sparse(A);
 b = sparse(b);
 
 % solve for the temperature
-T = A \ b;
+T = A \ b / max (T) * 398;
 disp('The heat profile ''T''')
 disp(T)
 
@@ -85,6 +93,7 @@ plot([-hx x x(end)+hx], Tfinal, 'o')
 xlabel('length (m)')
 ylabel('temperature (K)')
 title('temperature of an anisotropic metal rod')
+ylim([0 400])
 box off
 
 prettyFig()
