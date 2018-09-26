@@ -74,7 +74,7 @@ A = sparse(A);
 b = sparse(b);
 
 % solve for the temperature
-T = A \ b / max (T) * 398;
+T = A \ b; T = T / max(T) * 398;
 disp('The heat profile ''T''')
 disp(T)
 
@@ -347,7 +347,6 @@ if being_published
 end
 
 % set up effective concentration gradient
-[X, Y]    = meshgrid(1:8, 1:9);
 dx        = diff(X(1, 1:2));
 dy        = diff(Y(1:2, 1));
 [Px, Py]  = gradient(Cfinal, dx, dy);
