@@ -46,6 +46,7 @@ disp(['The pseudo-3-D thermal conductance for a big-ass fan is: ' num2str(Ginf) 
 
 % generate the connectivity matrix
 A                   = G .* full(gallery('tridiag', length(x), -1, 2, -1));
+
 % enforce Neumann boundary conditions
 A(end)              = G(end) + Ginf;
 % generate the value vector
@@ -276,11 +277,11 @@ G(49, :)    = row;
 
 % generate b matrix
 b           = zeros(49, 1);
-b([1:8 14]) = 100;  % mM
-b([15:7:36])  = Ginfx * Cinf; % 0
-b([21:7:42])  = Ginfx * Cinf; % 0
-b([44:46])    = Ginfy * Cinf; % 0
-b([43, 49]) = Cinf * 1/2 * (Ginfx + Ginfy);
+b([1:8 14]) = -100;  % mM
+b([15:7:36])  = -Ginfx * Cinf; % 0
+b([21:7:42])  = -Ginfx * Cinf; % 0
+b([44:46])    = -Ginfy * Cinf; % 0
+b([43, 49]) = -Cinf * 1/2 * (Ginfx + Ginfy);
 
 % convert to sparse matrix form and display
 disp('The sparse matrix form of ''G''')
@@ -307,9 +308,9 @@ end
 C       = G \ b;
 % produce a matrix of the same topography as the investigated system
 Ctotal  = reshape(C, [7 7])';
-dirichletSides = [0*ones(3,1); NaN(4,1)]; % mM
+dirichletSides = [0.1*ones(3,1); NaN(4,1)]; % mM
 Cfinal  = [dirichletSides Ctotal dirichletSides];
-Cfinal  = [0*ones(1,9); Cfinal]; % mM
+Cfinal  = [0.1*ones(1,9); Cfinal]; % mM
 
 % concentration matrix with the boundary conditions
 disp('The final concentration matrix')
@@ -318,11 +319,13 @@ disp(Cfinal)
 % plot the concentration matrix Cfinal
 figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1600]);
 x = hx * (1:9);
-y = hy * (1:8);
-h = pcolor(x,y,Cfinal);
+y = hy * (8:-1:1);
+[X, Y] = meshgrid(x, y);
+h = pcolor(X,Y,Cfinal);
 xlabel('x-position (um)')
 ylabel('y-position (um)')
 c = colorbar;
+% set(h, 'ydir', 'reverse');
 c.Label.String = 'concentration (mM)';
 title('concentration of glucose inside epithelial cell/lumen')
 % caxis([0 100]);
@@ -333,7 +336,7 @@ if being_published
   snapnow
   delete(gcf)
 end
-return
+
 % set up effective concentration gradient
 [X, Y]    = meshgrid(1:8, 1:9);
 dx        = diff(X(1, 1:2));
