@@ -82,7 +82,7 @@ yapprox = C * a' + S * b';
 figure('OuterPosition',[0 0 1200 800],'PaperUnits','points','PaperSize',[1200 800]);
 hold on
 plot(t, y)
-plot(t, yapprox)
+plot(t, yapprox/max(yapprox)*max(y))
 xticks([0 1 2 3 4])
 xticklabels({'0', 'L', '2L', '3L', '4L'})
 ylabel('amplitude (a.u.)')
