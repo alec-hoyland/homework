@@ -2,8 +2,31 @@
 % Alec Hoyland
 % 11:24 2018-10-2
 
+addpath('haar')
+
 pHeader;
 tic
+
+%% Load the Photo
+% Meghan, Duchess of Sussex
+
+% % load the .tif file
+% A = imread('Meghan_Markle_BW.tif', 'tiff');
+% % convert to single-precision floating point numbers
+% A = single(A);
+% % flip black and white (white == 0)
+% A = abs(A - 255) - 127.5;
+
+% load the test file
+A = imread('squiggle.tif', 'tiff');
+A = single(A);
+A = abs(A - 255);
+
+% column rastering
+B = haar(16, 'half');
+
+disp('The normalized Haar matrix is:')
+disp(B)
 
 
 %% Version Info
