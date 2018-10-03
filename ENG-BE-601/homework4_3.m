@@ -114,7 +114,7 @@ end
 figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1600]);
 snap = C4(1:32, 1:32);
 pcolor(snap)
-caxis([-127.5 127.5]);
+% caxis([-127.5 127.5]);
 title('tiny Meghan')
 
 prettyFig()
