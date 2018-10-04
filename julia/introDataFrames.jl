@@ -218,3 +218,135 @@ x[7] = 11:13
 x = DataFrame([(i,j) for i in 1:3, j in 1:5])
 # check to see if a name exists
 :x1 in names(x)
+
+## Manipulating Columns of DataFrames
+using DataFrames
+
+# start with a DataFrame of Bools that has default column names
+x = DataFrame(Bool, 3, 4);
+
+# create a new DataFrame with renamed columns
+rename(x, :x1 => :A)
+
+# perform in-place renaming
+rename!(c -> Symbol(string(c)^2), x)
+
+# rename a column without knowing the original name
+rename(x, names(x)[3] => :third)
+
+# change the names of all variables
+names!(x, [:a, :b, :c, :d])
+# can't use duplicate names (unless makeunique=true)
+names!(x, fill(:a, 4), makeunique=true)
+
+# reorder the names(x) vector as needed, creating a new DataFrame
+using Random
+x[shuffle(names(x))]
+
+# merging/adding columns
+x = DataFrame([(i,j) for i in 1:3, j in 1:3])
+y = DataFrame([(i, j) for i in 1:3, j in 4:6])
+hcat(x, y)
+# append a vector
+y = hcat(x, [1, 2, 3], makeunique=true)
+# prepend a vector
+y = hcat([1, 2, 3], x, makeunique=true)
+
+# insert a column into the middle (multiple times)
+insert!(y, 2, [1, 2, 3], :newcol, makeunique=true)
+
+## Manipulating Rows of DataFrames
+
+x = DataFrame(id=1:10, x = rand(10), y = [zeros(5); ones(5)])
+
+# check if a DataFrame, or a subset of its columns are sorted
+issorted(x)
+issorted(x, :x)
+
+# sort column :x in-place
+sort!(x, :x)
+
+# sort column :id
+y = sort(x, :id)
+
+# sort by two columns, first is decreasing, second is increasing
+sort(x, (:y, :x), rev=(true, false))
+sort(x, (order(:y, rev=true), :x))
+
+# even more sorting (let's try to figure out what they did here)
+sort(x, (order(:y, rev=true), order(:x, by=v->-v)))
+
+# reorder rows randomly
+using Random
+x[shuffle(1:10), :]
+
+# swap two rows
+sort(x, :id)
+x[[1, 10], :] = x[[10, 1], :]
+x
+
+# another way to swap (back)
+x[1, :], x[10, :] = x[10, :], x[1, :]
+x
+
+# merging/adding rows
+x = DataFrame(rand(3, 5))
+vcat(x, x)
+
+# reverse order of names
+y = x[reverse(names(x))]
+
+# automatic column-name matching
+vcat(x, y)
+
+# append by directly modifying x in-place
+append!(x, x)
+
+# add one row to the end
+# must use correct number of values and types
+push!(x, 1:5)
+
+# also works with dictionaries
+push!(x, Dict(:x1=> 1, :x2=>5, :x3=>32, :x4=>4, :x5=>11))
+
+# subsetting/removing rows
+x = DataFrame(id=1:10, val='a':'j')
+
+# subset by index
+x[1:2, :]
+
+# just peek without copying anything
+view(x, 1:2)
+
+# by boolean indexing
+x[repeat([true, false], outer=5), :]
+
+# don't copy, just view
+view(x, repeat([true, false], 5), :)
+
+# delete one row
+deleterows!(x, 7)
+
+# delete a collection of rows
+deleterows!(x, 6:7)
+
+# create a new DataFrame, where filtering function operates on the specified row
+x = DataFrame([1:4, 2:5, 3:6])
+filter(r -> r[:x1] > 2.5, x)
+
+# in-place modification of x (with do-block syntax)
+filter!(x) do r
+    if r[:x1] > 2.5
+        return r[:x2] < 4.5
+    end
+    r[:x3] < 3.5
+end
+x
+
+# deduplicating
+x = DataFrame(A=[1,2], B=["x", "y"])
+append!(x, x)
+x[:C]= 1:4
+x
+
+unique(x, [1,2])
