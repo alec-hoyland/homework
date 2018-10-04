@@ -1,6 +1,10 @@
-% Homework #1
+%% Homework #1
 % Alec Hoyland
 % September 10th, 2018
+
+pHeader;
+tic
+
 
 %% Problem #2
 %% Part A
@@ -80,3 +84,34 @@ disp('A possible zero test vector is [1 -3 1], since a1 + -3a2 + a3 = [0 0 0]')
 a1 + -3 * a2 + a3
 
 disp('The vectors span a plane in 2 dimensions')
+
+
+%% Version Info
+% The file that generated this document is called:
+disp(mfilename)
+
+
+%%
+% and its md5 hash is:
+Opt.Input = 'file';
+disp(dataHash(strcat(mfilename,'.m'),Opt))
+
+
+%%
+% This file should be in this commit:
+[status,m]=unix('git rev-parse HEAD');
+if ~status
+	disp(m)
+end
+
+t = toc;
+
+
+%%
+% This file has the following external dependencies:
+showDependencyHash(mfilename);
+
+
+%%
+% This document was built in:
+disp(strcat(oval(t,3),' seconds.'))

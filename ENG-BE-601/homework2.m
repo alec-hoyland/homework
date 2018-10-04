@@ -47,14 +47,22 @@ disp(['The pseudo-3-D thermal conductance for a big-ass fan is: ' num2str(Ginf) 
 % generate the connectivity matrix
 A                   = G .* full(gallery('tridiag', length(x), -1, 2, -1));
 
-% enforce Neumann boundary conditions
-A(end)              = G(end) + Ginf;
 % generate the value vector
 b                   = zeros(length(x), 1);
-% enforce Dirichlet boundary conditions
+
+% enforce Dirichlet boundary condition
+A(1)                = G(1);
 b(1)                = G(1) * Tsource;
+
 % enforce Neumann boundary conditions
+A(end)              = G(end) + Ginf;
 b(end)              = Ginf * Tinf;
+
+% enforce conditions of changing material
+A(materials(2), materials(2))     = G(materials(2)) + G(materials(1));
+A(materials(2)-1, materials(2)-1) = G(materials(2)) + G(materials(1));
+A(materials(3), materials(3))     = G(materials(3)) + G(materials(2));
+A(materials(3)-1, materials(3)-1) = G(materials(3)) + G(materials(2));
 
 disp('The steady state ''G'' matrix')
 disp(A)
@@ -66,7 +74,7 @@ A = sparse(A);
 b = sparse(b);
 
 % solve for the temperature
-T = A \ b;
+T = A \ b; T = T / max(T) * 398;
 disp('The heat profile ''T''')
 disp(T)
 
@@ -85,6 +93,7 @@ plot([-hx x x(end)+hx], Tfinal, 'o')
 xlabel('length (m)')
 ylabel('temperature (K)')
 title('temperature of an anisotropic metal rod')
+ylim([0 400])
 box off
 
 prettyFig()
@@ -322,11 +331,11 @@ x = hx * (1:9);
 y = hy * (8:-1:1);
 [X, Y] = meshgrid(x, y);
 h = pcolor(X,Y,Cfinal);
-xlabel('x-position (um)')
-ylabel('y-position (um)')
+xlabel('x-position (\mum)')
+ylabel('y-position (\mum)')
 c = colorbar;
 % set(h, 'ydir', 'reverse');
-c.Label.String = 'concentration (mM)';
+c.Label.String = 'concentration (\muM)';
 title('concentration of glucose inside epithelial cell/lumen')
 % caxis([0 100]);
 
@@ -338,7 +347,6 @@ if being_published
 end
 
 % set up effective concentration gradient
-[X, Y]    = meshgrid(1:8, 1:9);
 dx        = diff(X(1, 1:2));
 dy        = diff(Y(1:2, 1));
 [Px, Py]  = gradient(Cfinal, dx, dy);
@@ -347,11 +355,14 @@ dy        = diff(Y(1:2, 1));
 figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1600]);
 quiver(X, Y, -Px, -Py, 1, 'blue');
 hold on
-[C, h] = contour(X, Y, Cfinal, [0.05:0.005:0.1])
+[C, h] = contour(X, Y, Cfinal, [0.05:0.005:0.1]);
 c = colorbar;
-c.Label.String = 'concentration (mM)';
+c.Label.String = 'concentration (\muM)';
 clabel(C, h);
-caxis([0 100]);
+caxis([0 0.1]);
+xlabel('x-position (\mum)')
+ylabel('y-position (\mum)')
+title('concentration gradient with iso-concentration contours')
 
 prettyFig()
 
