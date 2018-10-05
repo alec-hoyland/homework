@@ -349,4 +349,21 @@ append!(x, x)
 x[:C]= 1:4
 x
 
+# get the first unique rows for given index
 unique(x, [1,2])
+
+# get the first unique rows for the whole row
+unique(x)
+
+# get the indicators of non-unique rows
+nonunique(x)
+
+# modify in-place
+unique!(x, :B)
+
+# extract one row from a DataFrame into a vector
+x = DataFrame(x=[1,missing,2], y=["a", "b", missing], z=[true,false,true])
+cols = [:x, :y]
+[x[1, col] for col in cols]
+[[x[i,col] for col in names(x)] for i in 1:nrow(x)]
+Tuple(x[1,col] for col in cols)
