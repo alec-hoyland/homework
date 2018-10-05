@@ -367,3 +367,22 @@ cols = [:x, :y]
 [x[1, col] for col in cols]
 [[x[i,col] for col in names(x)] for i in 1:nrow(x)]
 Tuple(x[1,col] for col in cols)
+
+## Working with Categorical Arrays
+using DataFrames
+
+x = categorical(["A", "B", "C"])
+y = categorical(["A", "B", "B", "C"], ordered=true)
+z = categorical(["A", "B", "B", "C", missing])
+
+c = cut(1:5, 5)
+by(DataFrame(x=cut(randn(100000), 10)), :x, d -> DataFrame(n=nrow(d)), sort=true)
+
+v = categorical([1, 2, 2, 3, 3])
+Vector{Union{String, Missing}}(z)
+
+arr = [x, y, z, c, v]
+isordered.(arr)
+ordered!(x, true), isordered(x)
+
+# list levels
