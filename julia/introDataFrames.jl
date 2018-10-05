@@ -499,3 +499,100 @@ aggregate(x, :id, sum, sort=true)
 x = DataFrame(rand(3,5))
 map(mean, eachcol(x))
 colwise(mean, x)
+
+## Performance
+
+using DataFrames
+using BenchmarkTools
+
+# access by column number is faster than by name
+x = DataFrame(rand(5, 1000))
+@btime x[500]
+@btime x[:x500]
+
+# when working with data, using barrier functions or type annotation
+function badFunction()
+    x = DataFrame(rand(1000000, 2))
+    y, z = x[1], x[2]
+    p = 0
+    for i in 1:nrow(x)
+        p += y[i]*z[i]
+    end
+    return p
+end
+
+@btime badFunction()
+
+@code_warntype badFunction()
+
+# solution #1: use a barrier function
+function f_inner(y,z)
+    p = 0.0
+    for i in 1:length(y)
+        p += y[i] * z[i]
+    end
+    return p
+end
+
+function f_barrier()
+    x = DataFrame(rand(1000000, 2))
+    f_inner(x[1], x[2])
+end
+
+@btime f_barrier()
+
+# solution #1.5: use an inbuilt function when possible
+function f_inbuilt()
+    x = DataFrame(rand(1000000, 2))
+    dot(x[1], x[2])
+end
+
+@btime f_inbuilt()
+
+# solution #2: provide the types of the extracted columns
+function f_typed() # not actually faster...very concerning...
+    x = DataFrame(rand(1000000, 2))
+    y::Vector{Float64}, z::Vector{Float64} = x[1], x[2]
+    p = 0
+    for i in 1:nrow(x)
+        p += y[i] * z[i]
+    end
+    return p
+end
+
+@btime f_typed()
+
+# Nota Bene: only create dataframes when you are done with a computation (ideally)
+# Nota Bene: appending to a DataFrame is fast
+
+x = DataFrame(rand(10^6, 5))
+y = DataFrame(transpose(1.0:5.0))
+z = [1.0:5.0;]
+
+# create a new data frame (slow!)
+@btime vcat($x, $y)
+# add a new row in-place (fast!)
+@btime append!($x, $y)
+
+# add a single row in-place (fastest!)
+x = DataFrame(rand(10^6, 5))
+@btime push!($x, $z)
+
+# adding Missing and Categorical slows down computations
+using Statistics
+
+function test(data)
+    println(eltype(data))
+    x = rand(data, 10^6)
+    y = categorical(x)
+    println(" raw:")
+    @btime countmap($x)
+    println(" categorical:")
+    @btime countmap($y)
+    nothing
+end
+
+test(1:10)
+test([randstring() for ii in 1:10])
+test(allowmissing(1:10))
+test(allowmissing([randstring() for ii in 1:10]))
