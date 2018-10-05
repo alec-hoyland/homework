@@ -596,3 +596,44 @@ test(1:10)
 test([randstring() for ii in 1:10])
 test(allowmissing(1:10))
 test(allowmissing([randstring() for ii in 1:10]))
+
+## Common Pitfalls
+
+# knowing what is coped when creating a DataFrame
+using DataFrames
+x = DataFrame(rand(3, 5))
+
+# y is a view on x
+y = x
+x === y
+
+# y is a separate variable in memory
+y = copy(x)
+x === y
+
+# but the columns are the same between the original and the copy
+all(x[i] === y[i] for i in ncol(x))
+
+# same as when creating arrays or assigning data frame columns, except ranges
+x = 1:3; y = [1, 2, 3]; df = DataFrame(x=x, y=y)
+y === df[:y]
+typeof(y), typeof(df[:y])
+
+# Nota Bene: do not modify the parent of a GroupedDataFrame
+x = DataFrame(id = repeat([1, 2], outer=3), x = 1:6)
+g = groupby(x, :id)
+# now, modifying x will mess up g
+
+# Nota Bene: you can filter columns of a data frame using booleans
+x = DataFrame(rand(5,5))
+x[x[:x1] .< 0.25, :] # filter by rows (needs the colon)
+
+# column selection creates aliases unless explicitly copied
+x = DataFrame(a=1:3)
+x[:b] = x[1] # alias
+x[:c] = x[:, 1] # alias
+x[:d] = x[1][:] # actual copy
+x[:e] = copy(x[1]) # explicit copy
+
+x[1,1] = 100;
+display(x)
