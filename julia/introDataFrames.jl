@@ -386,3 +386,42 @@ isordered.(arr)
 ordered!(x, true), isordered(x)
 
 # list levels
+levels.(arr)
+
+## Joining DataFrames
+x = DataFrame(ID=[1,2,3,4,missing], name = ["Alice", "Bob", "Conor", "Dave", "Zed"])
+y = DataFrame(id=[1,2,5,6,missing], age = [21, 22, 23, 24, 99])
+
+# the names of the columns which we want to join must be the same
+rename!(x, :ID => :id)
+
+# standard (inner) join by default, missing is joined
+join(x, y, on=:id)
+
+# left join (force join y to x)
+join(x, y, on=:id, kind=:left)
+
+# right join (force join x to y)
+join(x, y, on=:id, kind=:right)
+
+# outer join (join everything)
+join(x, y, on=:id, kind=:outer)
+
+# semi join (join only columns with the same names)
+join(x, y, on = :id, kind = :semi)
+
+# anti join (only join things not in x and y)
+join(x, y, on = :id, kind = :anti)
+
+# cross join does not require an argument
+# it produces the Cartesian product of arguments
+
+# complex cases of joins
+x = DataFrame(id1 = [1, 1, 2, 2, missing, missing], id2 = [1, 11, 2, 21, missing, 99],
+                name = ["Alice", "Bob", "Conor", "Dave", "Zed", "Zoe"])
+y = DataFrame(id1 = [1, 1, 3, 3, missing, missing],
+                id2 = [11, 1, 31, 3, missing, 999],
+                age = [21, 22, 23, 24, 99, 100])
+join(x, y, on=[:id1, :id2])
+join(x, y, on=[:id1], makeunique=true)
+join(x, y, on=[:id1], kind = :semi)
