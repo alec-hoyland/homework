@@ -467,3 +467,35 @@ unstack(y)
 # this will fail because a key cannot be found
 df = stack(DataFrame(rand(3,2)))
 unstack(df, :variable, :value)
+
+## Split-Apply-Combine
+
+x = DataFrame(id=[1,2,3,4,1,2,3,4], id2=[1,2,1,2,1,2,1,2], v=rand(8))
+
+# separate into groups based on the key :id
+gx1 = groupby(x, :id)
+
+gx2 = groupby(x, [:id, :id2])
+
+# reconstruct the original DataFrame
+vcat(gx2...)
+
+# by default, groups include missing values and are not sorted
+
+# apply a function to each group of a DataFrame
+using Statistics
+x = DataFrame(id=rand('a':'d', 100), v=rand(100))
+by(x, :id, y -> mean(y[:v]))
+by(x, :id, y -> mean(y[:v]), sort=true)
+
+# set a name for a column while applying a function to each group of a DataFrame
+by(x, :id, y -> DataFrame(res=mean(y[:v])))
+
+# apply a function over all columns of a data frame in groups given by id
+x = DataFrame(id=rand('a':'d', 100), x1 = rand(100), x2 = rand(100))
+aggregate(x, :id, sum)
+aggregate(x, :id, sum, sort=true)
+
+x = DataFrame(rand(3,5))
+map(mean, eachcol(x))
+colwise(mean, x)
