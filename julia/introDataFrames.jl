@@ -425,3 +425,45 @@ y = DataFrame(id1 = [1, 1, 3, 3, missing, missing],
 join(x, y, on=[:id1, :id2])
 join(x, y, on=[:id1], makeunique=true)
 join(x, y, on=[:id1], kind = :semi)
+
+# Reshaping DataFrames
+x = DataFrame(id = [1,2,3,4], id2 = [1,1,2,2], M1=[11,12,13,14], M2=[111,112,113,114])
+
+# melt a DataFrame to reference variables to values
+melt(x, :id, [:M1, :M2])
+stack(x, [:M1, :M2], :id)
+melt(x, :id, [:M1, :M2], variable_name=:key, value_name=:observed)
+
+# if the second argment is omitted, all other columns are assumed to be second argument
+# measure variables are only selected if they are a subset of AbstractFloat
+melt(x)
+melt(x, [:id, :id2])
+
+# index instead of symbol
+x
+melt(x, [1, 2])
+
+# use meltdf instead of melt to create a view rather than a new variable in memory
+
+# duplicates in key are silently accepted
+df = DataFrame(rand(3,2))
+df[:key] = [1,1,1]
+df
+mdf = melt(df)
+
+# long to wide
+x = DataFrame(id = [1,1,1], id2 = ['a','b','c'], a1 = rand(3), a2 = rand(3))
+y = melt(x, [1,2])
+
+# standard unstack with a unique key
+unstack(y, :id2, :variable, :value)
+
+# all other columns are treated as keys
+unstack(y, :variable, :value)
+
+# by default, :id, :variable, and :value names are assumed
+unstack(y)
+
+# this will fail because a key cannot be found
+df = stack(DataFrame(rand(3,2)))
+unstack(df, :variable, :value)
