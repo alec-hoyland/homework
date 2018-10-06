@@ -6,4 +6,4 @@ P = download("https://raw.githubusercontent.com/nassarhuda/easy_data/master/prog
 
 # read the data
 using CSV
-P, H = CSV.read("programming_languages.csv", header=true)
+P, H = CSV.File("programming_languages.csv", header=true)
