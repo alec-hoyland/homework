@@ -7,7 +7,7 @@ tic
 
 %% Problem 1.1
 % find the eigenvalues and eigenvectors of matrix A.
-% <</home/ahoyland/code/homework/ENG-BE-601/homework5_1_fig.eps>>
+% <</home/ahoyland/code/homework/ENG-BE-601/homework5_1_fig.png>>
 
 A = 1/3 * [2, -1, -1; -1, 2, -1; -1, -1, 2]
 disp('The eigenvalues are:')
@@ -52,7 +52,7 @@ C = [0 1 1 0 0 1 1 0; 0 0 0 0 1 1 1 1; 0 0 1 1 0 0 1 1] + [1; 1; 1];
 % % plot the transformed edges
 % combs = combnk(1:length(C2), 2);
 % for ii = 1:length(combs)
-%   if 6 == nnz([C2(1, combs(ii, 1)) C2(1, combs(ii, 2)) C2(2, combs(ii, 1)) C2(2, combs(ii, 2)) C2(3, combs(ii, 1)) C2(3, combs(ii, 2))]) &&
+%   if 6 == nnz([C2(1, combs(ii, 1)) C2(1, combs(ii, 2)) C2(2, combs(ii, 1)) C2(2, combs(ii, 2)) C2(3, combs(ii, 1)) C2(3, combs(ii, 2))])
 %     disp('ping')
 %     line([C2(1, combs(ii, 1)) C2(1, combs(ii, 2))], [C2(2, combs(ii, 1)) C2(2, combs(ii, 2))], [C2(3, combs(ii, 1)) C2(3, combs(ii, 2))], 'Color', 'k')
 %   end
