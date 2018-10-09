@@ -49,3 +49,25 @@ end
 dict[2003] # do it as a dictionary
 using DataFramesMeta
 @linq P |> where(:year .== 2003) |> select(pl03 = :year, :language)
+
+## Algorithms in Data Science
+using DataFrames, Plots, CSV; pyplot()
+
+# load the data
+download("http://samplecsvs.s3.amazonaws.com/Sacramentorealestatetransactions.csv","houses.csv")
+houses = CSV.read("houses.csv")
+
+# visualize the data
+scatter(houses[:sq__ft], houses[:price], markersize=3)
+
+# filter a data frame by feature value
+using Statistics
+by(houses[houses[:sq__ft] .> 0, :], :type, size)
+by(houses[houses[:sq__ft] .> 0, :], :type, x -> mean(x[:price]))
+
+# k-means clustering
+using Clustering
+df  = houses[houses[:sq__ft] .> 0, :]; # remove entries where the square-footage is zero
+X   = permutedims(convert(Array{Float64}, df[[:latitude, :longitude]]))
+k   = length(unique(df[:zip]))
+C   = kmeans(X, k)
