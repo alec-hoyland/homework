@@ -7,6 +7,7 @@ tic
 
 %% Problem 1.1
 % find the eigenvalues and eigenvectors of matrix A.
+%
 % <</home/ahoyland/code/homework/ENG-BE-601/homework5_1_fig.png>>
 
 A = 1/3 * [2, -1, -1; -1, 2, -1; -1, -1, 2]
