@@ -7,6 +7,10 @@ tic
 
 %% Problem 1.1
 % find the eigenvalues and eigenvectors of matrix A.
+% The eigenvectors cause a flattening of the shape. This is because one of the eigenvalue/vector pairs is zero.
+% This flattens the shape into 2 dimensions. Since the other two eigenvalues are equal, the flattening is symmetric.
+% Two of the vertices are compressed into a single one at the origin. In addition, because two of the eigenvalues
+% are 1, the shape is shifted in space one unit in those two dimensions, resulting in a recentering over the origin.
 %
 % <</home/ahoyland/code/homework/ENG-BE-601/homework5_1_fig.png>>
 
