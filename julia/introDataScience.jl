@@ -208,3 +208,29 @@ indmax(test_image)-1
 using Images
 t1 = reshape(tX[:,1],28,28)
 colorview(Gray, t1)
+
+## Linear Regression in Julia
+using Plots; gr()
+using Statistics
+
+xvals       = repeat(1:0.5:10, inner=2)
+yvals       = 3 .+ xvals + 2rand(length(xvals))
+scatter(xvals, yvals, color = :black, legend = false)
+
+# write a function in Julia to find the best fit
+function find_best_fit(xvals, yvals)
+
+    meanx   = mean(xvals)
+    meany   = mean(yvals)
+    stdx    = std(xvals)
+    stdy    = std(yvals)
+    r       = cor(xvals, yvals)
+    a       = r * stdy / stdx
+    b       = meany - a*meanx
+    return a, b
+end
+
+a, b = find_best_fit(xvals, yvals)
+ŷ = a * xvals .+ b
+
+plot!(xvals, ŷ)
