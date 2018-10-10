@@ -23,6 +23,13 @@ figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1
 imshow(mat2gray(A));
 title('original image with inverted colors')
 
+prettyFig()
+
+if being_published
+  snapnow
+  delete(gcf)
+end
+
 %% Generate Haar Matrix
 % For an image matrix $\mathrm{A}$ and a row-wise normalized Haar matrix $\mathrm{W}$,
 % the 2-D compressed image is $\mathrm{C} = \mathrm{W}^{-1} \mathrm{A} (\mathrm{W}^{-1})^T$.
