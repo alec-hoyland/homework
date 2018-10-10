@@ -234,3 +234,60 @@ a, b = find_best_fit(xvals, yvals)
 ŷ = a * xvals .+ b
 
 plot!(xvals, ŷ)
+
+## Plot using LaTeX Annotation
+using LaTeXStrings, Plots; pyplot()
+
+x       = 1:0.2:4
+x2      = L"x^2"
+logx    = L"log(x)"
+sqrtx   = L"\sqrt{x}"
+
+y1 = sqrt.(x)
+y2 = log.(x)
+y3 = x.^2
+
+f1 = plot(x,y1,legend = false)
+plot!(f1, x,y2) # "plot!" means "plot on the same canvas we just plotted on"
+plot!(f1, x,y3)
+title!("Plot $x2 vs. $logx vs. $sqrtx")
+annotate!(f1,[(x[6],y1[6],text(sqrtx,16,:center)),
+          (x[11],y2[11],text(logx,:right,16)),
+          (x[6],y3[6],text(x2,16))])
+
+## Statistics Plots
+using DataFrames, CSV, StatPlots
+
+# plot a simple two-dimensional histogram
+n       = 1000
+set1    = randn(n)
+set2    = randn(n)
+histogram2d(set1, set2, nbins=20, colorbar=true)
+
+# return to the `houses` dataset
+houses  = CSV.File("/home/ahoyland/code/homework/julia/houses.csv") |> DataFrame
+df      = houses[houses[:sq__ft] .> 0, :]
+x       = df[:sq__ft]
+y       = df[:price]
+gh      = histogram2d(x, y, nbins=20, colorbar=true)
+xaxis!(gh, "square feet")
+yaxis!(gh, "price")
+
+y       = rand(10000, 6)
+f2      = violin(["Series 1" "Series 2" "Series 3" "Series 4" "Series 5"], y, legend=false, color = :red)
+
+boxplot!(["Series 1" "Series 2" "Series 3" "Series 4" "Series 5"],y,leg=false,color=:green)
+
+some_cities = ["SACRAMENTO","RANCHO CORDOVA","RIO LINDA","CITRUS HEIGHTS","NORTH HIGHLANDS","ANTELOPE","ELK GROVE","ELVERTA" ]
+
+fh = plot(xrotation=90)
+for ucity in some_cities
+    subs = df[df[:city].==ucity,:]
+    city_prices = subs[:price]
+    violin!(fh,[ucity],city_prices,leg=false)
+end
+display(fh)
+
+# subplots!
+mylayout = @layout([a{0.5h};[b{0.7w} c]])
+plot(fh,f2,gh,layout=mylayout,legend=false)
