@@ -39,6 +39,8 @@ end
 W = haar(512, 'half');
 B = W * A;
 
+%% J = 9 Post-Column Raster
+
 % display the J = 9 post-column raster result
 figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1600]);
 imshow(mat2gray(B));
@@ -53,6 +55,8 @@ end
 
 % row rastering
 C = haar2(A);
+
+%% J = 8
 
 % display the J = 8 photo
 figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1600]);
@@ -70,6 +74,8 @@ end
 A2 = C(1:256, 1:256);
 C2 = haar2(A2);
 
+%% J = 7
+
 % display the J = 7 photo
 figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1600]);
 imshow(mat2gray(C2))
@@ -81,6 +87,8 @@ if being_published
   snapnow
   delete(gcf)
 end
+
+%% J = 6
 
 % J = 6
 A3 = C2(1:128, 1:128);
@@ -98,6 +106,8 @@ if being_published
   delete(gcf)
 end
 
+%% J = 5
+
 % J = 5
 A4 = C3(1:64, 1:64);
 C4 = haar2(A4);
@@ -114,6 +124,8 @@ if being_published
   delete(gcf)
 end
 
+%% 32 x 32 image
+
 % visualize the 32x32 snapshot of the Duchess
 figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1600]);
 snap = C4(1:32, 1:32);
@@ -127,6 +139,8 @@ if being_published
   snapnow
   delete(gcf)
 end
+
+%% 32 x 32 matrix
 
 disp('The 32x32 snapshot is:')
 disp(snap)
