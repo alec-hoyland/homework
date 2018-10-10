@@ -45,7 +45,7 @@ if being_published
 end
 
 % row rastering
-C = W * A * W';
+C = haar2(A);
 
 % display the J = 8 photo
 figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1600]);
@@ -61,8 +61,7 @@ end
 
 % J = 7
 A2 = C(1:256, 1:256);
-W2 = haar(256, 'half');
-C2 = W2 * A2 * W2';
+C2 = haar2(A2);
 
 % display the J = 7 photo
 figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1600]);
@@ -77,9 +76,8 @@ if being_published
 end
 
 % J = 6
-A3 = C(1:128, 1:128);
-W3 = haar(128, 'half');
-C3 = W3 * A3 * W3';
+A3 = C2(1:128, 1:128);
+C3 = haar2(A3);
 
 % display the J = 6 photo
 figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1600]);
@@ -94,9 +92,8 @@ if being_published
 end
 
 % J = 5
-A4 = C(1:64, 1:64);
-W4 = haar(64, 'half');
-C4 = W4 * A4 * W4';
+A4 = C3(1:64, 1:64);
+C4 = haar2(A4);
 
 % display the J = 5 photo
 figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1600]);
