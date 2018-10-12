@@ -19,10 +19,11 @@ histogram(float.(green.(apple[:])), color="red", label="apple", normalize=true, 
 histogram!(float.(green.(banana[:])), color="yellow", label="banana", normalize=true, nbins=25)
 
 # the apple is very red
-pixel = apple[40, 60]
+pixel = apple[40, 60];
 
 red_value   = Float64( red(pixel) )
 green_value = Float64( green(pixel) )
-blue_value  = Float64( blue(pixel) )
 
 print("The RGB values are ($red_value, $green_value, $blue_value)")
+
+# make changes to file
