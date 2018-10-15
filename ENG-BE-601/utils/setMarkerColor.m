@@ -22,7 +22,7 @@ function h = setMarkerColor(h, color, alpha)
             return
         end
     end
-    
+
     % if color is numeric, then it should be a 4x1 or 3x1 vector, or a matrix
     if isnumeric(color)
 
@@ -75,13 +75,13 @@ function h = setMarkerColor(h, color, alpha)
     end
 
     if isvector(color)
-        h.MarkerHandle.EdgeColorData = uint(255*color);
-        h.MarkerHandle.FaceColorData = uint(255*color);
+        h.MarkerHandle.EdgeColorData = uint8(255*color);
+        h.MarkerHandle.FaceColorData = uint8(255*color);
     end
 
     if ismatrix(color)
         h.MarkerHandle.FaceColorBinding = 'interpolated';
-        h.MarkerHandle.FaceColorData = color;
+        h.MarkerHandle.FaceColorData = uint8(color);
     end
 
 end % function
