@@ -77,9 +77,7 @@ function h = setMarkerColor(h, color, alpha)
     if isvector(color)
         h.MarkerHandle.EdgeColorData = uint8(255*color);
         h.MarkerHandle.FaceColorData = uint8(255*color);
-    end
-
-    if ismatrix(color)
+    elseif ismatrix(color)
         h.MarkerHandle.FaceColorBinding = 'interpolated';
         h.MarkerHandle.FaceColorData = uint8(color);
     end
