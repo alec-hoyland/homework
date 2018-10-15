@@ -22,7 +22,7 @@ function h = setMarkerColor(h, color, alpha)
             return
         end
     end
-
+    keyboard
     % if color is numeric, then it should be a 4x1 or 3x1 vector, or a matrix
     if isnumeric(color)
 
@@ -35,8 +35,13 @@ function h = setMarkerColor(h, color, alpha)
             % color is a 4x1 or 3x1 vector
             if length(color) == 4
                 color = vectorise(color);
-            elseif length(color) == 3 && nargin < 3
-                color(4) = 1;
+            elseif length(color) == 3
+                if nargin < 3
+                    % default to opaque
+                    color(4) = 1;
+                else
+                    color(4) = alpha;
+                end
                 color = vectorise(color);
             else
                 disp('[ERROR] color vector is incorrect size')
