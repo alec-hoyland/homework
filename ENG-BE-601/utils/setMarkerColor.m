@@ -22,7 +22,7 @@ function h = setMarkerColor(h, color, alpha)
             return
         end
     end
-    keyboard
+    
     % if color is numeric, then it should be a 4x1 or 3x1 vector, or a matrix
     if isnumeric(color)
 
