@@ -49,12 +49,7 @@ disp('The deviation matrix:')
 disp(D)
 
 % construct the sample covariance matrix
-S         = zeros(2);
-for ii = 1:2
-  for qq = 1:2
-    S(ii,qq) = 1 / (length(D) - 1) * D(:,ii)' * D(:,qq);
-  end
-end
+S         = 1 / (length(D) - 1) * D' * D;
 
 disp('The covariance matrix:')
 disp(S)
@@ -102,6 +97,64 @@ if being_published
   snapnow
   delete(gcf)
 end
+
+disp('The inverse covariance matrix:')
+disp(inv(S))
+
+%% Problem #1 Part C
+
+% compute statistical distance using the L-2 norm
+my_distances = mahal(D(:,2), D(:,1))
+disp('The statistical distances:')
+disp(my_distances)
+
+% produce histogram of statistical distance
+figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1600]);
+histogram(my_distances, 0:0.5:10)
+xlim([0 10])
+ylim([0 25])
+xlabel('statistical distance')
+ylabel('occurrences')
+title('histogram of statistical differences')
+
+prettyFig()
+
+if being_published
+  snapnow
+  delete(gcf)
+end
+
+disp('I have picked 0.95 for the alpha value');
+disp('From the chi-square table, c_squared is = 5.99')
+
+% scatter plot of data
+figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1600]);
+dots      = plot(fish_length, fish_weight, 'LineStyle', 'none',...
+          'Marker', 'o', 'MarkerEdgeColor', 'k', 'MarkerFaceColor', 'k', ...
+          'MarkerSize', 20);
+setMarkerColor(dots, 'k', 0.3);
+
+hold on
+
+% plot eigenvectors at centroid
+slope(1)  = V(1) / V(2);
+slope(2)  = V(3) / V(4);
+b         = mean(fish_weight) - slope * mean(fish_length);
+x         = 0:max(fish_length);
+plot(x, slope(1)*x + b(1), 'r')
+plot(x, slope(2)*x + b(2), 'r')
+
+xlabel('fish length (in)')
+ylabel('fish weight (oz)')
+title('Moosehead Lake Rock Bass')
+
+prettyFig()
+
+if being_published
+  snapnow
+  delete(gcf)
+end
+
 
 %% Version Info
 % The file that generated this document is called:
