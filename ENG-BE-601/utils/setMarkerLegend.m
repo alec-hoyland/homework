@@ -1,4 +1,4 @@
-function legendMarkers(handle,hLegend,lMarker,alpha)
+function setMarkerLegend(handle,hLegend,lMarker,alpha)
 %legendMarkers Apply color & transparency to legend markers
 %
 %   The legend function clears marker customizations such as
