@@ -34,6 +34,7 @@ ylabel('fish weight (oz)')
 title('Moosehead Lake Rock Bass')
 
 prettyFig()
+drawnow
 
 if being_published
   snapnow
@@ -92,6 +93,7 @@ ylabel('fish weight (oz)')
 title('Moosehead Lake Rock Bass')
 
 prettyFig()
+drawnow
 
 if being_published
   snapnow
@@ -104,7 +106,13 @@ disp(inv(S))
 %% Problem #1 Part C
 
 % compute statistical distance using the L-2 norm
-my_distances = mahal(D(:,2), D(:,1))
+my_distances = zeros(100,1);
+for ii = 1:length(fish_weight)
+	d			= zeros(2,1);
+	d(1) 	= fish_length(ii) - mean(fish_length);
+	d(2) 	= fish_weight(ii) - mean(fish_weight);
+	my_distances(ii) = d' * inv(S) * d;
+end
 disp('The statistical distances:')
 disp(my_distances)
 
@@ -118,6 +126,7 @@ ylabel('occurrences')
 title('histogram of statistical differences')
 
 prettyFig()
+drawnow
 
 if being_published
   snapnow
@@ -144,11 +153,23 @@ x         = 0:max(fish_length);
 plot(x, slope(1)*x + b(1), 'r')
 plot(x, slope(2)*x + b(2), 'r')
 
+% plot an ellipse as black dots
+d1 				= linspace(0, max(fish_length), 101);
+d2 				= zeros(size(d1));
+invS 			= inv(S);
+for ii = 1:length(d2)
+	r 			= roots([invS(2,2) (invS(1,2) + invS(2,1))*d1(ii) (invS(1,1)*d1(ii)^2 - 5.99^2)]);
+	d2(ii)	= r(1);
+end
+
+plot(d1, d2, 'LineStyle', 'none', 'Marker', 'o', 'MarkerSize', 3, 'MarkerFaceColor', 'k', 'MarkerEdgeColor', 'k');
+
 xlabel('fish length (in)')
 ylabel('fish weight (oz)')
 title('Moosehead Lake Rock Bass')
 
 prettyFig()
+drawnow
 
 if being_published
   snapnow
