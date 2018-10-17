@@ -197,6 +197,14 @@ xlabel('fish length (in)')
 ylabel('fish weight (oz)')
 zlabel('# occurrences')
 
+prettyFig()
+drawnow
+
+if being_published
+  snapnow
+  delete(gcf)
+end
+
 %% Version Info
 % The file that generated this document is called:
 disp(mfilename)
