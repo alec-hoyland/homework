@@ -223,19 +223,19 @@ disp('Four guess vectors (each column is a vector)')
 disp(xGuess)
 
 % perform iteration
-gamma = complex(zeros(4));
+gamma = complex(zeros(4,1));
 
 %% Eigenvector #1
-gamma(:,1) = shifted_inverse_power(A, xGuess(:,1));
+gamma(1) 		= shifted_inverse_power(A, xGuess(:,1));
 
 %% Eigenvector #2
-gamma(:,2) = shifted_inverse_power(A, xGuess(:,2));
+gamma(2) 		= shifted_inverse_power(A, xGuess(:,2));
 
 %% Eigenvector #3
-gamma(:,3) = shifted_inverse_power(A, xGuess(:,3));
+gamma(3) 		= shifted_inverse_power(A, xGuess(:,3));
 
 %% Eigenvector #4
-gamma(:,4) = shifted_inverse_power(A, xGuess(:,4));
+gamma(4) 		= shifted_inverse_power(A, xGuess(:,4));
 
 disp('The final estimates for the eigenvectors are:')
 disp(gamma)
