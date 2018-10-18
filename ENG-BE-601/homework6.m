@@ -226,16 +226,16 @@ disp(xGuess)
 gamma = complex(zeros(4,1));
 
 %% Eigenvector #1
-gamma(1) 		= shifted_inverse_power(A, xGuess(:,1));
+gamma(1) 		= shifted_inverse_power(A, xGuess(:,1), true);
 
 %% Eigenvector #2
-gamma(2) 		= shifted_inverse_power(A, xGuess(:,2));
+gamma(2) 		= shifted_inverse_power(A, xGuess(:,2), true);
 
 %% Eigenvector #3
-gamma(3) 		= shifted_inverse_power(A, xGuess(:,3));
+gamma(3) 		= shifted_inverse_power(A, xGuess(:,3), true);
 
 %% Eigenvector #4
-gamma(4) 		= shifted_inverse_power(A, xGuess(:,4));
+gamma(4) 		= shifted_inverse_power(A, xGuess(:,4), true);
 
 disp('The final estimates for the eigenvectors are:')
 disp(gamma)
