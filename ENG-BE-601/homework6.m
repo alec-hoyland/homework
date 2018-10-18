@@ -205,6 +205,41 @@ if being_published
   delete(gcf)
 end
 
+%% Problem 2
+% Use the refined shifted inverse power method to estimate the four eigenvalues
+% and eigenvectors of matrix A.
+
+A 					= [2, -3, 1, 3; 1, 4, -3, -3; 5, 3, -1, -1; 3, -6, -3, 1];
+disp('The matrix A is:')
+disp(A)
+
+% set up a guess vector
+xGuess(:,1) = [-1, 0, 0, 0];
+xGuess(:,2) = [0, 1+i, 0, 0];
+xGuess(:,3) = [0, 0, 1-i, 0];
+xGuess(:,4)	= [0, 0, 0, 1];
+
+disp('Four guess vectors (each column is a vector)')
+disp(xGuess)
+
+% perform iteration
+gamma = complex(zeros(4));
+
+%% Eigenvector #1
+gamma(:,1) = shifted_inverse_power(A, xGuess(:,1));
+
+%% Eigenvector #2
+gamma(:,2) = shifted_inverse_power(A, xGuess(:,2));
+
+%% Eigenvector #3
+gamma(:,3) = shifted_inverse_power(A, xGuess(:,3));
+
+%% Eigenvector #4
+gamma(:,4) = shifted_inverse_power(A, xGuess(:,4));
+
+disp('The final estimates for the eigenvectors are:')
+disp(gamma)
+
 %% Version Info
 % The file that generated this document is called:
 disp(mfilename)
