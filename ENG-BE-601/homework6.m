@@ -215,8 +215,8 @@ disp(A)
 
 % set up a guess vector
 xGuess(:,1) = [-1, 0, 0, 0];
-xGuess(:,2) = [0, 1+i, 0, 0];
-xGuess(:,3) = [0, 0, 1-i, 0];
+xGuess(:,2) = [0, i, 0, 0];
+xGuess(:,3) = [0, 0, -i, 0];
 xGuess(:,4)	= [0, 0, 0, 1];
 
 disp('Four guess vectors (each column is a vector)')

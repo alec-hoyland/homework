@@ -24,12 +24,12 @@ function [gamma, x] = shifted_inverse_power(A, x, verbose)
 
 		% display the results
 		if verbose
-			disp(['[INFO] Iteration #' num2str(iter) '	gamma = ' mat2str(gamma(2), 2) '		distance = ' oval(dist,2)])
+			disp(['[INFO] Iteration #' num2str(ii) '	gamma = ' mat2str(gamma(2), 2) '		distance = ' oval(dist,2)])
 		end % if
 
 		% termination conditions
 		if dist < 0.0001
-			disp(['[INFO] convergence at < 0.0001 after' num2str(ii) 'iterations'])
+			disp(['[INFO] convergence at < 0.0001 after ' num2str(ii) ' iterations'])
 			break
         end % if
 
