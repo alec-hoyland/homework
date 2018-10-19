@@ -18,22 +18,16 @@ title('Moosehead Lake Rock Bass')
 
 prettyFig()
 drawnow
+saveas(gcf, '/home/ahoyland/code/homework/ENG-BE-601/homework6/homework6_figure_1.png')
+close all
 
 % construct the deviation matrix
 D         = zeros(length(fish_weight), 2);
 D(:,1)    = fish_length - mean(fish_length);
 D(:,2)    = fish_weight - mean(fish_weight);
 
-disp('The deviation matrix:')
-disp(D)
-
 % construct the sample covariance matrix
 S         = 1 / (length(D) - 1) * D' * D;
-
-disp('The covariance matrix:')
-disp(S)
-
-%% Problem #1 Part B
 
 % compute the eigenvalues
 [V, lambda] = eig(S)
@@ -63,6 +57,8 @@ title('Moosehead Lake Rock Bass')
 
 prettyFig()
 drawnow
+saveas(gcf, '/home/ahoyland/code/homework/ENG-BE-601/homework6/homework6_figure_2.png')
+close all
 
 %% Problem #1 Part C
 
@@ -88,14 +84,9 @@ title('histogram of statistical differences')
 
 prettyFig()
 drawnow
+saveas(gcf, '/home/ahoyland/code/homework/ENG-BE-601/homework6/homework6_figure_3.png')
+close all
 
-if being_published
-  snapnow
-  delete(gcf)
-end
-
-disp('I have picked 0.95 for the alpha value');
-disp('From the chi-square table, c_squared is = 5.99')
 c2 = 5.99;
 
 % scatter plot of data
@@ -134,15 +125,15 @@ title('Moosehead Lake Rock Bass')
 
 prettyFig()
 drawnow
-
-%% Problem #1 Part D
+saveas(fig, '/home/ahoyland/code/homework/ENG-BE-601/homework6/homework6_figure_4.png')
+close all
 
 index = find(my_distances > c2)
 disp('Fish IDs with high statistical differences')
 fish_ID(index)
 
 X = [fish_length fish_weight];
-figure;
+figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1600]);
 hist3(X, 'Nbins', [15 15]);
 xlabel('fish length (in)')
 ylabel('fish weight (oz)')
@@ -150,3 +141,5 @@ zlabel('# occurrences')
 
 prettyFig()
 drawnow
+saveas(gcf, '/home/ahoyland/code/homework/ENG-BE-601/homework6/homework6_figure_5.png')
+close all
