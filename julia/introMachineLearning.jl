@@ -93,3 +93,48 @@ x1, y1      = 2, 0.8
 L1(w)       = (y1 - σ(x1, w))^2
 
 plot(L1, -2, 1.5, xlabel="w", ylabel="L1(w)", leg=false)
+
+## Intro to Flux
+using Flux
+
+# create a model neuron with two inputs, one output, and the σ linking function
+model       = Dense(2, 1, σ)
+
+## Learning with a Single Neuron
+using CSV, DataFrames, Flux
+cd("/home/ahoyland/code/homework/julia")
+apples      = CSV.File("data/Apple_Golden_1.dat", header=true, delim='\t') |> DataFrame
+bananas     = CSV.File("data/bananas.dat", header=true, delim='\t') |> DataFrame
+
+for df in [apples, bananas]
+    rename!(df, Symbol("height ") => :height, Symbol(" width ") => :width,
+    Symbol(" red ") => :red, Symbol(" green ") => :green, Symbol(" blue") => :blue)
+end
+
+x_apples    = [ [apples[i, :red], apples[i, :green]] for i in 1:size(apples)[1] ]
+x_bananas   = [ [bananas[i, :red], bananas[i, :green]] for i in 1:size(bananas)[1] ]
+
+# input data of red and green colors in apples and bananas
+xs          = vcat(x_apples, x_bananas)
+# true classification
+ys          = vcat( zeros(size(x_apples)[1]), ones(size(x_bananas)[1]) );
+
+data        = zip(xs, ys)
+
+# how to create parameters (Tracked Arrays)
+W           = Flux.param(rand(1,2))
+b           = Flux.param(rand(1))
+
+# create a single-neuron (dense) model
+model       = Flux.Dense(2, 1, Flux.σ)
+
+# define a loss function
+loss(x,y)   = Flux.mse(model(x), y)
+
+# determine the optimization regime (stochastic gradient descent)
+opt         = Flux.SGD([model.W, model.b], 0.01)
+
+# train the model
+for i in 1:100
+    Flux.train!(loss, data, opt)
+end
