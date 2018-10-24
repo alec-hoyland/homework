@@ -46,6 +46,93 @@ end
 % The 7 and 8 render very well at 150 sums, but the 4 doesn't become recognizable
 % until around 180-200 sums.
 
+%% Problem #1: Comparing the Original and SVD-approximated Images
+% I would expect there to be slight variation between the two images
+% as represented by pixel intensities. Specifically, I would expect the
+% SVD-decomposed image to have less contrast and therefore smaller variance
+% which would cause the clustering to spread out (variance between x1 and x2).
+
+n = [100 75 200];
+for ii = 1:3
+
+	[U, S, V] = svd(img);
+
+	A 			= img';
+	B 			= spectralSums(n(ii), U, S, V)';
+	x1 			= A(:);
+	x2 			= B(:);
+
+	figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1600]); hold on
+	plot(x1, x2, '.')
+	xlabel('original image intensities')
+	ylabel('SVD-reconstructed pixel intensities')
+	title(['N' num2str(ii)])
+
+	prettyFig()
+
+	if being_published
+		snapnow
+		delete(gcf)
+	end
+
+	% compute the deviation vectors
+	d1 			= x1 - mean(x1);
+	d2 			= x2 - mean(x2);
+
+	% store these vectors in a columnwise normalized matrix
+	d1hat 	= d1 / norm(d1);
+	d2hat 	= d2 / norm(d2);
+
+	% form the normalized deviation matrix
+	clear S
+	clear V
+	D 			= [d1hat d2hat];
+
+	% calculate the sample covariance matrix
+	S 			= 1 / (length(D)) * D' * D;
+
+	% calculate the eigenvalues and eigenvectors
+	[V, lambda] = eig(S);
+
+	disp(['(N' num2str(ii) ') ' 'The sample covariance matrix is:'])
+	disp(S)
+	disp(['(N' num2str(ii) ') ' 'The eigenvalue matrix is:'])
+	disp(lambda)
+	disp(['(N' num2str(ii) ') ' 'The eigenvectors are:'])
+	disp(V)
+
+	% plot the principal axes
+	figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1600]); hold on
+	plot(x1, x2, '.')
+	plot(x1, V(1)/V(3)*(x1-mean(x1)) + mean(x2), 'k-')
+	plot(x1, V(2)/V(4)*(x1-mean(x1)) + mean(x2), 'k-')
+	xlabel('original image intensities')
+	ylabel('SVD-reconstructed pixel intensities')
+	title(['N' num2str(ii)])
+
+	axis square
+	axis([-255 255 -255 255])
+
+	prettyFig()
+
+	if being_published
+		snapnow
+		delete(gcf)
+	end
+
+	l = diag(lambda);
+
+	disp(['(N' num2str(ii) ') ' 'The % variance explained by principal axis 1:'])
+	disp(100*l(1)/sum(l))
+
+	disp(['(N' num2str(ii) ') ' 'The % variance explained by principal axis 2:'])
+	disp(100*l(2)/sum(l))
+
+	disp(['(N' num2str(ii) ') ' 'The Pearson correlation coefficient is:'])
+	disp(D'*D)
+
+end
+
 %% Version Info
 % The file that generated this document is called:
 disp(mfilename)
