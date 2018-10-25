@@ -47,6 +47,9 @@ end
 % until around 180-200 sums.
 % <</home/ahoyland/code/homework/ENG-BE-601/final/478.png>>
 
+%%
+% <</home/ahoyland/code/homework/ENG-BE-601/homework6/homework6_figure_1.png>>
+
 %% Problem #1: Comparing the Original and SVD-approximated Images
 % I would expect there to be slight variation between the two images
 % as represented by pixel intensities. Specifically, I would expect the
