@@ -44,7 +44,7 @@ disp(G)
 
 %% Shifted Inverse Power Iteration
 
-[gamma, x] = shifted_inverse_power(A, x, true);
+[gamma, x] = shifted_inverse_power(G, x, true);
 
 %% Version Info
 % The file that generated this document is called:
