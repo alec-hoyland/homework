@@ -4,7 +4,7 @@ function [gamma, x] = shifted_inverse_power(A, x, verbose)
 
 	% initial condition
 	x 					= x / (x'*x);
-	gamma(1) 		= x' * A * x;
+	gamma(1) 		= 0.99;
 
 	if nargin < 3
 		verbose 	= false;
