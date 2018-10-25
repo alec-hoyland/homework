@@ -22,6 +22,7 @@ title('83.28% compression')
 prettyFig
 drawnow
 saveas(gcf, '/home/ahoyland/code/homework/ENG-BE-601/final/morpheus.jpg')
+saveas(gcf, '/home/ahoyland/code/homework/ENG-BE-601/final/morpheus.png')
 close
 
 %% Problem #2: Spectral Sums to Resolve Question Mark
@@ -33,6 +34,7 @@ title('87.46% compression')
 prettyFig
 drawnow
 saveas(gcf, '/home/ahoyland/code/homework/ENG-BE-601/final/questionmark.jpg')
+saveas(gcf, '/home/ahoyland/code/homework/ENG-BE-601/final/questionmark.png')
 close
 
 %% Problem #2: Spectral Sums to Resolve 4 7 8
@@ -44,4 +46,5 @@ title('66.56% compression')
 prettyFig
 drawnow
 saveas(gcf, '/home/ahoyland/code/homework/ENG-BE-601/final/478.jpg')
+saveas(gcf, '/home/ahoyland/code/homework/ENG-BE-601/final/478.png')
 close
