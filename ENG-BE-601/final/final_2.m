@@ -44,7 +44,10 @@ disp(G)
 
 %% Shifted Inverse Power Iteration
 
-[gamma, x] = shifted_inverse_power(G, x, true);
+[gamma, x] = shifted_inverse_power(G, [1:15]', true);
+
+disp('The final eigenvector is:')
+disp(x)
 
 %% Version Info
 % The file that generated this document is called:
