@@ -72,6 +72,13 @@ set(gca, 'XDir', 'reverse')
 ylabel('% absorbance')
 grid on
 
+prettyFig()
+
+if being_published
+	snapnow
+	delete(gcf)
+end
+
 %% 2.4 Chemical Differences in Coffee Species
 % _C. robusta_ has higher chlorogenic acid and caffeine contents on a dry
 % weight basis. These chemicals appear in the ATR spectra and help to discriminate
