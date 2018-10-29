@@ -65,7 +65,7 @@ end
 %% 2.3 Plot Absorbance vs. Wavenumber Spectrum
 
 figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1600]);
-plot(wavenumber, absorbance)
+plot(wavenumber, robusta2)
 title(['SVD #2, robusta 2 IR signature'])
 xlabel('wavenumber (cm^{-1})')
 set(gca, 'XDir', 'reverse')
