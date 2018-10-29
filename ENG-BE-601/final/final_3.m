@@ -35,6 +35,23 @@ ylabel('singular values')
 xlabel('nth singular value')
 title('singular values of coffee IR spectra')
 
+%% SVD Decomposition of the Data
+
+%%
+% <</home/ahoyland/code/homework/ENG-BE-601/final/pcolor_X.png>>
+
+%% SVD Submatrices
+
+%%
+% <</home/ahoyland/code/homework/ENG-BE-601/final/SVDsubmatrix_1.png>>
+
+%%
+% <</home/ahoyland/code/homework/ENG-BE-601/final/SVDsubmatrix_2.png>>
+
+%%
+% <</home/ahoyland/code/homework/ENG-BE-601/final/SVDsubmatrix_3.png>>
+
+
 %% Version Info
 % The file that generated this document is called:
 disp(mfilename)
