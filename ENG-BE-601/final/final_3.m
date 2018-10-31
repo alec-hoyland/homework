@@ -84,6 +84,30 @@ end
 % weight basis. These chemicals appear in the ATR spectra and help to discriminate
 % between _C. arabica_ and _C. robusta_.
 
+%% 3.1 Calculate the Deviation and Covariance Matrices
+
+% deviation is data - mean
+D 				= X - mean(X);
+% covariance matrix
+S 				= 1 / (length(D) - 1) * D' * D;
+
+%% 3.2 Eigenvalues from the Covariance
+
+[V, lambda] = eig(S);
+
+disp('The eigenvector matrix of the covariance:')
+disp(V)
+
+disp('The eigenvalue matrix of the covariance:')
+disp(lambda)
+
+%% 3.3 Normalize the Covariance Eigenvectors
+
+V 				= V / min(min(abs(V)));
+
+disp('Normalized covariance eigenvectors:')
+disp(V)
+
 %% Version Info
 % The file that generated this document is called:
 disp(mfilename)
