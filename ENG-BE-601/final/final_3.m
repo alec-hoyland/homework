@@ -103,7 +103,7 @@ disp(lambda)
 
 %% 3.3 Normalize the Covariance Eigenvectors
 
-V 				= V / min(min(abs(V)));
+V 				= V ./ min(abs(V));
 
 disp('Normalized covariance eigenvectors:')
 disp(V)
