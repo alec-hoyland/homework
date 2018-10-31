@@ -200,3 +200,129 @@ findall(x -> x > 0.5, myarray)
 findall(myarray) do x
     x > 0.5
 end
+
+## Functions
+
+# define inline
+f(x,y)      = 2x + y
+
+# define by function keyword
+function f(x)
+    x + 2
+end
+
+# keyword arguments
+myFunction(a, b=1; c=2) = (a + b)*3 + c
+
+# declare function arguments as a certain type
+myFunction(a::Float64) = 2*a
+
+# splat operator to specify variable number of arguments and "splice" a list
+function average(init, args...)
+    s = 0
+    for arg in args
+        s += arg
+    end
+    return init + s/length(args)
+end
+
+a = average(10, 1, 2, 3)
+a = average(10, [1, 2, 3] ...)
+
+# templates
+myFunction(x::T, y::T2, z::T2) where {T <: Number, T2} = 5x + 5y + 5z
+myFunction(1,2,3)
+myFunction(1, 2.5, 3.5)
+# myFunction(1, 2, 3.5) <-- not allowed since y and z are not the same type
+
+# functions as objects
+f(x) = 2x
+a = f(2)
+a = f
+a(5)
+
+## Custom Structures
+
+# defining a (mutable) structure
+mutable struct MyOwnType
+    property1
+    property2::String
+end
+
+# defining a struct with parametrized types
+mutable struct MyOwnType{T <: Number}
+    property1
+    property2::String
+    property3::T
+end
+
+# structs are immutable by default
+# mutable objects (such as arrays) within immutable structs are mutable
+struct MyImmutableType
+    property1::Array{Float64,1}
+end
+
+a = MyImmutableType(collect(1:10))
+
+a.property1
+push!(a.property1, 11)
+a.property1
+
+## I/O
+
+open("afile.txt", "w") do f  # "w" for writing
+  write(f, "test\n")         # \n for newline
+end
+
+## RTEs & Exceptions
+
+try
+  # ..some dangerous code..
+catch e
+    if isa(e, KeyError)
+      # do something
+    end
+  # ..what to do if an error happens, most likely send an error message using:
+  error("My detailed message")
+end
+
+## Metaprogramming
+
+# colon prefix operator
+expr = :(1+2) # save the `1+2` expression in the `expr` expression
+eval(expr)    # here the expression is evaluated and the code returns 3
+
+# interpolation is supported
+a = 1
+expr = :($a+2) # expr is now :(1+2)
+
+# an alternative to :([...]) is the quote [...] end block
+
+# parse a string
+expr = Meta.parse("1+2") # parses the string "1+2" and saves the `1+2` expression in the `expr` expression, same as expr = :(1+2)
+eval(expr)          # here the expression is evaluated and the code returns 3
+
+# equivalent expression from the tree
+expr = Expr(:call, :+, 1, 2)
+
+# symbols
+a = 2;
+ex = Expr(:call, :*, a, :b) # ex is equal to :(2 * b). Note that b doesn't even need to be defined
+a = 0; b = 2;               # no matter what now happens to a, as a is evaluated at the moment of creating the expression and the expression stores its value, without any more reference to the variable
+eval(ex)                    # returns 4, not 0
+
+# macros
+
+macro unless(test_expr, branch_expr)
+    quote
+        if !$test_expr
+            $branch_expr
+        end
+    end
+end
+
+array = [1, 2, 'b']
+
+# 3 in array is the first expression
+@unless 3 in array println("array does not contain 3")
+@unless in(3, array) println("array does not contain 3")
