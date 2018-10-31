@@ -18,7 +18,7 @@ ZooeyDeschanel 				= mat2gray(imcomplement(imread([faceFolder 'ZooeyDeschanel_BW
 ZooeyDeschanel2				= mat2gray(imcomplement(imread([faceFolder 'ZooeyDeschanel2_BW_cropped(1)(1).tif'])));
 KatyPerry			 				= mat2gray(imcomplement(imread([faceFolder 'KatyPerry_BW_cropped(1)(1).tif'])));
 
-%% 2. Feature Extractions
+%% 2.1 Feature Extractions
 
 features 							= struct;
 
@@ -27,10 +27,10 @@ features(1).eyes 			= StevenTyler(60:90, 30:130);
 features(1).nose 			= StevenTyler(91:125, 10:140);
 features(1).chin 			= StevenTyler(130:160, 20:120);
 
-features(1).name 			= 'MelissaRivers';
-features(1).eyes 			= MelissaRivers(50:80, 20:120);
+features(2).name 			= 'MelissaRivers';
+features(2).eyes 			= MelissaRivers(50:80, 20:120);
 features(2).nose 			= MelissaRivers(81:115, 10:140);
-features(3).chin 			= MelissaRivers(130:160, 20:120);
+features(2).chin 			= MelissaRivers(130:160, 20:120);
 
 features(3).name 			= 'LivTyler';
 features(3).eyes			= LivTyler(60:90, 20:120);
@@ -66,6 +66,39 @@ features(9).name 			= 'KatyPerry';
 features(9).eyes 			= KatyPerry(45:75, 20:120);
 features(9).nose 			= KatyPerry(81:115, 10:140);
 features(9).chin 			= KatyPerry(140:170, 20:120);
+
+%% 2.2 Horizontal Rastering and Concatenation
+clear X
+
+for ii = 1:9
+	X(:,ii) 						= [features(ii).eyes(:); features(ii).nose(:); features(ii).chin(:)];
+end
+
+%% 3.1 Construct Un-Normalized Deviation Matrix
+
+D 										= X - mean(X);
+
+%% 3.2 Construct Sample Covariance Matrix
+
+S 										= 1 / (length(D) - 1) * D' * D;
+
+disp('The sample covariance matrix is:')
+disp(S)
+
+%% 3.3 Normalize the Deviation Vectors
+
+for ii = 1:9
+	D(:, ii) 						= D(:, ii) / norm(D(:, ii));
+end
+
+%% 3.4 Calculate the Pearson Correlation Coefficient Matrix
+
+R 										= D' * D;
+
+disp('The Pearson correlation coefficient matrix:')
+disp(R)
+
+
 
 %% Version Info
 % The file that generated this document is called:
