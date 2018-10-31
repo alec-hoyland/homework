@@ -108,6 +108,18 @@ V 				= V ./ min(abs(V));
 disp('Normalized covariance eigenvectors:')
 disp(V)
 
+%% 4.1 Total Variance in First Three Principal Components
+
+eigs 			= diag(lambda);
+
+disp('Total variance explained by first three PCs:')
+disp([num2str(sum(eigs(1:3))/sum(eigs)*100) '%'])
+
+%% 4.2 Different Signs in Eigenvectors
+% The second principle component describes some of the differences between groups.
+% The negative signs correspond to one species of coffee, and the positive signs
+% to the other.
+
 %% Version Info
 % The file that generated this document is called:
 disp(mfilename)
