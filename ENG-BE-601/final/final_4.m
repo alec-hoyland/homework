@@ -98,6 +98,55 @@ R 										= D' * D;
 disp('The Pearson correlation coefficient matrix:')
 disp(R)
 
+%% 3.5 Questions
+% The largest non-trivial correlation coefficient value is 0.80184, between faces #7
+% and #8 (e.g. R(7,8)). Unsurprisingly, faces #7 and #8 are the same person:
+% Zooey Deschanel. The highest correlation in pixel values for the three facial
+% features examined are between the two pictures of the same person.
+
+%% 4.1 Obtain Eigenvalues and Eigenvectors
+
+[V, lambda] 				= eig(S);
+
+disp('Eigenvectors:')
+disp(V)
+
+disp('Eigenvalue Matrix:')
+disp(lambda)
+
+%% 4.2 Normalize the Eigenvectors
+
+V 									= V ./ min(abs(V));
+
+disp('Normalized eigenvectors:')
+disp(V)
+
+%% 5.1 Total Variance Explained by First Three PCs
+
+eigs 								= diag(lambda);
+disp([num2str(sum(eigs(1:3))/sum(eigs)*100) '%'])
+
+%% 5.2 Questions
+% The 7th-9th entries in the second principal component have large values because
+% the corresponding pictures all look very similar. Zooey and Katy have very similar
+% smiles and large eyes. Zooey's actual sister, Emily, has a toothier smile with
+% some cheek action causing her eyes to appear slimmer. For this reason, Zooey
+% and Katy appear more similar in the 2nd PC.
+%
+% Steven, Melissa, and Liv all look quite similar, so the eigenvectors of the
+% covariance matrix represent that.
+%
+% Kiefer and Rachel have chins that are different shapes and (with respect to
+% these images) different tones. For this reason, the higher order eigenvectors
+% begin to highlight the difference between Kiefer's chiseled jaw and his sister's.
+%
+% Melissa is the oddball, which makes sense considering that she is unrelated
+% to any of the other people in the pictures. The eigenvector components related
+% to her are dissimilar from the others.
+%
+% Photos #1 and #4 are most different from the others in that they depict men.
+% Perhaps #1 and #2 have the most typically-classifiable male and female face
+% characteristics as identified from the face snippets we correlated.
 
 
 %% Version Info
