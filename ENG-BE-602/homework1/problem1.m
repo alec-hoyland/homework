@@ -114,7 +114,7 @@ end
 disp('Iterations with \omega = 1.6')
 disp(x)
 
-%% Estimate the optimal parameter
+%% 4. Estimate the optimal parameter
 % The best parameter is close to $\omega_{opt} = 1.15$.
 
 % define the SOR matrix
