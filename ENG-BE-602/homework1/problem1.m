@@ -40,6 +40,7 @@ for ii = 2:length(x)
 
 end
 
+%%
 disp('Iterations with \omega = 1.8')
 disp(x)
 
@@ -111,6 +112,7 @@ for ii = 2:length(x)
 
 end
 
+%%
 disp('Iterations with \omega = 1.6')
 disp(x)
 
@@ -139,6 +141,7 @@ for ii = 2:length(x)
 
 end
 
+%%
 disp('Iterations with \omega = 1.15')
 disp(x)
 
