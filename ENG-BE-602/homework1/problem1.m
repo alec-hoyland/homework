@@ -5,7 +5,7 @@
 pHeader;
 tic
 
-%% 1.1 SOR with an arbitrary tuning factor
+%% 1. SOR with an arbitrary tuning factor
 % The solution gets "stuck" at a solution and does not converge. The approximate
 % solution changes drastically in the first few iterations and then ceases to change.
 % The norm of the residual does not significantly decrease in the first few iterations
