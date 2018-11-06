@@ -34,8 +34,8 @@ for ii = 2:length(x)
 	disp(['[INFO] residual norm = ' num2str(norm(residual))])
 
 	if norm(residual) < 0.01
-		break
 		disp(['[INFO] SOR converges, terminating...'])
+		break
 	end
 
 end
@@ -105,8 +105,8 @@ for ii = 2:length(x)
 	disp(['[INFO] residual norm = ' num2str(norm(residual))])
 
 	if norm(residual) < 0.01
-		break
 		disp(['[INFO] SOR converges, terminating...'])
+		break
 	end
 
 end
@@ -133,8 +133,8 @@ for ii = 2:length(x)
 	disp(['[INFO] residual norm = ' num2str(norm(residual))])
 
 	if norm(residual) < 0.01
-		break
 		disp(['[INFO] SOR converges, terminating...'])
+		break
 	end
 
 end
