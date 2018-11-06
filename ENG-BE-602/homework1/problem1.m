@@ -56,7 +56,7 @@ for ii = 1:length(omega)
 	eigs(:,ii)= eig(B);
 end
 
-figure('OuterPosition',[0 0 2400 2400],'PaperUnits','points','PaperSize',[2400 2400]); hold on
+figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1600]); hold on
 % plot the eigenvalues in the complex plane
 c 					= linspecer(length(omega));
 for ii = 1:length(omega)
@@ -77,7 +77,6 @@ xlim([-3 3])
 axis square
 title('The eigenvalues of matrix B as a function of the SOR tuning factor \omega')
 
-tightfig()
 prettyFig()
 
 if being_published
