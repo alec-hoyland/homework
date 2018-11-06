@@ -56,7 +56,7 @@ for ii = 1:length(omega)
 	eigs(:,ii)= eig(B);
 end
 
-figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1600]); hold on
+figure('OuterPosition',[0 0 1200 1200],'PaperUnits','points','PaperSize',[1200 1200]); hold on
 % plot the eigenvalues in the complex plane
 c 					= linspecer(length(omega));
 for ii = 1:length(omega)
