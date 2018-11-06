@@ -77,7 +77,7 @@ xlim([-3 3])
 axis square
 title('The eigenvalues of matrix B as a function of the SOR tuning factor \omega')
 
-
+tightfig()
 prettyFig()
 
 if being_published
