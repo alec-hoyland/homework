@@ -29,7 +29,7 @@ x(:, 1) 		= x0;
 for ii = 2:length(x)
 	disp(['[INFO] iteration #' num2str(ii)])
 
-	x(:,ii)		= ( (M - A) * x(:,ii-1) + b ) \ M;
+	x(:,ii)		= M \ ( (M - A) * x(:,ii-1) + b );
 	residual 	= b - A * x(:,ii);
 	disp(['[INFO] residual norm = ' num2str(norm(residual))])
 
@@ -100,7 +100,7 @@ x(:, 1) 		= x0;
 for ii = 2:length(x)
 	disp(['[INFO] iteration #' num2str(ii)])
 
-	x(:,ii)		= ( (M - A) * x(:,ii-1) + b ) \ M;
+	x(:,ii)		= M \ ( (M - A) * x(:,ii-1) + b );
 	residual 	= b - A * x(:,ii);
 	disp(['[INFO] residual norm = ' num2str(norm(residual))])
 
@@ -128,7 +128,7 @@ x(:, 1) 		= x0;
 for ii = 2:length(x)
 	disp(['[INFO] iteration #' num2str(ii)])
 
-	x(:,ii)		= ( (M - A) * x(:,ii-1) + b ) \ M;
+	x(:,ii)		= M \ ( (M - A) * x(:,ii-1) + b );
 	residual 	= b - A * x(:,ii);
 	disp(['[INFO] residual norm = ' num2str(norm(residual))])
 
