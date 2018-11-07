@@ -5,6 +5,9 @@
 pHeader;
 tic
 
+%% A. Jacobi iterations
+
+% build the G matrix
 
 
 %% Version Info
