@@ -163,10 +163,10 @@ figure('OuterPosition',[0 0 1200 1200],'PaperUnits','points','PaperSize',[1200 1
 [X,Y] 			= meshgrid(linspace(-10, 10, 51), linspace(-10, 10, 51));
 contour(X, Y, phi, 15);
 for ii = 1:size(x, 2)
-	plot(x(1,ii), x(2,ii), 'ok');
+	plot(x(1,ii), x(2,ii), 'ok', 'MarkerFaceColor', 'k');
 end
 for ii = 1:size(x, 2)-1
-	plot([x(1,ii), x(1,ii)+w(1,ii)], [x(2,ii), x(2,ii)+w(2,ii)], '-r', 'LineWidth', 2);
+	plot([x(1,ii), x(1,ii)+w(1,ii)], [x(2,ii), x(2,ii)+w(2,ii)], 'Color', [0 0 0 0.2], 'LineWidth', 2);
 end
 xlabel('x_1')
 ylabel('x_2')
