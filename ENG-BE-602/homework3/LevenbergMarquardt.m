@@ -3,6 +3,7 @@ function [] = LevenbergMarquardt(t, y, fcn, Jacobian, params, mu, mu_scale, init
 
   x       = NaN(2,1000);
   x(:,1)  = vectorise(initial);
+  norm00  = NaN;
 
   for ii = 2:16
     % compute deviance and Jacobian
@@ -50,9 +51,11 @@ function [] = LevenbergMarquardt(t, y, fcn, Jacobian, params, mu, mu_scale, init
     disp(['[ITER #' num2str(ii-1) '] x: ' mat2str(x(:,ii)) ' norm(r): ' num2str(norm0) ' m: ' num2str(qq) ' mu: ' num2str(mu)])
 
     % check for convergence
-    if abs(norm0 - norm0_old) < 0.0001
+    if abs(norm0 - norm00) < 0.0001
       disp('[INFO] solution converged')
       break
+    else
+      norm00 = norm0;
     end
 
   end %% ii
