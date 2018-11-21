@@ -12,14 +12,14 @@ tic
 
 %% 1.1 Residual contour terrain
 
-step 			= 0:0.1:2;
+step 			= -2:0.01:2;
 [X, Y] 		= meshgrid(step, step);
 
 residual 	= NaN;
 res_norm 	= NaN(length(step));
 for ii = 1:length(step)
 	for qq = 1:length(step)
-		residual					= y - t .* exp(-step(ii) * t) .* sin(step(qq) * t);
+		residual					= y - t .* exp(step(ii) * t) .* sin(step(qq) * t);
 		res_norm(ii, qq) 	= sum(residual.^2);
 	end
 end
@@ -37,8 +37,11 @@ if being_published
 	delete(gcf)
 end
 
+%% 1.2 Levenberg-Marquardt
 
-
+Jacobian 				= cell(1,2);
+Jacobian{1} 		= @(alpha, omega) alpha * t .* exp(alpha * t) .* sin(omega * t);
+Jacobian{2} 		= @(alpha, omega) omega * t .* exp(alpha * t) .* cos(omega * t);
 
 %% Version Info
 % The file that generated this document is called:
