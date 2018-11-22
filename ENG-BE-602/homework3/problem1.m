@@ -12,14 +12,14 @@ tic
 
 %% 1.1 Residual contour terrain
 
-step 			= -2:0.01:2;
+step 			= -6:0.01:6;
 [X, Y] 		= meshgrid(step, step);
 
 residual 	= NaN;
 res_norm 	= NaN(length(step));
 for ii = 1:length(step)
 	for qq = 1:length(step)
-		residual					= y - t .* exp(step(ii) * t) .* sin(step(qq) * t);
+		residual					= y - alpha_sine(t, step(ii), step(qq));
 		res_norm(ii, qq) 	= sum(residual.^2);
 	end
 end
