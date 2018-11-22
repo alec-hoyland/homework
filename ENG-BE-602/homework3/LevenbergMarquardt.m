@@ -1,11 +1,15 @@
-function [x] = LevenbergMarquardt(t, y, fcn, mu, mu_scale, initial)
+function [x] = LevenbergMarquardt(t, y, fcn, mu, mu_scale, initial, nIters)
   % nonlinear least-squares fitting
 
-  x       = NaN(2,16);
+  if ~exist(nIters, 'var')
+    nIters = 100;
+  end
+
+  x       = NaN(2,nIters);
   x(:,1)  = vectorise(initial);
   norm00  = NaN;
 
-  for ii = 2:16
+  for ii = 2:nIters
     % unpack outputs from input function
     [yhat, J] = fcn(t, x(1, ii-1), x(2, ii-1));
     J0    = J';
@@ -62,5 +66,7 @@ function [x] = LevenbergMarquardt(t, y, fcn, mu, mu_scale, initial)
 
   end %% ii
 
+  % post-processing
+  x     = reshape(nonnans(x), 2, []);
 
 end % function
