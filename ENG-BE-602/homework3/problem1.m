@@ -82,7 +82,7 @@ end
 
 %%
 
-x 					= LevenbergMarquardt(t, y, @alpha_sine, 1, [5, 50], [-0.4, 0.5]);
+x 					= LevenbergMarquardt(t, y, @alpha_sine, 1, [5, 50], [-0.4, 0.5], 15);
 
 %%
 
@@ -123,7 +123,7 @@ end
 
 %%
 
-x 					= LevenbergMarquardt(t, y, @alpha_sine, 100, [5, 50], [-0.4, 0.5]);
+x 					= LevenbergMarquardt(t, y, @alpha_sine, 100, [5, 50], [-0.4, 0.5], 15);
 
 %%
 
@@ -164,7 +164,7 @@ end
 
 %%
 
-x 					= LevenbergMarquardt(t, y, @alpha_sine, 1e5, [5, 50], [-0.4, 0.5]);
+x 					= LevenbergMarquardt(t, y, @alpha_sine, 1e5, [5, 50], [-0.4, 0.5], 15);
 
 %%
 
@@ -205,7 +205,7 @@ end
 
 %%
 
-x 					= LevenbergMarquardt(t, y, @alpha_sine, 1e5, [5, 5], [-0.4, 0.5]);
+x 					= LevenbergMarquardt(t, y, @alpha_sine, 1e5, [5, 5], [-0.4, 0.5], 15);
 
 %%
 

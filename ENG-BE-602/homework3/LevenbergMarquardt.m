@@ -1,7 +1,7 @@
 function [x] = LevenbergMarquardt(t, y, fcn, mu, mu_scale, initial, nIters)
   % nonlinear least-squares fitting
 
-  if ~exist(nIters, 'var')
+  if ~exist('nIters', 'var')
     nIters = 100;
   end
 
