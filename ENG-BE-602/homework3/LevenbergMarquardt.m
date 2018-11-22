@@ -1,23 +1,25 @@
-function [] = LevenbergMarquardt(t, y, fcn, Jacobian, params, mu, mu_scale, initial)
+function [x] = LevenbergMarquardt(t, y, fcn, mu, mu_scale, initial)
   % nonlinear least-squares fitting
 
-  x       = NaN(2,1000);
+  x       = NaN(2,16);
   x(:,1)  = vectorise(initial);
   norm00  = NaN;
 
   for ii = 2:16
-    % compute deviance and Jacobian
-    b0    = y - fcn(x(:,ii-1));
-    J0    = Jacobian(x(:,ii-1));
+    % unpack outputs from input function
+    [yhat, J] = fcn(t, x(1, ii-1), x(2, ii-1));
+    J0    = J';
+    % compute deviance
+    b0    = y - yhat;
     % compute residual
-    dx    = mldivide(J0' * J0 + mu * eye(length(J0)), J0' * b0);
+    dx    = mldivide(J0' * J0 + mu * eye(size(J0,2)), J0' * b0);
     r0    = b0 - J0 * dx;
     norm0 = sum(r0.^2);
 
     % evaluate norm-squared of residual
     for qq = 1:5
       xtemp     = x(:,ii-1) + dx;
-      residual  = y - fcn(xtemp);
+      residual  = y - fcn(t, xtemp(1), xtemp(2));
       res_norm  = sum(residual.^2);
 
       if res_norm < norm0
@@ -31,7 +33,7 @@ function [] = LevenbergMarquardt(t, y, fcn, Jacobian, params, mu, mu_scale, init
         % increase trust factor
         mu      = mu * mu_scale(1);
         % compute residual
-        dx      = mldivide(J0' * J0 + mu * eye(length(J0)), J0' * b0);
+        dx      = mldivide(J0' * J0 + mu * eye(size(J0, 2)), J0' * b0);
         r0      = b0 - J0 * dx;
         norm0   = sum(r0.^2);
 

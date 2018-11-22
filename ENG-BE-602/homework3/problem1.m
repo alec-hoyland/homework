@@ -39,9 +39,7 @@ end
 
 %% 1.2 Levenberg-Marquardt
 
-Jacobian 				= cell(1,2);
-Jacobian{1} 		= @(alpha, omega) alpha * t .* exp(alpha * t) .* sin(omega * t);
-Jacobian{2} 		= @(alpha, omega) omega * t .* exp(alpha * t) .* cos(omega * t);
+x 					= LevenbergMarquardt(t, y, @alpha_sine, 0.1, [5, 50], [1, 1]);
 
 %% Version Info
 % The file that generated this document is called:
