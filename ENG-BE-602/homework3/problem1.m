@@ -179,7 +179,8 @@ plot(x(1,:), x(2,:), 'k-o', 'MarkerSize', 12, 'MarkerFaceColor', 'k');
 xlabel('\alpha')
 ylabel('\omega')
 title('Levenberg-Marquardt algorithm progress with MSE topography')
-
+xlim([-2 0])
+ylim([-2*pi 2*pi])
 prettyFig()
 
 if being_published
@@ -220,7 +221,8 @@ plot(x(1,:), x(2,:), 'k-o', 'MarkerSize', 12, 'MarkerFaceColor', 'k');
 xlabel('\alpha')
 ylabel('\omega')
 title('Levenberg-Marquardt algorithm progress with MSE topography')
-
+xlim([-2 0])
+ylim([-2*pi 2*pi])
 prettyFig()
 
 if being_published
