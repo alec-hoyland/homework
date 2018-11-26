@@ -45,6 +45,11 @@ mean(dataTable{:,:}, 2, 'omitnan')
 ANOVA 						= anova2table(cel);
 [c, m, h, gnames]	= multcompare(stats);
 
+if being_published
+	snapnow
+	delete(gcf)
+end
+
 disp('ANOVA table:')
 disp(ANOVA)
 
