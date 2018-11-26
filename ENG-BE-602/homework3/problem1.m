@@ -14,7 +14,7 @@ tic
 % $\alpha$ must be negative, or the function will blow up as $t \rightarrow \infty$.
 
 stepA 		= -2:0.01:-0.2;
-stepO 		= 0:0.01:2;
+stepO 		= -2*pi:0.1:2*pi;
 [X, Y] 		= meshgrid(stepA, stepO);
 
 residual 	= NaN;
@@ -28,6 +28,8 @@ end
 
 figure('OuterPosition',[0 0 1200 1200],'PaperUnits','points','PaperSize',[1200 1200]); hold on
 contour(X, Y, res_norm', 20)
+xlim([-2 0])
+ylim([-2*pi 2*pi])
 xlabel('\alpha')
 ylabel('\omega')
 title('norm-squared residual of alpha-sinusoid fit')
@@ -41,7 +43,7 @@ end
 
 %% 1.2 Levenberg-Marquardt
 
-x 					= LevenbergMarquardt(t, y, @alpha_sine, 0.1, [5, 50], [1, 1]);
+x 					= LevenbergMarquardt(t, y, @alpha_sine, 0.1, [5, 50], [-1, 1]);
 
 %% 1.3 Overlay of solutions onto MSE topography
 
@@ -51,7 +53,8 @@ plot(x(1,:), x(2,:), 'k-o', 'MarkerSize', 12, 'MarkerFaceColor', 'k');
 xlabel('\alpha')
 ylabel('\omega')
 title('Levenberg-Marquardt algorithm progress with MSE topography')
-
+xlim([-2 0])
+ylim([-2*pi 2*pi])
 prettyFig()
 
 if being_published
@@ -92,7 +95,8 @@ plot(x(1,:), x(2,:), 'k-o', 'MarkerSize', 12, 'MarkerFaceColor', 'k');
 xlabel('\alpha')
 ylabel('\omega')
 title('Levenberg-Marquardt algorithm progress with MSE topography')
-
+xlim([-2 0])
+ylim([-2*pi 2*pi])
 prettyFig()
 
 if being_published
@@ -133,7 +137,8 @@ plot(x(1,:), x(2,:), 'k-o', 'MarkerSize', 12, 'MarkerFaceColor', 'k');
 xlabel('\alpha')
 ylabel('\omega')
 title('Levenberg-Marquardt algorithm progress with MSE topography')
-
+xlim([-2 0])
+ylim([-2*pi 2*pi])
 prettyFig()
 
 if being_published
