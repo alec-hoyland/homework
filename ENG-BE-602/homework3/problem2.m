@@ -41,10 +41,26 @@ mean(dataTable{:,:}, 2, 'omitnan')
 
 %% 5. ANOVA
 
-[~, cel] 	= anova1(A, dataTable.Properties.VariableNames, 'off');
-ANOVA 		= anova2table(cel);
+[~, cel, stats] 	= anova1(A, dataTable.Properties.VariableNames, 'off');
+ANOVA 						= anova2table(cel);
+[c, m, h, gnames]	= multcompare(stats);
 
+disp('ANOVA table:')
 disp(ANOVA)
+
+disp('Tukey test HSD:')
+disp(c)
+
+%%
+% 2014 and 2015 were statistically significant increases in scarlet fever
+% over 2013, and 2015 marked a s.s. increase over the previous year. While
+% 2016 had more recorded scarlet fever illnesses than 2015, the increase is not
+% statistically significant. The general trend is that scarlet fever outbreaks
+% in the UK are increasing (though they might have plateaued).
+% Welcome back to 1910 for some reason.
+
+%%
+% Some years had statistically significantly more scarlet fever than others.
 
 %% Version Info
 % The file that generated this document is called:
