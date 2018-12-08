@@ -13,29 +13,34 @@ tic
 disp('The half-period parameter is L=4')
 L = 4;
 
-% first-order odd Fourier
-f     = [sin(pi/L*t)];
-c     = mldivide(y, f);
-yfit  = c(1)*f(:,1);
-r1    = norm(y-yfit);
+% compute the grand mean
+grandMean = mean(y);
+% compute the sum of squares error from the grand mean
+SSE       = norm(y-grandMean);
 
-% second-order odd Fourier
-f     = [sin(pi/L*t), sin(2*pi/L*t)];
+% first-order odd Fourier
+f     = [ones(length(t),1), sin(pi/L*t)];
 c     = mldivide(y, f);
-yfit  = c(1)*f(:,1) + c(2)*f(:,2);
-r2    = norm(y-yfit);
+yfit  = c(1) + c(2)*f(:,2);
+r1    = norm(y-yfit) / (norm(y-yfit) + SSE);
+return
+% second-order odd Fourier
+f     = [ones(length(t), 1), sin(pi/L*t), sin(2*pi/L*t)];
+c     = mldivide(y, f);
+yfit  = c(1) + c(2)*f(:,2) + c(3)*f(:,3);
+r2    = norm(y-yfit) / (norm(y-yfit) + SSE);
 
 % third-order odd Fourier
-f     = [sin(pi/L*t), sin(2*pi/L*t), sin(3*pi/L*t)];
+f     = [ones(length(t), 1), sin(pi/L*t), sin(2*pi/L*t), sin(3*pi/L*t)];
 c     = mldivide(y, f);
-yfit  = c(1)*f(:,1) + c(2)*f(:,2) + c(3)*f(:,3);
-r3    = norm(y-yfit);
+yfit  = c(1) + c(2)*f(:,2) + c(3)*f(:,3) + c(4)*f(:,4);
+r3    = norm(y-yfit) / (norm(y-yfit) + SSE);
 
 % fourth-order odd Fourier
-f     = [sin(pi/L*t), sin(2*pi/L*t), sin(3*pi/L*t) sin(4*pi/L*t)];
+f     = [ones(length(t), 1), sin(pi/L*t), sin(2*pi/L*t), sin(3*pi/L*t) sin(4*pi/L*t)];
 c     = mldivide(y, f);
-yfit  = c(1)*f(:,1) + c(2)*f(:,2) + c(3)*f(:,3) + c(4)*f(:,4);
-r4    = norm(y-yfit);
+yfit  = c(1) + c(2)*f(:,2) + c(3)*f(:,3) + c(4)*f(:,4) + c(5)*f(:,5);
+r4    = norm(y-yfit) / (norm(y-yfit) + SSE);
 
 %%
 % The third order odd Fourier coefficients produce the best fit for
@@ -54,10 +59,10 @@ bar(R)
 %%
 
 varNames = {'Factor X1', 'Factor X3', 'Factor X5', 'Error', 'Regression Combo', 'Total', 'R2 Value'};
-t = table(varNames', NaN(7,1),NaN(7,1),NaN(7,1),NaN(7,1),NaN(7,1),NaN(7,1),NaN(7,1));
-t.Properties.VariableNames = {'Factor', 'DoF', 'SumSq', 'SequentialSS', 'AdjustedSS', 'Variance', 'F', 'FCritical'};
+dataTable = table(varNames', NaN(7,1),NaN(7,1),NaN(7,1),NaN(7,1),NaN(7,1),NaN(7,1),NaN(7,1));
+dataTable.Properties.VariableNames = {'Factor', 'DoF', 'SumSq', 'SequentialSS', 'AdjustedSS', 'Variance', 'F', 'FCritical'};
 
-t{1:3,3} = [r1 r2 r3]';
+dataTable{1:3,3} = [r1 r2 r3]';
 
 
 %% Version Info
