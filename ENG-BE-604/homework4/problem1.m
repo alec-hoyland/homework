@@ -16,14 +16,14 @@ L = 4;
 % compute the grand mean
 grandMean = mean(y);
 % compute the sum of squares error from the grand mean
-SSE       = norm(y-grandMean);
+SST       = norm(y-grandMean);
 
 % first-order odd Fourier
 f     = [ones(length(t),1), sin(pi/L*t)];
 c     = mldivide(y, f);
 yfit  = c(1) + c(2)*f(:,2);
 r1    = norm(y-yfit) / (norm(y-yfit) + SSE);
-return
+
 % second-order odd Fourier
 f     = [ones(length(t), 1), sin(pi/L*t), sin(2*pi/L*t)];
 c     = mldivide(y, f);
@@ -62,7 +62,11 @@ varNames = {'Factor X1', 'Factor X3', 'Factor X5', 'Error', 'Regression Combo', 
 dataTable = table(varNames', NaN(7,1),NaN(7,1),NaN(7,1),NaN(7,1),NaN(7,1),NaN(7,1),NaN(7,1));
 dataTable.Properties.VariableNames = {'Factor', 'DoF', 'SumSq', 'SequentialSS', 'AdjustedSS', 'Variance', 'F', 'FCritical'};
 
-dataTable{1:3,3} = [r1 r2 r3]';
+% total degrees of freedom
+dataTable{6, 1} = length(y) - 1;
+
+% total sum of squared deviation from grand mean
+dataTable{6, 2} = norm(y - mean(y));
 
 
 %% Version Info
