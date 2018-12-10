@@ -63,24 +63,36 @@ tbl.ci90pm  = 1.645*tbl.stdev/sqrt(80);
 disp(tbl)
 
 %% Histograms
-for ii = 1:4
-  figure('OuterPosition',[0 0 1200 1200],'PaperUnits','points','PaperSize',[1200 1200]); hold on
-  % temp = tbl.mean(ii) + tbl.ci90pm(ii);
-  % plot([temp, temp], 10, 'LineWidth', 2, 'Color', 'r', 'LineStyle', '--');
-  % temp = tbl.mean(ii) - tbl.ci90pm(ii);
-  % plot([temp, temp], 10, 'LineWidth', 2, 'Color', 'r', 'LineStyle', '--');
-  histogram(betas(:, ii))
-  title([num2str(ii-1) '-order parameter'])
-  xlabel('parameter value')
-  ylabel('# occurring')
 
-  prettyFig()
+% figure('OuterPosition',[0 0 1200 1200],'PaperUnits','points','PaperSize',[1200 1200]); hold on
+% histogram(betas(:, ii))
+% title([num2str(ii-1) '-order parameter'])
+% temp = tbl.mean(ii) + tbl.ci90pm(ii);
+% line([temp, temp], [0 20], 'LineWidth', 2, 'Color', 'r', 'LineStyle', '--');
+% temp = tbl.mean(ii) - tbl.ci90pm(ii);
+% line([temp, temp], [0 20], 'LineWidth', 2, 'Color', 'r', 'LineStyle', '--');
+% xlabel('parameter value')
+% ylabel('# occurring')
+%
+% prettyFig()
+%
+% if being_published
+%   snapnow
+%   delete(gcf)
+% end
 
-  if being_published
-    snapnow
-    delete(gcf)
-  end
-end
+%%
+% <</home/ahoyland/code/homework/ENG-BE-604/homework5/1.png>>
+
+%%
+% <</home/ahoyland/code/homework/ENG-BE-604/homework5/2.png>>
+
+%%
+% <</home/ahoyland/code/homework/ENG-BE-604/homework5/3.png>>
+
+%%
+% <</home/ahoyland/code/homework/ENG-BE-604/homework5/4.png>>
+
 
 %%
 
