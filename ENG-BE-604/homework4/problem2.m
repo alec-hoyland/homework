@@ -7,14 +7,40 @@ pHeader;
 tic
 
 %% Load data
-[x1, x2, y] = textread('data_problem2.txt', '%f%f', 'headerlines', 1);
+[x1, x2, y] = textread('data_problem2.txt', '%f%f%f', 'headerlines', 1);
 
-r     = sqrt(x1.^2 + x2.^2);
+[r,I] = sort(sqrt(x1.^2 + x2.^2));
+y     = y(I);
 p     = 1:14;
 
 for ii = 1:14
+  yfit    = polyfit(r, y, ii);
+  res(ii) = norm(y - polyval(yfit, r));
+end
 
-  b = mldivide(r'*r, )
+disp([p' res'])
+
+%%
+
+figure('OuterPosition',[0 0 1200 1200],'PaperUnits','points','PaperSize',[1200 1200]); hold on
+leg = cell(14,1);
+plot(r, y, 'ok')
+leg{1} = 'data';
+for ii = 1:14
+  plot(r, polyval(polyfit(r, y, ii), r));
+  leg{ii+1} = ['p = ' num2str(ii)];
+end
+xlabel('r')
+ylabel('y')
+legend(leg)
+
+prettyFig()
+
+if being_published
+  snapnow
+  delete(gcf)
+end
+
 
 
 %% Version Info
