@@ -43,11 +43,20 @@ end
 
 %% 3. Plot the data in 2-D space
 
+eq = @(x1, x2) pf(1) + pf(2) * x1 + pf(3) * x2 + pf(4) * x1.^2 + pf(5) * x1 .* x2 + pf(6) * x2.^2;
+
+xplot = linspace(-10, 10, 201);
+yplot = NaN(length(xvals), 1);
+
+for ii = 1:length(xvals)
+  yplot(ii) = fsolve(@(x) eq(xplot(ii), x), 1, optimoptions('fsolve', 'Display', 'off'));
+end
+
 figure;
 plot(x1(logical(y)), x2(logical(y)), 'r+');
 hold on
 plot(x1(~logical(y)), x2(~logical(y)), 'ko');
-% fplot(xplot, yplot, [0 2*pi], 'k');
+plot(xplot, yplot, 'k')
 xlabel('factor 1')
 ylabel('factor 2')
 title('2-D logistic regression')
