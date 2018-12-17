@@ -11,7 +11,7 @@ tic
 %% 1. Solve using Levenberg-Marquardt
 options         = LMFsolve('default');
 options.Display = 1;
-[pf, ssq, cnt]  = LMFsolve(@(p) norm(y - logistic(p, x1, x2)), [0.1 0.1 0.1 0.1 0.1], options);
+[pf, ssq, cnt]  = LMFsolve(@(p) norm(y - logistic(p, x1, x2)), [0.1 0.1 0.1 0.1 0.1 0.1], options);
 
 % 2. Plot the data in 3-D space
 
@@ -45,9 +45,9 @@ end
 
 %% 3. Plot the data in 2-D space
 
-eq = @(x1, x2) pf(1) + pf(2) * x1 + pf(3) * x2 + pf(4) * x1.^2 + pf(5) * x1 .* x2 + pf(6) * x2.^2;
+eq = @(x1, x2) pf(1) + pf(2) .* x1 + pf(3) .* x2 + pf(4) .* x1.^2 + pf(5) .* x1 .* x2 + pf(6) .* x2.^2;
 
-xplot = linspace(-10, 10, 201);
+xplot = linspace(0, 10, 201);
 yplot = NaN(length(xplot), 1);
 
 for ii = 1:length(xplot)
