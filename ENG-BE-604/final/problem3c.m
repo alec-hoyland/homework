@@ -46,9 +46,9 @@ end
 eq = @(x1, x2) pf(1) + pf(2) * x1 + pf(3) * x2 + pf(4) * x1.^2 + pf(5) * x1 .* x2 + pf(6) * x2.^2;
 
 xplot = linspace(-10, 10, 201);
-yplot = NaN(length(xvals), 1);
+yplot = NaN(length(xplot), 1);
 
-for ii = 1:length(xvals)
+for ii = 1:length(xplot)
   yplot(ii) = fsolve(@(x) eq(xplot(ii), x), 1, optimoptions('fsolve', 'Display', 'off'));
 end
 
