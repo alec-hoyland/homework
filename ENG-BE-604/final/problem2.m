@@ -19,7 +19,8 @@ chem2_smooth    = fLOESS(chem2, 0.02);
 wavenumber  = wavenumber * 1e3;
 
 figure('OuterPosition',[0 0 1200 1200],'PaperUnits','points','PaperSize',[1200 1200]); hold on
-plot(wavenumber, chem1, 'o', 'Color', [0 0 0 0.2])
+scatter(wavenumber, chem1, 'filled', 'k', 'SizeData', 100)
+alpha(0.2)
 plot(wavenumber, chem1_smooth, 'k')
 xlabel('wavenumber')
 ylabel('IR signal')
@@ -34,7 +35,8 @@ if being_published
 end
 
 figure('OuterPosition',[0 0 1200 1200],'PaperUnits','points','PaperSize',[1200 1200]); hold on
-plot(wavenumber, chem2, 'o', 'Color', [0 0 0 0.2])
+scatter(wavenumber, chem2, 'filled', 'k', 'SizeData', 100)
+alpha(0.2)
 plot(wavenumber, chem2_smooth, 'k')
 xlabel('wavenumber')
 ylabel('IR signal')
@@ -55,7 +57,14 @@ tbl.Properties.VariableNames = {'wavenumber', 'chem1', 'chem1smooth', 'chem2', '
 
 disp(tbl)
 
-
+%% 3. Which chemical is which?
+% Chemical #1 is Mr. Stinky (aka para-divinylbenzene). The high wavenumbers (~1600) correspond
+% to the aromatic bond stretching and the lower wavenumbers (700-1000) correspond to
+% alkene stretching and bending. Chemical #2 is methyl methacrylate. The peak at
+% ~1700 refers to the C=O ester bond stretching. Similarly, the peak at ~1100 refers
+% to the C-O ester bond stretching. The lower wavenumber peaks correspond to alkene
+% stretching and bending. The major difference between the two IR spectra is the presence
+% of C=O and C-O signatures in the 1700-1100 wavenumbe range in the second spectrum.
 
 %% Version Info
 pFooter;
