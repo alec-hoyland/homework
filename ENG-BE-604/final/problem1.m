@@ -7,6 +7,7 @@ tic
 
 %% Load the data
 [S, rate]    = textread('data_problem1.txt', '%f%f', 'headerlines', 1);
+options      = optimoptions('lsqcurvefit', 'Display', 'off');
 
 %% 1. Using Levenberg-Marquardt
 
@@ -88,7 +89,7 @@ for ii = 1:100
   % construct a bootstrapped data set
   ys  = yfit - r(bs(:, ii));
   % compute the Hill fit
-  ps(ii, :)  = lsqcurvefit(@hill2, [p(1,end), p(2,end)], S, ys, [0 0], [4, 4]);
+  ps(ii, :)  = lsqcurvefit(@hill2, [p(1,end), p(2,end)], S, ys, [0 0], [4, 4], options);
 end
 
 %% 2.4
