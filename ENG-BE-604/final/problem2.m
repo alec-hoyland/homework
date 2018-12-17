@@ -12,9 +12,11 @@ tic
 wavenumber = wavenumber / 1e3;
 
 %% 1. Using LOESS to smooth data
-
+warning('off', 'all')
 chem1_smooth    = fLOESS(chem1, 0.02);
 chem2_smooth    = fLOESS(chem2, 0.02);
+
+wavenumber  = wavenumber * 1e3;
 
 figure('OuterPosition',[0 0 1200 1200],'PaperUnits','points','PaperSize',[1200 1200]); hold on
 plot(wavenumber, chem1, 'o', 'Color', [0 0 0 0.2])
