@@ -38,7 +38,7 @@ ygrid = 0:0.1:10;
 Z = NaN(length(xgrid), length(ygrid));
 for ii = 1:length(xgrid)
   for qq = 1:length(ygrid)
-    [Z(ii, qq)] = logistic_2factor(betas, xgrid(ii), ygrid(qq));
+    [Z(ii, qq)] = logistic_2factor(betas, [xgrid(ii), ygrid(qq)]);
   end
 end
 surf(X, Y, Z', 'FaceAlpha', 0.2, 'EdgeColor', 'none');
