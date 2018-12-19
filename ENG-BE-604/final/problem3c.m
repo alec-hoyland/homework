@@ -11,7 +11,8 @@ tic
 %% 1. Solve using Levenberg-Marquardt
 options         = LMFsolve('default');
 options.Display = 1;
-[pf, ssq, cnt]  = LMFsolve(@(p) norm(y - logistic(p, x1, x2)), [0 0 0 1 0 -1.9], options);
+
+betas           = LMFsolve(@(p) norm(y - logistic_2factor(p, x1, x2)), initial, options);
 
 % 2. Plot the data in 3-D space
 
@@ -25,14 +26,14 @@ ygrid = 0:0.1:10;
 Z = NaN(length(xgrid), length(ygrid));
 for ii = 1:length(xgrid)
   for qq = 1:length(ygrid)
-    Z(ii, qq) = logistic(pf, xgrid(ii), ygrid(qq));
+    [Z(ii, qq)] = logistic_2factor(betas, xgrid(ii), ygrid(qq));
   end
 end
 surf(X, Y, Z, 'FaceAlpha', 0.2, 'EdgeColor', 'none');
 xlabel('factor 1')
 ylabel('factor 2')
 zlabel('cured?')
-title('logistic regression of zombie cure factors')
+title('logistic_2factor regression of zombie cure factors')
 
 prettyFig();
 
@@ -43,7 +44,7 @@ end
 
 %% 3. Plot the data in 2-D space
 
-eq = @(x1, x2) pf(1) + pf(2) * x1 + pf(3) * x2 + pf(4) * x1.^2 + pf(5) * x1 .* x2 + pf(6) * x2.^2;
+eq = @(x1, x2) betas(1) + betas(2) * x1 + betas(3) * x2 + betas(4) * x1.^2 + betas(5) * x1 .* x2 + betas(6) * x2.^2;
 
 xplot = linspace(-10, 10, 201);
 yplot = NaN(length(xplot), 1);
@@ -59,7 +60,7 @@ plot(x1(~logical(y)), x2(~logical(y)), 'ko');
 plot(xplot, yplot, 'k')
 xlabel('factor 1')
 ylabel('factor 2')
-title('2-D logistic regression')
+title('2-D logistic_2factor regression')
 
 
 %% Version Info

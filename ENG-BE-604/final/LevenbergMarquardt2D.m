@@ -1,17 +1,17 @@
-function [x] = LevenbergMarquardt(t, y, fcn, mu, mu_scale, initial, nIters)
+function [x] = LevenbergMarquardt2D(x, y, fcn, mu, mu_scale, initial, nIters)
   % nonlinear least-squares fitting
 
   if ~exist('nIters', 'var')
     nIters = 100;
   end
 
-  x       = NaN(2,nIters);
-  x(:,1)  = vectorise(initial);
+  betas   = NaN(nIters, length(initial));
+  betas(1, :) = initial;
   norm00  = NaN;
 
   for ii = 2:nIters
     % unpack outputs from input function
-    [yhat, J] = fcn(t, x(1, ii-1), x(2, ii-1));
+    [yhat, J] = fcn(betas(ii-1, :), x(:, 1), x(:, 2));
     J0    = J';
     % compute deviance
     b0    = y - yhat;
@@ -22,13 +22,13 @@ function [x] = LevenbergMarquardt(t, y, fcn, mu, mu_scale, initial, nIters)
 
     % evaluate norm-squared of residual
     for qq = 1:5
-      xtemp     = x(:,ii-1) + dx;
-      residual  = y - fcn(t, xtemp(1), xtemp(2));
+      btemp     = betas(ii-1, :) + dx;
+      residual  = y - fcn(btemp, x(:, 1), x(:, 2));
       res_norm  = sum(residual.^2);
 
       if res_norm < norm0
         % update the x-vector
-        x(:,ii) = xtemp;
+        betas(ii, :) = btemp;
         % decrease trust factor
         mu      = mu / mu_scale(2);
         % terminate inner loop
@@ -44,7 +44,7 @@ function [x] = LevenbergMarquardt(t, y, fcn, mu, mu_scale, initial, nIters)
         % give up if qq = 5
         if qq == 5
           % update x regardless
-          x(:,ii) = xtemp;
+          betas(ii, :) = btemp;
           % terminate inner loop
           break
         end % qq == 5
@@ -67,6 +67,6 @@ function [x] = LevenbergMarquardt(t, y, fcn, mu, mu_scale, initial, nIters)
   end %% ii
 
   % post-processing
-  x     = reshape(nonnans(x), 2, []);
+  betas     = reshape(nonnans(betas), length(initial), []);
 
 end % function
