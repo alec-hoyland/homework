@@ -1,24 +1,17 @@
-function [y, y] = logistic_2factor(beta, x1, x2)
+function [y, J] = logistic_2factor(beta, x1, x2)
 
   polynomial = beta(1) + beta(2) * x1 + beta(3) * x2 + ...
               beta(4) * x1.^2 + beta(5) * x1 .* x2 + beta(6) * x2.^2;
 
   y = 1 ./ (1 + exp(-polynomial));
 
+  J         = NaN(6, length(x1));
+  kernel    = exp(polynomial) ./ ((exp(polynomial) + 1) .^2);
+  J(1, :)   = kernel;
+  J(2, :)   = x1 .* kernel;
+  J(3, :)   = x2 .* kernel;
+  J(4, :)   = x1 .* x1 .* kernel;
+  J(5, :)   = x1 .* x2 .* kernel;
+  J(6, :)   = x2 .* x2 .* kernel;
+
 end
-
-function [y, J] = alpha_sin(t, alpha, omega)
-  % compute the alpha * sine function
-  % and the associated Jacobian matrix
-  % for parameters alpha and omega
-  % and data t
-
-  % NOTE: alpha is negative and omega is positive (or negative)
-
-  y       = t .* exp(alpha * t) .* sin(omega * t);
-
-  J       = NaN(2,length(t));
-  J(1,:)  = alpha * t .* exp(alpha * t) .* sin(omega * t);
-  J(2,:)  = omega * t .* exp(alpha * t) .* cos(omega * t);
-
-end % function

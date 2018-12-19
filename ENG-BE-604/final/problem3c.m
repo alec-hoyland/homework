@@ -12,8 +12,10 @@ tic
 options         = LMFsolve('default');
 options.Display = 1;
 
-betas           = LMFsolve(@(p) norm(y - logistic_2factor(p, x1, x2)), initial, options);
-
+% perform parameter estimation
+% betas           = LMFsolve(@(p) norm(y - logistic_2factor(p, x1, x2)), initial, options);
+betas             = LevenbergMarquardt2D([x1 x2], y, @logistic_2factor, 500, [5, 50], [0 0 0 0 0 0], 100);
+betas             = betas(end, :);
 % 2. Plot the data in 3-D space
 
 figure;

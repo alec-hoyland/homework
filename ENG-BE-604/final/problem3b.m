@@ -16,11 +16,11 @@ options.Display = 1;
 initial         = [0, -1, -1, 1, 1, -1];
 
 % perform parameter estimation
-betas           = LMFsolve(@(p) norm(y - logistic_2factor(p, x1, x2)), initial, options);
+% betas           = LMFsolve(@(p) norm(y - logistic_2factor(p, x1, x2)), initial, options);
+betas             = LevenbergMarquardt2D([x1 x2], y, @logistic_2factor, 500, [5, 50], [0 0 0 0 0 0], 100);
+betas             = betas(end, :);
 
 % 2. Plot the data in 3-D space
-
-figure;
 
 figure;
 plot3(x1(logical(y)), x2(logical(y)), y(logical(y)), 'r+');
@@ -39,7 +39,7 @@ surf(X, Y, Z, 'FaceAlpha', 0.2, 'EdgeColor', 'none');
 xlabel('factor 1')
 ylabel('factor 2')
 zlabel('cured?')
-title('logistic_2factor regression of zombie cure factors')
+title('logistic regression of zombie cure factors')
 
 prettyFig();
 

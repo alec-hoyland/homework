@@ -22,7 +22,7 @@ function [betas] = LevenbergMarquardt2D(x, y, fcn, mu, mu_scale, initial, nIters
 
     % evaluate norm-squared of residual
     for qq = 1:5
-      btemp     = betas(ii-1, :) + dx;
+      btemp     = betas(ii-1, :) + dx';
       residual  = y - fcn(btemp, x(:, 1), x(:, 2));
       res_norm  = sum(residual.^2);
 
@@ -54,7 +54,7 @@ function [betas] = LevenbergMarquardt2D(x, y, fcn, mu, mu_scale, initial, nIters
     end % qq
 
     % print results
-    disp(['[ITER #' num2str(ii-1) '] x: ' mat2str(x(:,ii)) ' norm(r): ' num2str(norm0) ' m: ' num2str(qq) ' mu: ' num2str(mu)])
+    disp(['[ITER #' num2str(ii-1) '] betas: ' mat2str(betas(ii, :)) ' norm(r): ' num2str(norm0) ' m: ' num2str(qq) ' mu: ' num2str(mu)])
 
     % check for convergence
     if abs(norm0 - norm00) < 0.0001
@@ -67,6 +67,6 @@ function [betas] = LevenbergMarquardt2D(x, y, fcn, mu, mu_scale, initial, nIters
   end %% ii
 
   % post-processing
-  betas     = reshape(nonnans(betas), length(initial), []);
+  betas     = reshape(nonnans(betas), [], length(initial));
 
 end % function
