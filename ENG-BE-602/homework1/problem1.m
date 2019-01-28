@@ -16,7 +16,7 @@ eta   = 1;
 % derivative
 xdot = @(x, t, omega) -E/eta*x + 1/eta * sin(omega * t);
 
-dt    = 0.01;
+dt    = 0.001;
 t     = dt:dt:100;
 x     = zeros(length(t), 1);
 omega = linspace(0, 1e6, 1001);
