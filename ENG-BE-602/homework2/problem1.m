@@ -17,11 +17,11 @@ A     = [-n*kr1*s0, kr2; n*kr1*s0, -kr2];
 
 %% 1.2 Plot solutions
 % For a systems of coupled linear differential equations,
-% $$\dot{v} = \mathrm{A}v$$
+% $$ \dot{v} = \mathrm{A}v $$
 % the solution is
-% $$v(t) = v(0) \exp(\mathrm{A}t) $$
-% where $$\exp(\mathrm{A}$$ is defined by the power series expansion.
-% $$\exp(At) = A \sinh(t) + I \cosh(t)$$
+% $$ v(t) = v(0) \exp(\mathrm{A}t) $$
+% where $$\exp(\mathrm{A}) $$ is defined by the power series expansion.
+% $$ \exp(At) = A \sinh(t) + I \cosh(t) $$
 
 % time vector & solution vector
 t       = 0:0.02:1;
