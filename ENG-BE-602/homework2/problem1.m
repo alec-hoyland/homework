@@ -19,8 +19,8 @@ A     = [-n*kr1*s0, kr2; n*kr1*s0, -kr2];
 % For a systems of coupled linear differential equations,
 % $$\dot{v} = \mathrm{A}v$$
 % the solution is
-% $$v(t) = v(0) \exp(\mathrm{A}t)$$
-% where $\exp(\mathrm{A}$ is defined by the power series expansion.
+% $$v(t) = v(0) \exp(\mathrm{A}t) $$
+% where $$\exp(\mathrm{A}$$ is defined by the power series expansion.
 % $$\exp(At) = A \sinh(t) + I \cosh(t)$$
 
 % time vector & solution vector
