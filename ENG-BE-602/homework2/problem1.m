@@ -27,7 +27,7 @@ A     = [-n*kr1*s0, kr2; n*kr1*s0, -kr2];
 t       = 0:0.02:1;
 R       = solution2(A, t, [1e-3; 0]);
 
-figure;
+figure('OuterPosition',[0 0 1200 1200],'PaperUnits','points','PaperSize',[1200 1200]); hold on
 plot(t, R);
 xlabel('time')
 ylabel('concentration')
@@ -42,7 +42,7 @@ end
 
 %% 1.3 Plot phase diagram
 
-figure;
+figure('OuterPosition',[0 0 1200 1200],'PaperUnits','points','PaperSize',[1200 1200]); hold on
 plot(R(:, 1), R(:, 2), 'o');
 xlabel('concentration R_0')
 ylabel('concentration R_1')
