@@ -185,7 +185,8 @@ if being_published
 end
 
 %% 2b.2 Explanation
-% put words here
+% The second dashpot makes the system asymmetric and overdamped, causing no oscillations.
+% Instead, the two masses move to a steady-state equilibrium condition.
 
 %% 2b.2
 
@@ -245,7 +246,8 @@ if being_published
 end
 
 %% 2b.2 Explanation
-% put words here
+% The masses would move to equal equilibrium conditions, except that one
+% is being forced, causing it to reach equilibrium at a lower value (the forcing is negative).
 
 %% Version Info
 pFooter;
