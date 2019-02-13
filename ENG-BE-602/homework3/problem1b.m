@@ -40,10 +40,105 @@ end
 
 t     = 0:0.1:9;
 F0    = 0.1;
-initial = [];
+initial = [1 0.9 0.9 0.9 0.9 0.65 0.5 -0.9; 0 -0.5 -0.4 -0.3 -0.2 -0.1 0 0.1];
+C     = linspecer(size(initial, 2));
 
-% for loop then plot
-[t,x] = ode45(@(t, y) odefun(t, y, F0), t, initial(:, ii));
+figure('OuterPosition',[0 0 1200 1200],'PaperUnits','points','PaperSize',[1200 1200]); hold on
+
+for ii = 1:size(initial, 2)
+  [t,x] = ode45(@(t, y) odefun(t, y, F0), t, initial(:, ii));
+  plot(x(:,1), x(:,2), 'o', 'Color', C(ii, :))
+end
+
+xlabel('position')
+ylabel('velocity')
+axis([-2 2 -2 2])
+axis square;
+
+prettyFig
+
+if being_published
+  snapnow
+  delete(gcf)
+end
+
+%% 2 Phase Plots F0 = 0.38
+
+t     = 0:0.1:9;
+F0    = 0.38;
+initial = [1 0.9 0.9 0.9 0.9 0.65 0.5 -0.9; 0 -0.5 -0.4 -0.3 -0.2 -0.1 0 0.1];
+C     = linspecer(size(initial, 2));
+
+figure('OuterPosition',[0 0 1200 1200],'PaperUnits','points','PaperSize',[1200 1200]); hold on
+
+for ii = 1:size(initial, 2)
+  [t,x] = ode45(@(t, y) odefun(t, y, F0), t, initial(:, ii));
+  plot(x(:,1), x(:,2), 'o', 'Color', C(ii, :))
+end
+
+xlabel('position')
+ylabel('velocity')
+axis([-2 2 -2 2])
+axis square;
+
+prettyFig
+
+if being_published
+  snapnow
+  delete(gcf)
+end
+
+%% 2 Phase Plots F0 = 0.4
+
+t     = 0:0.1:9;
+F0    = 0.4;
+initial = [1 0.9 0.9 0.9 0.9 0.65 0.5 -0.9; 0 -0.5 -0.4 -0.3 -0.2 -0.1 0 0.1];
+C     = linspecer(size(initial, 2));
+
+figure('OuterPosition',[0 0 1200 1200],'PaperUnits','points','PaperSize',[1200 1200]); hold on
+
+for ii = 1:size(initial, 2)
+  [t,x] = ode45(@(t, y) odefun(t, y, F0), t, initial(:, ii));
+  plot(x(:,1), x(:,2), 'o', 'Color', C(ii, :))
+end
+
+xlabel('position')
+ylabel('velocity')
+axis([-2 2 -2 2])
+axis square;
+
+prettyFig
+
+if being_published
+  snapnow
+  delete(gcf)
+end
+
+%% 2 Phase Plots F0 = 0.75
+
+t     = 0:0.1:9;
+F0    = 0.75;
+initial = [1 0.9 0.9 0.9 0.9 0.65 0.5 -0.9; 0 -0.5 -0.4 -0.3 -0.2 -0.1 0 0.1];
+C     = linspecer(size(initial, 2));
+
+figure('OuterPosition',[0 0 1200 1200],'PaperUnits','points','PaperSize',[1200 1200]); hold on
+
+for ii = 1:size(initial, 2)
+  [t,x] = ode45(@(t, y) odefun(t, y, F0), t, initial(:, ii));
+  plot(x(:,1), x(:,2), 'o', 'Color', C(ii, :))
+end
+
+xlabel('position')
+ylabel('velocity')
+axis([-2 2 -2 2])
+axis square;
+
+prettyFig
+
+if being_published
+  snapnow
+  delete(gcf)
+end
 
 
 %% Version Info
