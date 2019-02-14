@@ -44,14 +44,17 @@ initial = [1 0.9 0.9 0.9 0.9 0.65 0.5 -0.9; 0 -0.5 -0.4 -0.3 -0.2 -0.1 0 0.1];
 C     = linspecer(size(initial, 2));
 
 figure('OuterPosition',[0 0 1200 1200],'PaperUnits','points','PaperSize',[1200 1200]); hold on
+leg = cell(size(initial, 2), 1);
 
 for ii = 1:size(initial, 2)
   [t,x] = ode45(@(t, y) odefun(t, y, F0), t, initial(:, ii));
   plot(x(:,1), x(:,2), 'o', 'Color', C(ii, :))
+  leg{ii} = ['IC #' num2str(ii)];
 end
 
 xlabel('position')
 ylabel('velocity')
+legend(leg, 'Location', 'best');
 axis([-2 2 -2 2])
 axis square;
 
@@ -70,14 +73,17 @@ initial = [1 0.9 0.9 0.9 0.9 0.65 0.5 -0.9; 0 -0.5 -0.4 -0.3 -0.2 -0.1 0 0.1];
 C     = linspecer(size(initial, 2));
 
 figure('OuterPosition',[0 0 1200 1200],'PaperUnits','points','PaperSize',[1200 1200]); hold on
+leg = cell(size(initial, 2), 1);
 
 for ii = 1:size(initial, 2)
   [t,x] = ode45(@(t, y) odefun(t, y, F0), t, initial(:, ii));
   plot(x(:,1), x(:,2), 'o', 'Color', C(ii, :))
+  leg{ii} = ['IC #' num2str(ii)];
 end
 
 xlabel('position')
 ylabel('velocity')
+legend(leg, 'Location', 'best');
 axis([-2 2 -2 2])
 axis square;
 
@@ -96,14 +102,17 @@ initial = [1 0.9 0.9 0.9 0.9 0.65 0.5 -0.9; 0 -0.5 -0.4 -0.3 -0.2 -0.1 0 0.1];
 C     = linspecer(size(initial, 2));
 
 figure('OuterPosition',[0 0 1200 1200],'PaperUnits','points','PaperSize',[1200 1200]); hold on
+leg = cell(size(initial, 2), 1);
 
 for ii = 1:size(initial, 2)
   [t,x] = ode45(@(t, y) odefun(t, y, F0), t, initial(:, ii));
   plot(x(:,1), x(:,2), 'o', 'Color', C(ii, :))
+  leg{ii} = ['IC #' num2str(ii)];
 end
 
 xlabel('position')
 ylabel('velocity')
+legend(leg, 'Location', 'best');
 axis([-2 2 -2 2])
 axis square;
 
@@ -122,14 +131,17 @@ initial = [1 0.9 0.9 0.9 0.9 0.65 0.5 -0.9; 0 -0.5 -0.4 -0.3 -0.2 -0.1 0 0.1];
 C     = linspecer(size(initial, 2));
 
 figure('OuterPosition',[0 0 1200 1200],'PaperUnits','points','PaperSize',[1200 1200]); hold on
+leg = cell(size(initial, 2), 1);
 
 for ii = 1:size(initial, 2)
   [t,x] = ode45(@(t, y) odefun(t, y, F0), t, initial(:, ii));
   plot(x(:,1), x(:,2), 'o', 'Color', C(ii, :))
+  leg{ii} = ['IC #' num2str(ii)];
 end
 
 xlabel('position')
 ylabel('velocity')
+legend(leg, 'Location', 'best');
 axis([-2 2 -2 2])
 axis square;
 
