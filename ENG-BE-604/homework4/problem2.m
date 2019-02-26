@@ -34,7 +34,7 @@ xlabel('r')
 ylabel('y')
 legend(leg)
 
-prettyFig()
+figlib.pretty()
 
 if being_published
   snapnow
@@ -66,7 +66,7 @@ xlabel('polynomial order')
 ylabel('PE values')
 title('PE values with LOO CV')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
   snapnow
@@ -101,7 +101,7 @@ end
 % zlabel('y')
 % zlim([-1, 1])
 %
-% prettyFig()
+% figlib.pretty()
 %
 % if being_published
 %   snapnow

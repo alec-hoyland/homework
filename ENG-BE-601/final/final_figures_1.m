@@ -19,7 +19,7 @@ figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1
 A 			= spectralSums(100, U, S, V);
 imshow(mat2gray(A));
 title('83.28% compression')
-prettyFig
+figlib.pretty
 drawnow
 saveas(gcf, '/home/ahoyland/code/homework/ENG-BE-601/final/morpheus.jpg')
 saveas(gcf, '/home/ahoyland/code/homework/ENG-BE-601/final/morpheus.png')
@@ -31,7 +31,7 @@ figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1
 A 			= spectralSums(75, U, S, V);
 imshow(mat2gray(A));
 title('87.46% compression')
-prettyFig
+figlib.pretty
 drawnow
 saveas(gcf, '/home/ahoyland/code/homework/ENG-BE-601/final/questionmark.jpg')
 saveas(gcf, '/home/ahoyland/code/homework/ENG-BE-601/final/questionmark.png')
@@ -43,7 +43,7 @@ figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1
 A 			= spectralSums(200, U, S, V);
 imshow(mat2gray(A));
 title('66.56% compression')
-prettyFig
+figlib.pretty
 drawnow
 saveas(gcf, '/home/ahoyland/code/homework/ENG-BE-601/final/478.jpg')
 saveas(gcf, '/home/ahoyland/code/homework/ENG-BE-601/final/478.png')

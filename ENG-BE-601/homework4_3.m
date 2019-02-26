@@ -23,7 +23,7 @@ figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1
 imshow(mat2gray(A));
 title('original image with inverted colors')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
   snapnow
@@ -46,7 +46,7 @@ figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1
 imshow(mat2gray(B));
 title('J = 9, post-columns only')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
   snapnow
@@ -63,7 +63,7 @@ figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1
 imshow(mat2gray(C))
 title('Proper J = 8 photo (small upper-left corner)')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
   snapnow
@@ -81,7 +81,7 @@ figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1
 imshow(mat2gray(C2))
 title('Proper J = 7 photo (small upper-left corner)')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
   snapnow
@@ -99,7 +99,7 @@ figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1
 imshow(mat2gray(C3))
 title('Proper J = 6 photo (small upper-left corner)')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
   snapnow
@@ -117,7 +117,7 @@ figure('OuterPosition',[0 0 1600 1600],'PaperUnits','points','PaperSize',[1600 1
 imshow(mat2gray(C4))
 title('Proper J = 5 photo (small upper-left corner)')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
   snapnow
@@ -133,7 +133,7 @@ pcolor(snap)
 % caxis([-127.5 127.5]);
 title('tiny Meghan')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
   snapnow

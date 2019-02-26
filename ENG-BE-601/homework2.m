@@ -96,7 +96,7 @@ title('temperature of an anisotropic metal rod')
 ylim([0 400])
 box off
 
-prettyFig()
+figlib.pretty()
 if being_published
   snapnow
   delete(gcf)
@@ -306,7 +306,7 @@ subplot(2,2,2); spy(L); title('spy(L)')
 subplot(2,2,3); spy(U); title('spy(U)')
 subplot(2,2,4); spy(P); title('spy(P)')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
   snapnow
@@ -339,7 +339,7 @@ c.Label.String = 'concentration (\muM)';
 title('concentration of glucose inside epithelial cell/lumen')
 % caxis([0 100]);
 
-prettyFig()
+figlib.pretty()
 
 if being_published
   snapnow
@@ -364,7 +364,7 @@ xlabel('x-position (\mum)')
 ylabel('y-position (\mum)')
 title('concentration gradient with iso-concentration contours')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
   snapnow

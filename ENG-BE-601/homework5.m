@@ -48,7 +48,7 @@ ylabel('population')
 title('the walking dead at steady-state')
 legend({'well', 'sick', 'zombie', 'dead'})
 
-prettyFig()
+figlib.pretty()
 
 if being_published
   snapnow

@@ -27,7 +27,7 @@ ylabel('IR signal')
 set(gca, 'XDir', 'reverse')
 title('Chemical #1')
 
-prettyFig();
+figlib.pretty();
 
 if being_published
   snapnow
@@ -43,7 +43,7 @@ ylabel('IR signal')
 set(gca, 'XDir', 'reverse')
 title('Chemical #2')
 
-prettyFig();
+figlib.pretty();
 
 if being_published
   snapnow

@@ -47,7 +47,7 @@ ylabel('factor 2')
 zlabel('cured?')
 title('logistic_2factor regression of zombie cure factors')
 
-prettyFig();
+figlib.pretty();
 
 if being_published
   snapnow

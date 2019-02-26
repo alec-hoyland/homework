@@ -33,7 +33,7 @@ xlabel('time')
 ylabel('concentration')
 legend({'R_0', 'R_1'})
 axis([0 1 0 1e-3])
-prettyFig();
+figlib.pretty();
 
 if being_published
   snapnow
@@ -65,7 +65,7 @@ end
 
 legend({'A', 'B', 'C', 'D'})
 
-prettyFig();
+figlib.pretty();
 
 if being_published
   snapnow

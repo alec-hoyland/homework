@@ -21,7 +21,7 @@ end
 
 legend(leg);
 
-prettyFig()
+figlib.pretty()
 
 if being_published
   snapnow
@@ -58,7 +58,7 @@ legend(leg, 'Location', 'best');
 axis([-2 2 -2 2])
 axis square;
 
-prettyFig
+figlib.pretty
 
 if being_published
   snapnow
@@ -87,7 +87,7 @@ legend(leg, 'Location', 'best');
 axis([-2 2 -2 2])
 axis square;
 
-prettyFig
+figlib.pretty
 
 if being_published
   snapnow
@@ -116,7 +116,7 @@ legend(leg, 'Location', 'best');
 axis([-2 2 -2 2])
 axis square;
 
-prettyFig
+figlib.pretty
 
 if being_published
   snapnow
@@ -145,7 +145,7 @@ legend(leg, 'Location', 'best');
 axis([-2 2 -2 2])
 axis square;
 
-prettyFig
+figlib.pretty
 
 if being_published
   snapnow

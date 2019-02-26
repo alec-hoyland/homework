@@ -30,7 +30,7 @@ xlabel('x')
 ylabel('y')
 legend({'raw data', 'LS 3rd-order fit'}, 'Location', 'northwest')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
   snapnow
@@ -74,7 +74,7 @@ disp(tbl)
 % xlabel('parameter value')
 % ylabel('# occurring')
 %
-% prettyFig()
+% figlib.pretty()
 %
 % if being_published
 %   snapnow

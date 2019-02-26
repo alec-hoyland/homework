@@ -16,7 +16,7 @@ xlim([0.5*min(fish_length) 1.5*max(fish_length)])
 ylim([0.5*min(fish_weight) 1.5*max(fish_weight)])
 title('Moosehead Lake Rock Bass')
 
-prettyFig()
+figlib.pretty()
 drawnow
 saveas(gcf, '/home/ahoyland/code/homework/ENG-BE-601/homework6/homework6_figure_1.png')
 close all
@@ -55,7 +55,7 @@ xlim([0.5*min(fish_length) 1.5*max(fish_length)])
 ylim([0.5*min(fish_weight) 1.5*max(fish_weight)])
 title('Moosehead Lake Rock Bass')
 
-prettyFig()
+figlib.pretty()
 drawnow
 saveas(gcf, '/home/ahoyland/code/homework/ENG-BE-601/homework6/homework6_figure_2.png')
 close all
@@ -82,7 +82,7 @@ xlabel('statistical distance')
 ylabel('occurrences')
 title('histogram of statistical differences')
 
-prettyFig()
+figlib.pretty()
 drawnow
 saveas(gcf, '/home/ahoyland/code/homework/ENG-BE-601/homework6/homework6_figure_3.png')
 close all
@@ -123,7 +123,7 @@ xlim([-5 25])
 ylim([-25 25])
 title('Moosehead Lake Rock Bass')
 
-prettyFig()
+figlib.pretty()
 drawnow
 saveas(fig, '/home/ahoyland/code/homework/ENG-BE-601/homework6/homework6_figure_4.png')
 close all
@@ -139,7 +139,7 @@ xlabel('fish length (in)')
 ylabel('fish weight (oz)')
 zlabel('# occurrences')
 
-prettyFig()
+figlib.pretty()
 drawnow
 saveas(gcf, '/home/ahoyland/code/homework/ENG-BE-601/homework6/homework6_figure_5.png')
 close all

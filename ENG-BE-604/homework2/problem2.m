@@ -25,7 +25,7 @@ xlabel('x_1')
 ylabel('x_2')
 title('phase plot of a dynamical system')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
 	snapnow
@@ -101,7 +101,7 @@ xlabel('x_1')
 ylabel('x_2')
 title('phase plot of a dynamical system')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
 	snapnow
@@ -172,7 +172,7 @@ xlabel('x_1')
 ylabel('x_2')
 title('phase plot of a dynamical system')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
 	snapnow

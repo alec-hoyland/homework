@@ -34,7 +34,7 @@ xlabel('\alpha')
 ylabel('\omega')
 title('norm-squared residual of alpha-sinusoid fit')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
 	snapnow
@@ -55,7 +55,7 @@ ylabel('\omega')
 title('Levenberg-Marquardt algorithm progress with MSE topography')
 xlim([-2 0])
 ylim([-2*pi 2*pi])
-prettyFig()
+figlib.pretty()
 
 if being_published
 	snapnow
@@ -74,7 +74,7 @@ xlabel('t')
 ylabel('y')
 title('raw data with least-squares fit')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
 	snapnow
@@ -97,7 +97,7 @@ ylabel('\omega')
 title('Levenberg-Marquardt algorithm progress with MSE topography')
 xlim([-2 0])
 ylim([-2*pi 2*pi])
-prettyFig()
+figlib.pretty()
 
 if being_published
 	snapnow
@@ -116,7 +116,7 @@ xlabel('t')
 ylabel('y')
 title('raw data with least-squares fit')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
 	snapnow
@@ -139,7 +139,7 @@ ylabel('\omega')
 title('Levenberg-Marquardt algorithm progress with MSE topography')
 xlim([-2 0])
 ylim([-2*pi 2*pi])
-prettyFig()
+figlib.pretty()
 
 if being_published
 	snapnow
@@ -158,7 +158,7 @@ xlabel('t')
 ylabel('y')
 title('raw data with least-squares fit')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
 	snapnow
@@ -181,7 +181,7 @@ ylabel('\omega')
 title('Levenberg-Marquardt algorithm progress with MSE topography')
 xlim([-2 0])
 ylim([-2*pi 2*pi])
-prettyFig()
+figlib.pretty()
 
 if being_published
 	snapnow
@@ -200,7 +200,7 @@ xlabel('t')
 ylabel('y')
 title('raw data with least-squares fit')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
 	snapnow
@@ -223,7 +223,7 @@ ylabel('\omega')
 title('Levenberg-Marquardt algorithm progress with MSE topography')
 xlim([-2 0])
 ylim([-2*pi 2*pi])
-prettyFig()
+figlib.pretty()
 
 if being_published
 	snapnow
@@ -242,7 +242,7 @@ xlabel('t')
 ylabel('y')
 title('raw data with least-squares fit')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
 	snapnow

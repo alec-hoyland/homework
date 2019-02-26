@@ -30,7 +30,7 @@ xlabel('n')
 ylabel('K_m')
 title('Nonlinear least-squares landscape')
 
-prettyFig();
+figlib.pretty();
 
 if being_published
   snapnow
@@ -57,7 +57,7 @@ xlabel('n')
 ylabel('K_m')
 title('Nonlinear least-squares landscape w/ LM')
 
-% prettyFig();
+% figlib.pretty();
 
 if being_published
   snapnow
@@ -72,7 +72,7 @@ xlabel('substrate concentration (nM) ')
 ylabel('enzyme rate (rxn/sec)')
 title('Data with Hill function fit')
 
-prettyFig();
+figlib.pretty();
 
 if being_published
   snapnow

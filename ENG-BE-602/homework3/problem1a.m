@@ -32,7 +32,7 @@ c = colorbar;
 c.Label.String = 'Total Energy';
 axis square;
 
-prettyFig();
+figlib.pretty();
 
 if being_published
   snapnow
@@ -47,7 +47,7 @@ energyContours = [-0.5:0.05:05 06:0.1:2];
 CfinalColorbarHandle = colorbar;
 axis([-2 2 -2 2])
 
-prettyFig
+figlib.pretty
 
 if being_published
   snapnow
@@ -78,7 +78,7 @@ energyContours = [-0.5:0.05:05 06:0.1:2];
 CfinalColorbarHandle = colorbar;
 axis([-2 2 -2 2])
 
-prettyFig
+figlib.pretty
 
 if being_published
   snapnow
@@ -109,7 +109,7 @@ energyContours = [-0.5:0.05:05 06:0.1:2];
 CfinalColorbarHandle = colorbar;
 axis([-2 2 -2 2])
 
-prettyFig
+figlib.pretty
 
 if being_published
   snapnow
@@ -140,7 +140,7 @@ energyContours = [-0.5:0.05:05 06:0.1:2];
 CfinalColorbarHandle = colorbar;
 axis([-2 2 -2 2])
 
-prettyFig
+figlib.pretty
 
 if being_published
   snapnow

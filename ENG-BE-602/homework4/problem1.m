@@ -44,7 +44,7 @@ ylabel('membrane potential (mV)')
 title('varying the gain parameter: trajectory')
 legend(leg, 'Location', 'best')
 
-prettyFig('lw', 1)
+figlib.pretty('lw', 1)
 
 if being_published
   snapnow
@@ -64,7 +64,7 @@ legend(leg, 'Location', 'best')
 axis square
 axis([-2.5 2.5 -2.5 2.5])
 
-prettyFig
+figlib.pretty
 
 if being_published
   snapnow
@@ -106,7 +106,7 @@ title('varying the input function: phase')
 axis square
 axis([-2.5 2.5 -2.5 2.5])
 
-prettyFig
+figlib.pretty
 
 if being_published
   snapnow
@@ -120,7 +120,7 @@ xlabel('time (s)')
 ylabel('membrane potential(V)')
 title('varying the input function: trajectory')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
   snapnow

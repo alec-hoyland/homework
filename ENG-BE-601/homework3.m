@@ -35,7 +35,7 @@ ylabel('y-data');
 title('some data with some regression')
 legend({'data', 'fit'})
 
-prettyFig()
+figlib.pretty()
 
 if being_published
   snapnow

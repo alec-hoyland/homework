@@ -49,7 +49,7 @@ xlabel('real')
 ylabel('imaginary')
 title('Jacobi Gerschgorin circles')
 
-prettyFig()
+figlib.pretty()
 axis square
 
 if being_published
@@ -95,7 +95,7 @@ xlabel('real')
 ylabel('imaginary')
 title('Gauss-Seidel Gerschgorin circles')
 
-prettyFig()
+figlib.pretty()
 axis square
 
 if being_published
@@ -141,7 +141,7 @@ xlabel('real')
 ylabel('imaginary')
 title('SOR Gerschgorin circles')
 
-prettyFig()
+figlib.pretty()
 axis square
 
 if being_published

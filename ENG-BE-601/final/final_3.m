@@ -35,7 +35,7 @@ ylabel('singular values')
 xlabel('nth singular value')
 title('singular values of coffee IR spectra')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
 	snapnow
@@ -72,7 +72,7 @@ set(gca, 'XDir', 'reverse')
 ylabel('% absorbance')
 grid on
 
-prettyFig()
+figlib.pretty()
 
 if being_published
 	snapnow

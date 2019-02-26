@@ -41,7 +41,7 @@ ylabel('x_2')
 axis([-1 1 -1 1])
 axis square
 
-prettyFig()
+figlib.pretty()
 
 if being_published
     snapnow
@@ -56,7 +56,7 @@ xlabel('time')
 ylabel('displacement')
 legend({'x_1', 'x_2'})
 
-prettyFig()
+figlib.pretty()
 
 if being_published
     snapnow
@@ -101,7 +101,7 @@ ylabel('x_2')
 axis([-1 1 -1 1])
 axis square
 
-prettyFig()
+figlib.pretty()
 
 if being_published
     snapnow
@@ -116,7 +116,7 @@ xlabel('time')
 ylabel('displacement')
 legend({'x_1', 'x_2'})
 
-prettyFig()
+figlib.pretty()
 
 if being_published
     snapnow
@@ -162,7 +162,7 @@ ylabel('x_2')
 axis([-1 1 -1 1])
 axis square
 
-prettyFig()
+figlib.pretty()
 
 if being_published
  snapnow
@@ -177,7 +177,7 @@ xlabel('time')
 ylabel('displacement')
 legend({'x_1', 'x_2'})
 
-prettyFig()
+figlib.pretty()
 
 if being_published
  snapnow
@@ -223,7 +223,7 @@ ylabel('x_2')
 axis([-1 1 -1 1])
 axis square
 
-prettyFig()
+figlib.pretty()
 
 if being_published
  snapnow
@@ -238,7 +238,7 @@ xlabel('time')
 ylabel('displacement')
 legend({'x_1', 'x_2'})
 
-prettyFig()
+figlib.pretty()
 
 if being_published
  snapnow

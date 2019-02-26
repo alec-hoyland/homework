@@ -79,7 +79,7 @@ bar(cat, SS(:,1:3)', 'stacked')
 legend({'residual sum-of-squares error', 'regression sum-of-squares error', }, 'Location', 'northeast')
 title('sum-of-squares error by odd Fourier series order fit')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
   snapnow
@@ -146,7 +146,7 @@ plot(t, yfit);
 xlabel('t')
 ylabel('y')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
   snapnow

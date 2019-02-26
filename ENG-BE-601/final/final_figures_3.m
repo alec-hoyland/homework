@@ -40,7 +40,7 @@ xlabel('coffee bean bag/type')
 ylabel('wavenumber (cm^{-1})')
 colormap(jet)
 
-prettyFig
+figlib.pretty
 drawnow
 saveas(gcf, '/home/ahoyland/code/homework/ENG-BE-601/final/pcolor_X.jpg')
 saveas(gcf, '/home/ahoyland/code/homework/ENG-BE-601/final/pcolor_X.png')
@@ -75,7 +75,7 @@ for ii = 1:3
 	ylabel('wavenumber (cm^{-1})')
 	colormap(jet)
 
-	prettyFig
+	figlib.pretty
 	drawnow
 	saveas(gcf, ['/home/ahoyland/code/homework/ENG-BE-601/final/SVDsubmatrix_' num2str(ii) '.jpg'])
 	saveas(gcf, ['/home/ahoyland/code/homework/ENG-BE-601/final/SVDsubmatrix_' num2str(ii) '.png'])

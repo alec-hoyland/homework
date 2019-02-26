@@ -24,7 +24,7 @@ ylabel('singular values')
 xlabel('nth singular value')
 title('singular values of redpill2')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
 	snapnow
@@ -75,7 +75,7 @@ for ii = 1:3
 	ylabel('SVD-reconstructed pixel intensities')
 	title(['N' num2str(ii)])
 
-	prettyFig()
+	figlib.pretty()
 
 	if being_published
 		snapnow
@@ -120,7 +120,7 @@ for ii = 1:3
 	axis square
 	axis([-255 255 -255 255])
 
-	prettyFig()
+	figlib.pretty()
 
 	if being_published
 		snapnow

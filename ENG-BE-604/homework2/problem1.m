@@ -44,7 +44,7 @@ xlabel('t')
 ylabel('y')
 title('Data and Least-Squares Fit')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
 	snapnow
@@ -67,7 +67,7 @@ xlabel('residual value')
 ylabel('# of occurrences')
 title('distribution of residual values')
 
-prettyFig()
+figlib.pretty()
 
 if being_published
 	snapnow
@@ -116,7 +116,7 @@ xlim([-10, 10])
 ylim([-10, 10])
 axis square
 
-prettyFig()
+figlib.pretty()
 
 if being_published
 	snapnow
@@ -175,7 +175,7 @@ xlim([-10, 10])
 ylim([-10, 10])
 axis square
 
-prettyFig()
+figlib.pretty()
 
 if being_published
 	snapnow

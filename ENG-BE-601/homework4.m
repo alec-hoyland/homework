@@ -33,7 +33,7 @@ xticklabels({'0', 'L', '2L'})
 ylabel('amplitude (a.u.)')
 legend({'data', '5th-order fourier'})
 
-prettyFig()
+figlib.pretty()
 
 if being_published
   snapnow
@@ -88,7 +88,7 @@ xticklabels({'0', 'L', '2L', '3L', '4L'})
 ylabel('amplitude (a.u.)')
 legend({'data', '5th-order fourier'})
 
-prettyFig()
+figlib.pretty()
 
 if being_published
   snapnow
