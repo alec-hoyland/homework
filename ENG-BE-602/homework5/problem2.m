@@ -40,20 +40,16 @@ figure
 [X, Y] = meshgrid(x, y);
 surf(X, Y, f');
 
-if being_published
-  plotlib.snap
+  pdflib.snap
   delete(gcf)
-end
 
 %% Plot a 2-D graph
 
 figure;
 pcolor(X, Y, f')
 
-if being_published
-  plotlib.snap
+  pdflib.snap
   delete(gcf)
-end
 
 %% Version Info
 pdflib.footer;
