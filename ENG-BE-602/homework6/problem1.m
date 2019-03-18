@@ -14,11 +14,14 @@ tic
 % is enforced by the Dirichlet boundary conditions and properties of the
 % associated Legendre polynomials.
 
-%% Compute the Fourier-Legendre Coefficients
+%% Compute the Fourier-Legendre Coefficients-
 
-C = zeros(7, 3); % l, m, indexed starting at 0
-
-% TODO: plug in the C values by hand
+C = zeros(8, 3); % l, m, indexed starting at 0
+C(3,1) = 50;
+C(3,3) = 250;
+C(5,3) = 250;
+C(6,3) = -1750;
+C(7,3) = 250;
 
 %% Plot the spherical surface
 
@@ -41,8 +44,13 @@ for ii = 1:numel(T)
   temp = 0;
   for l = 1:size(C, 1)
     for m = 1:size(C, 2)
-      lgdr = legendre(l, cos(theta(ii)));
-      temp = temp + C(l, m) * (1 / (r(ii)^(l +1))) * cos(m * phi(ii)) * lgdr(m);
+      lgdr = legendre(l-1, cos(theta(ii)));
+      if m > l
+        lgdr = lgdr(l);
+      else
+        lgdr = lgdr(m);
+      end
+      temp = temp + C(l, m) * (1 / (r(ii)^(l +1))) * cos(m * phi(ii)) * lgdr;
     end
   end
   T(ii) = temp;
@@ -65,12 +73,11 @@ caxis([-60, 60])
 pdflib.snap
 delete(gcf)
 
-
 figure;
 slicehandle1 = slice(X, Y, Z, T, 0, 0, 0); hold on;
 set(slicehandle1, 'EdgeColor', 'none', 'FaceAlpha', 0.9);
 slicehandle2 = slice(X, Y, Z, T, SX, SY, SZ);
-set(slicehandle, 'EdgeColor', 'none');
+set(slicehandle2, 'EdgeColor', 'none');
 slicehandle3 = slice(X, Y, Z, T, SX2, SY2, SZ2);
 set(slicehandle3, 'EdgeColor', 'black', 'FaceColor', 'none');
 title('spherical coordinate plot of temperature at r=1')
@@ -92,8 +99,13 @@ for ii = 1:length(x)
   temp = 0;
   for l = 1:size(C, 1)
     for m = 1:size(C, 2)
-      lgdr = legendre(l, cos(x(ii));
-      temp = temp + C(l, m) * lgdr(m);
+      lgdr = legendre(l-1, cos(x(ii)));
+      if m > l
+        lgdr = lgdr(l);
+      else
+        lgdr = lgdr(m);
+      end
+      temp = temp + C(l, m) * lgdr;
     end
   end
   f(ii) = temp;
@@ -127,12 +139,18 @@ phi = atan2(Y, X);
 
 % build temperature profile
 T = zeros(size(r));
+xx = repmat(x, [1, numel(T)/numel(x)]);
 for ii = 1:numel(T)
   temp = 0;
   for l = 1:size(C, 1)
     for m = 1:size(C, 2)
-      lgdr = legendre(l, cos(theta(ii)));
-      temp = temp + C(l, m) * (1 / (r(ii)^(l +1))) * cos(m * phi(ii)) * lgdr(m);
+      lgdr = legendre(l-1, cos(xx(ii)));
+      if m > l
+        lgdr = lgdr(l);
+      else
+        lgdr = lgdr(m);
+      end
+      temp = temp + C(l, m) * (1 / (r(ii)^(l +1))) * cos(m * phi(ii)) * lgdr;
     end
   end
   T(ii) = temp;
@@ -142,7 +160,7 @@ figure;
 slicehandle1 = slice(X, Y, Z, T, 0, 0, 0); hold on;
 set(slicehandle1, 'EdgeColor', 'none', 'FaceAlpha', 0.9);
 slicehandle2 = slice(X, Y, Z, T, SX, SY, SZ);
-set(slicehandle, 'EdgeColor', 'none');
+set(slicehandle2, 'EdgeColor', 'none');
 slicehandle3 = slice(X, Y, Z, T, SX2, SY2, SZ2);
 set(slicehandle3, 'EdgeColor', 'black', 'FaceColor', 'none');
 title('spherical coordinate plot of temperature at r=1')
