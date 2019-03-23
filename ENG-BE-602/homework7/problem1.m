@@ -142,12 +142,12 @@ function C = getCoeff(broots, m, p, b, trig)
     % computes coefficients for a Fourier-Bessel double series
 
     C = zeros(max(m), max(p));
-
     for mm = m
         bessel_m = mm - 1;
         for pp = p
-            prefactor = 2 / (b^2 * besselj(bessel_m+1, broots(mm))^2);
-            fun = @(x) x * trig(x) * besselj(bessel_m, broots(mm)/b*x);
+            keyboard
+            prefactor = 2 / (b^2 * besselj(bessel_m+1, broots(pp))^2);
+            fun = @(x) x * trig(x) * besselj(bessel_m, broots(pp)/b*x);
             C(mm, pp) = prefactor * integral(fun, 0, b);
         end
     end
