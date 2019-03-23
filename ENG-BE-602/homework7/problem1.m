@@ -89,7 +89,7 @@ y = 2*r;
 z = z;
 
 [X, Y, Z] = meshgrid(x, y, z);
-R = sqrt(X.^2, Y.^2, Z.^2);
+R = sqrt(X.^2 + Y.^2 + Z.^2);
 Phi = atan2(Y, X);
 
 [cxx, cyy, czz] = cylinder(10, 60);
@@ -99,14 +99,14 @@ slicehandle1 = slice(X, Y, Z, u, cxx, cyy, czz);
 set(slicehandle1, 'EdgeColor', 'Black')
 set(slicehandle1, 'FaceAlpha', 0.9);
 hold on
-slicehandle2 = slice(X, Y, Z, u, cxx, pi/2, czz)
+slicehandle2 = slice(X, Y, Z, u, cxx, repmat(median(median(cyy)), size(cxx)), czz)
 xlabel('x')
 ylabel('y')
 zlabel('z')
 
-clrb = colorbar
-caxis([0 100])
-clrb.Label.String('temp')
+clrb = colorbar;
+caxis([0 100]);
+clrb.Label.String = ('temp');
 
 pdflib.snap
 delete(gcf)
@@ -145,9 +145,8 @@ function C = getCoeff(broots, m, p, b, trig)
     for mm = m
         bessel_m = mm - 1;
         for pp = p
-            keyboard
             prefactor = 2 / (b^2 * besselj(bessel_m+1, broots(pp))^2);
-            fun = @(x) x * trig(x) * besselj(bessel_m, broots(pp)/b*x);
+            fun = @(x) x .* trig(x) .* besselj(bessel_m, broots(pp)/b.*x);
             C(mm, pp) = prefactor * integral(fun, 0, b);
         end
     end
