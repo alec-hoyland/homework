@@ -32,7 +32,7 @@ broots(4,1) = 13.0152007216984;
 
 %% Get cosine coefficients
 
-trig = @(x) -0.004 * x^3;
+trig = @(x) -0.004 * x.^3;
 b = 10;
 
 m = [0, 2] + 1; % matlab 1-indexing correction
@@ -42,7 +42,7 @@ C = getCoeff(broots, m, p, b, trig)
 
 %% Get sine coefficients
 
-trig = @(x) -0.015 * x^3;
+trig = @(x) -0.015 * x.^3;
 b = 10;
 
 n = [1] + 1; % matlab 1-indexing correction
