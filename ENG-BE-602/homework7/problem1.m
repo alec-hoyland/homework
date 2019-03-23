@@ -148,7 +148,7 @@ function C = getCoeff(broots, m, p, b, trig)
         for pp = p
             prefactor = 2 / (b^2 * besselj(bessel_m+1, broots(mm))^2);
             fun = @(x) x * trig(x) * besselj(bessel_m, broots(mm)/b*x);
-            C(mm, pp) = prefactor * integrate(fun, 0, b);
+            C(mm, pp) = prefactor * integral(fun, 0, b);
         end
     end
 
