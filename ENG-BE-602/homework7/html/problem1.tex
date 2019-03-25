@@ -1,0 +1,141 @@
+
+% This LaTeX was auto-generated from MATLAB code.
+% To make changes, update the MATLAB code and republish this document.
+
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{color}
+
+\sloppy
+\definecolor{lightgray}{gray}{0.5}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+
+
+\subsection*{Contents}
+
+\begin{itemize}
+\setlength{\itemsep}{-1ex}
+   \item Homework \#7
+   \item Boundary Conditions
+   \item Get cosine coefficients
+   \item Get sine coefficients
+   \item Construct the Fourier-Bessel series
+   \item Plot the Fourier-Bessel series
+   \item Version Info
+\end{itemize}
+
+
+\subsection*{Homework \#7}
+
+\begin{par}
+Problem 1 Alec Hoyland 2019-3-16 13:52
+\end{par} \vspace{1em}
+
+
+\subsection*{Boundary Conditions}
+
+\begin{par}
+$u \rightarrow 0$ as $z \rightarrow \infty$. $u = 0$ at $r = b= 10, z \neq 0$. Finally, at $z=0, r=b$, $u(r,\phi,0) = 50 - 0.004r^4 \cos(2\phi) - 0.015r^3\sin(\phi)$.
+\end{par} \vspace{1em}
+\begin{par}
+$C_{m,p} = \frac{2}{\pi b^2[J_{m+1}(k_{m,p}b)]^2} \int_0^{2\pi} h_{cos}(\phi) cos(m\phi) d\phi$. For $D_{n,q}$ it's the same but with $\sin$ replacing $\cos$. For $m = 0$, divide by a factor of 2.
+\end{par} \vspace{1em}
+\begin{par}
+Let $g_{cos}(r) = -0.004r^4$ and $h_{cos}(\phi) = cos(2\phi)$ and
+\end{par} \vspace{1em}
+
+
+\subsection*{Get cosine coefficients}
+
+ \color{lightgray} 
+ 
+\begin{verbatim}
+C =
+
+   1.0e+29 *
+
+   -0.0000    4.7633    0.0000
+         0         0         0
+   -0.0000   -0.0000   -0.0000
+
+\end{verbatim} 
+
+\color{black}
+
+
+\subsection*{Get sine coefficients}
+
+
+        \color{lightgray} \begin{verbatim}
+D =
+
+   1.0e+29 *
+
+         0         0         0
+   -0.0000   -0.0000    9.8334
+
+\end{verbatim} \color{black}
+
+
+\subsection*{Construct the Fourier-Bessel series}
+
+
+
+\subsection*{Plot the Fourier-Bessel series}
+
+
+\color{lightgray} 
+
+\begin{verbatim}
+slicehandle2 =
+
+  Surface with properties:
+
+       EdgeColor: [0 0 0]
+       LineStyle: '-'
+       FaceColor: 'flat'
+    FaceLighting: 'flat'
+       FaceAlpha: 1
+           XData: [2x61 double]
+           YData: [2x61 double]
+           ZData: [2x61 double]
+           CData: [2x61 double]
+
+  Use GET to show all properties
+
+\end{verbatim} 
+
+\color{black}
+
+\includegraphics [width=4in]{problem1_01.pdf}
+
+\includegraphics [width=4in]{problem1_02.pdf}
+
+\includegraphics [width=4in]{problem1_03.pdf}
+
+
+\subsection*{Version Info}
+
+
+        \color{lightgray} 
+        
+        \begin{verbatim}git clone git@github.com:alec-hoyland/homework.git /home/alec/code/homework
+git checkout  ae3ede4ef6c7b4fdeef5b4e1145fc849c94ce6a7
+git clone git@github.com:sg-s/srinivas.gs_mtools.git /home/alec/code/srinivas.gs_mtools
+git checkout  4fb6fb13a0ec7de28279d4e0890ca274807388c7
+\end{verbatim} \color{black}
+    \begin{par}
+This document was built in:
+\end{par} \vspace{1em}
+
+        \color{lightgray} 
+        
+        \begin{verbatim}3.75 seconds.
+\end{verbatim} \color{black}
+
+
+
+\end{document}
