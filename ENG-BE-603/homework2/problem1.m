@@ -53,6 +53,22 @@ for xx = 1:length(x)
 	end
 end
 
+[X, Y] = meshgrid(x, y);
+
+for tt = 1:length(t)
+
+	figure;
+	slice(X, Y, u(:, :, tt), 'EdgeColor', 'k');
+	xlabel('x')
+	ylabel('y')
+	colorbar
+	title(['temp heatmap at t = ' numstr(t(tt)) 's'])
+
+	pdflib.snapnow
+	delete(gcf)
+
+end
+
 %% Version Info
 pdflib.footer;
 time = toc;
