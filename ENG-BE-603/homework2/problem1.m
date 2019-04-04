@@ -39,7 +39,19 @@ end
 % compute the temperature u(x,y,t)
 u 		= zeros(length(x), length(y), length(t));
 
-for
+for xx = 1:length(x)
+	for yy = 1:length(y)
+		for tt = 1:length(t)
+			val = 0;
+			for p = 1:nCoeffs
+				for q = 1:nCoeffs
+					val = val + C(p, q) * sin(p * pi / a * xx) * sin(q * pi / b * yy) * exp(-((p * pi / a)^2 + (q * pi / b)^2));
+				end
+			end
+			u(xx, yy, tt) = val;
+		end
+	end
+end
 
 %% Version Info
 pdflib.footer;
