@@ -1,7 +1,7 @@
-%% Homework #1
+%% Homework #2
 % Problem 1
 % Alec Hoyland
-% 2019-3-25 14:09
+% 2019-4-4 11:53
 
 pdflib.header;
 tic
