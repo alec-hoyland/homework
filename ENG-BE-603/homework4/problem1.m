@@ -13,7 +13,44 @@ D = 1 / (ra * Cm);
 B = 1 / (rm * Cm);
 
 b = 1;
-h = get_h(x, b);
+
+a = 2.5;
+tfinal = 5e-3;
+dx = a/1000;
+dt = tfinal/100;
+
+x = -a:dt:a;
+t = dt:dt:tfinal;
+
+% compute h times g and integrate over it
+dummyindex = linspace(-1, 1, 11);
+integrand = zeros(length(x), length(t), length(dummyindex));
+V = zeros(length(x), length(t));
+count = 0;
+total = length(x) * length(t) * length(dummyindex);
+for xx = 1:length(x)
+	corelib.textbar(count, total);
+	for tt = 1:length(t)
+		for bb = 1:length(dummyindex)
+			integrand(xx, tt, bb) = get_h(dummyindex(bb), 1) * green(x(xx), t(tt), dummyindex(bb), D, B);
+			count = count + 1;
+		end
+		V(xx, tt) = trapz(dummyindex, integrand(xx, tt, :));
+	end
+end
+
+%% Plot
+
+figure;
+[X, T] = meshgrid(x, y);
+surf(X, T, V);
+xlabel('distance (cm)')
+ylabel('time (s)')
+zlabel('membrane potential (mV)')
+title('solution with double pulse IC')
+
+pdflib.snap
+delete(gcf)
 
 %% Version Info
 pdflib.footer;
@@ -23,8 +60,12 @@ time = toc;
 % This document was built in:
 disp(strcat(strlib.oval(time,3),' seconds.'))
 
-function h = get_h(x, b)
-	h = zeros(length(x),1);
-	h(-b < x | x < 0) = -1;
-	h(0 < x | x < b) = 1;
+function hval = get_h(x, b)
+	hval = zeros(length(x),1);
+	hval(-b < x | x < 0) = -1;
+	hval(0 < x | x < b) = 1;
+end
+
+function g = green(x, t, b, D, B)
+	g = sqrt(pi) ./ sqrt(D) ./ sqrt(t) .* exp(-((x + 2 .* pi .* b).^2 - 4 .* B .* D .* t.^2) ./ (4 .* D .* t));
 end
