@@ -43,7 +43,7 @@ end
 
 figure;
 [X, T] = meshgrid(x, t);
-surf(X, T, V);
+surf(X, T, V');
 xlabel('distance (cm)')
 ylabel('time (s)')
 zlabel('membrane potential (mV)')
