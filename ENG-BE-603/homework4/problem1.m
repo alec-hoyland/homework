@@ -42,7 +42,7 @@ end
 %% Plot
 
 figure;
-[X, T] = meshgrid(x, y);
+[X, T] = meshgrid(x, t);
 surf(X, T, V);
 xlabel('distance (cm)')
 ylabel('time (s)')
