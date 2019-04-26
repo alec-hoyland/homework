@@ -6,7 +6,7 @@ function [x] = LevenbergMarquardt(t, y, fcn, mu, mu_scale, initial, nIters)
   end
 
   x       = NaN(2,nIters);
-  x(:,1)  = vectorise(initial);
+  x(:,1)  = corelib.vectorise(initial);
   norm00  = NaN;
 
   for ii = 2:nIters
