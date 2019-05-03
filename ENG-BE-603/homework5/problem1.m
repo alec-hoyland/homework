@@ -39,7 +39,7 @@ pulse = zeros(length(x), length(t));
 [~, temp2] = min(abs(t - b));
 pulse(temp, 1:temp2) = Q;
 
-Vpulse = sconv2(sparse(pulse), sparse(V), 'same');
+Vpulse = conv2(pulse, V, 'same');
 %% Plot
 
 figure;
