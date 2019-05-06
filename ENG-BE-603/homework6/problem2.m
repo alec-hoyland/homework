@@ -5,7 +5,37 @@
 
 pdflib.header;
 
+x_ext = 15;
+tfinal = 10;
+dx = 0.5;
+dt = 0.5;
 
+x = -x_ext:dt:x_ext;
+t = dt:dt:tfinal;
+
+a = 5;
+D = 15;
+
+u = zeros(length(x), length(t));
+
+for ii = 1:length(x)
+  for qq = 1:length(t)
+    u(ii, qq) = 1/2 * erf((-a - x(ii)) / sqrt(4 * D * t(qq))) - 1/2 * erf((a - x(ii)) / sqrt(4 * D * t(qq)));
+  end
+end
+
+figure;
+[X, T] = meshgrid(x, t);
+pcolor(X, T, u');
+xlabel('distance (cm)')
+ylabel('time (s)')
+c = colorbar
+c.Label.String = 'agar amount'
+
+%%
+% There is equal exchange across the y-axis ($x=0$) meaning that there is zero net flux for all time.
+% This will always be true because equal concentrations started equally far away, thus there is a symmetry.
+% After infinite time, the concentration will be equal throughout.
 
 %% Version Info
 pdflib.footer;
