@@ -19,17 +19,32 @@ u 			= solution(x, t);
 [X, T] 	= meshgrid(x, t);
 
 figure;
-surf(X, T, u');
-c = colorbar;
+surf(X, T, u', 'EdgeColor', 'none');
+c = colorbar('Location', 'EastOutside');
 xlabel('x-position (cm)')
 ylabel('time (s)')
 c.Label.String = 'y-position (cm)';
 
-plotlib.pretty;
-plotlib.tight;
+figlib.pretty;
+figlib.tight;
 
 pdflib.snap;
 delete(gcf)
+
+%% Audible frequency
+% The audible frequency is $f = \frac{n}{2 L} \sqrt{\frac{\tau}{\sigma}}$.
+
+p = struct;
+p.L				= 50; 			% cm
+p.tau 		= 7000;			% kg * cm / s^2
+p.sigma  	= 0.36e-5;	% kg / m
+p.b 			= 10;				% cm
+p.epsilon = 2.5;			% cm
+p.u0 			= 0.1;			% cm
+p.n 			= 60; 			% unitless
+
+disp(['The audible frequency is: ' num2str(1/(2 * p.L) * sqrt(p.tau / p.sigma)) ' Hz'])
+disp('This is a fourth octave ''A'' note')
 
 %% Version Info
 pdflib.footer;
