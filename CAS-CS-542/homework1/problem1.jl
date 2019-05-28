@@ -1,20 +1,26 @@
-# ---
-# title : Homework #1
-# author : Alec Hoyland
-# date : 2019-05-28
-# options : 
-#   out_path : CAS-CS-542/homework1/problem1.pdf
-#   doctype : md2pdf
-# ---
+#% ---
+#% title : Homework #1
+#% author : Alec Hoyland
+#% date : 2019-05-28
+#% options : 
+#%   out_path : CAS-CS-542/homework1/problem1.pdf
+#%   doctype : md2pdf
+#% ---
 
-## Write a simple algorithm that tries to play Rock-Paper-Scissors (and win!)
+#% # Introduction
+#% The goal is to design a simple algorithm that takes in a history of rock-paper-scissors
+#% and tries to guess the next winning choice.
+#% The data comes from 100 trials of a human playing RPS against the [essentially](https://www.essentially.net/rsp/end.jsp) algorithm.
+
 cd("/home/alec/code/homework/CAS-CS-542/homework1/")
 
 # compute results from the extant (unknown) algorithm
 using CSV
 using DataFrames
 
-results = CSV.read("data.csv", header = false)
+#% Here are the results from a user playing against the computer algorithm.
+#% A '1' indicates 'rock', '2' indicates 'paper', and '3' indicates a choice of 'scissors'.
+results = CSV.read("data.csv", header = true)
 
 function evaluateGame(x)
     score = [0, 0, 0]
@@ -36,7 +42,7 @@ function evaluateGame(x)
     return score
 end
 
-# in the first game against the computer
 score = evaluateGame(results)
 
-print("")
+#% In the first 100 trials against the computer,
+#% the player won `j score[1]` time, lost `j score[2]` times and tied `j score[3]` times.
