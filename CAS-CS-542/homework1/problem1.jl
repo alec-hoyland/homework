@@ -16,6 +16,7 @@ cd("/home/alec/code/homework/CAS-CS-542/homework1/")
 # compute results from the extant (unknown) algorithm
 using CSV
 using DataFrames
+using StatsBase
 
 #%% Here are the results from a user playing against the computer algorithm.
 #%% A '1' indicates 'rock', '2' indicates 'paper', and '3' indicates a choice of 'scissors'.
@@ -63,20 +64,28 @@ end
 #%% Biased RPS algorithm
 #%% This algorithm reads the history dependence and checks for bias in the opponent's guesses.
 #%% If the opponent favors one sign over another, this algorithim will outperform random chance.
+#%% This may not be true if the data set is poorly sampled.
+#%% That is, if the user doesn't pick rock, paper, and scissors somewhat evenly.
 
 function rps_alg_biased(history)
     counts = [sum(history[:,2] .== ii) for ii in 1:3]
     p = counts / sum(counts)
-    val = rand();
-    if val <= p[1]
-        return 1
-    elseif val <= p[2]
-        return 2
-    else
-        return 3
-    end
+    return sample([1, 2, 3], Weights(p));
 end
 
-function sigmoid(x)
-    return 1 / (1 + exp(x));
+function rps_alg_biased(history, last_play)
+    history = [history; last_play]
+    rps_alg_biased(history)
 end
+
+#%% With the biased algorithm, I performed much better.
+#%% I won 33 games, lost 25, and tied 42.
+#%% As an enhancement to my algorithm, I allowed the dataset to grow with play.
+#%% And recomputed the probabilities each time.
+
+#%% A more robust algorithm would look for more history dependence.
+#%% For example, it would look for doublets and triplets that appear more commonly,
+#%% and weight the probabilities higher when a triplet is recognized 
+#%% (e.g. when you've seen two out of three just now).
+#%% The dataset could be scraped for this information by finding all places where
+#%% 1-2 exists and then finding what comes afterwards, in the case of the triplet 1-2-X.
