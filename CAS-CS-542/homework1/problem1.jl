@@ -3,7 +3,7 @@
 #%% author : Alec Hoyland
 #%% date : 2019-05-28
 #%% options : 
-#%%   doctype : md2pdf
+#%%   doctype : md2html
 #%% ---
 
 #%% # Introduction
@@ -45,3 +45,38 @@ score = evaluateGame(results)
 
 #%% In the first 100 trials against the computer,
 #%% the player won `j score[1]` time, lost `j score[2]` times and tied `j score[3]` times.
+
+#%% # Various RPS algorithms
+
+#%% ## Naive algorithm
+#%% This algorithm just picks a number between 1 and 3, corresponding to rock, paper, and scissors respectively.
+#%% Therefore, in the long-time limit, victory vs. any other strategy will converge to ``\frac{1}{3}``.
+#%% Even the wildly successful [iocaine powder](https://webdocs.cs.ualberta.ca/~darse/rsb-results1.html) algorithm
+#%% reverts to random guessing in the case where the history-recognition algorithm fails.
+#%% No strategy can beat the random-guessing one, however this is the trivial solution.
+#%% If one's opponent is *not random*, there exist better algorithms.
+
+function rps_alg_naive(history)
+    return rand(1:3)
+end
+    
+#%% Biased RPS algorithm
+#%% This algorithm reads the history dependence and checks for bias in the opponent's guesses.
+#%% If the opponent favors one sign over another, this algorithim will outperform random chance.
+
+function rps_alg_biased(history)
+    counts = [sum(history[:,2] .== ii) for ii in 1:3]
+    p = counts / sum(counts)
+    val = rand();
+    if val <= p[1]
+        return 1
+    elseif val <= p[2]
+        return 2
+    else
+        return 3
+    end
+end
+
+function sigmoid(x)
+    return 1 / (1 + exp(x));
+end
