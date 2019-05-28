@@ -1,3 +1,12 @@
+# ---
+# title : Homework #1
+# author : Alec Hoyland
+# date : 2019-05-28
+# options : 
+#   out_path : CAS-CS-542/homework1/problem1.pdf
+#   doctype : md2pdf
+# ---
+
 ## Write a simple algorithm that tries to play Rock-Paper-Scissors (and win!)
 cd("/home/alec/code/homework/CAS-CS-542/homework1/")
 
@@ -29,3 +38,5 @@ end
 
 # in the first game against the computer
 score = evaluateGame(results)
+
+print("")
