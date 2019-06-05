@@ -50,6 +50,8 @@ end
 BIC = deviance.(ols)
 vars[argmin(BIC)]
 
+#%% The variable to add is `j vars[argmin(BIC)]`.
+
 #%% Formal justification
 #%% The variable that should be factored into the linear model is `LIC`.
 #%% The Bayesian information criterion is formally defined as
@@ -83,3 +85,18 @@ vars[argmin(BIC)]
 #%% p(M | x) \propto p(x | M) p(M) \approx \exp(\ln (\hat{\mathcal{L}}) - \frac{k}{2} \ln (n))``
 #%%
 #%% from which we define ``\mathrm{BIC} = \ln(n)k - 2 \ln(\hat{\mathcal{L}})``.
+#%% For an ordinary least squares fit, minimizing the negative logarithm of the likelihood
+#%% is equivalent to minimizing the residual sum of squares error.
+#%% We prove this in homework #2, question 1 part D.
+#%% Therefore, since we have restricted our model to three explanatory variables,
+#%% and two are chosen for us, we can select the best model by choosing the one
+#%% with the third variable which results in the lowest residual sum of squares error
+#%% after ordinary least squares fitting.
+
+using Plots; gr()
+
+scatter(1961:1973, df.HOM,
+    xlabel = "year",
+    ylabel = "homicide rate",
+    label = "real data")
+scatter!(1961:1973, predict(ols[argmin(BIC)]), label = "predicted", legend = :topleft)
