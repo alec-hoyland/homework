@@ -3,7 +3,7 @@
 #%% author: Alec Hoyland
 #%% data : 2019-06-03
 #%% options :
-#%%     doctype: md2html
+#%%     doctype: md2pdf
 #%% ---
 
 #%% ## Introduction
@@ -30,7 +30,7 @@ names!(df, colnames)
 #%% ## Determining a linear model fit
 #%% We attempt to predict the homicide rate `HOM` as a linear function of `FTP`, `WE`,
 #%% and some other variable. We will therefore make 8 fits, each using a model
-#%% `HOM ~ FTP + WE + X`, where `X` is one of the other variables in the dataset.
+#%% ``HOM ~ FTP + WE + X``, where `X` is one of the other variables in the dataset.
 #%% Since we want the model to have four parameters and depend on only three independent variables,
 #%% and two of them are fixed, I have decided not to use the PRESS criterion for
 #%% evaluating the goodness of a parsimonious model.
@@ -83,7 +83,7 @@ vars[argmin(BIC)]
 #%%
 #%% For large ``n``, we can ignore the terms of constant order, to approximate:
 #%%
-#%% p(M | x) \propto p(x | M) p(M) \approx \exp(\ln (\hat{\mathcal{L}}) - \frac{k}{2} \ln (n))``
+#%% ``p(M | x) \propto p(x | M) p(M) \approx \exp(\ln (\hat{\mathcal{L}}) - \frac{k}{2} \ln (n))``
 #%%
 #%% from which we define ``\mathrm{BIC} = \ln(n)k - 2 \ln(\hat{\mathcal{L}})``.
 #%% For an ordinary least squares fit, minimizing the negative logarithm of the likelihood
