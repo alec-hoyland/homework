@@ -1,9 +1,10 @@
 #%% ---
 #%% title : Homework #2, Problem 1
+#%% author: Alec Hoyland
 #%% data : 2019-06-03
 #%% options :
 #%%     doctype: md2pdf
-#%%
+#%% ---
 
 #%% ## Introduction
 #%% Detroit is a lovely city, but it also has a serious crime problem.
