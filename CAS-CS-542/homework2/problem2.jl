@@ -51,5 +51,23 @@ function normalize_features!(df)
     return df
 end
 
+function distance(a::AbstractVector{T}, b::AbstractVector{T}) where T <: Number
+    d = 0;
+    for ii = 1:length(a)
+        d = d + (a[ii] - b[ii])^2;
+    end
+    return sqrt(d)
+end
+
+function distance(a::AbstractVector{T}, b::AbstractVector{T}) where T <: String
+    d = 0;
+    for ii = 1:length(a)
+        if a[ii] != b[ii]
+            d = d + 1;
+        end
+    end
+    return sqrt(d)
+end
+
 df = impute_missing_data!(df);
 df = normalize_features!(df);
