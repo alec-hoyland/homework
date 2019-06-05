@@ -21,7 +21,7 @@ using StatsModels
 using GLM
 
 # load the data set
-df = npzread("data/detroit.npy") |> DataFrame
+df = npzread("data/detroit.npy") |> DataFrame;
 colnames = [:FTP, :UEMP, :MAN, :LIC, :GR, :NMAN, :GOV, :HE, :WE, :HOM]
 names!(df, colnames)
 
