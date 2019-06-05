@@ -52,6 +52,7 @@ function normalize_features!(df)
 end
 
 function distance(a::AbstractVector{T}, b::AbstractVector{T}) where T <: Number
+    # for numerical vectors, define the L₂ distance
     d = 0;
     for ii = 1:length(a)
         d = d + (a[ii] - b[ii])^2;
@@ -60,6 +61,7 @@ function distance(a::AbstractVector{T}, b::AbstractVector{T}) where T <: Number
 end
 
 function distance(a::AbstractVector{T}, b::AbstractVector{T}) where T <: String
+    # for non-numerical vectors, the distance is the square root of the number of mismatches
     d = 0;
     for ii = 1:length(a)
         if a[ii] != b[ii]
