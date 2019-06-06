@@ -109,6 +109,11 @@ end
 df = impute_missing_data!(df);
 df = normalize_features!(df);
 
+function get_all_distances(imageI::AbstractArray, x::AbstractArray)
+    diff = imageI .- x
+    distances = vec(sum(diff .* diff,1))
+end
+
 function get_k_nearest_neighbors(x::AbstractArray, imageI::AbstractArray, k::Int = 3, train = true)
     nRows, nCols = size(x)
     distances = get_all_distances(imageI, x)
@@ -118,4 +123,23 @@ function get_k_nearest_neighbors(x::AbstractArray, imageI::AbstractArray, k::Int
     else
         return kNearestNeighbors = Array(sortedNeighbors[1:k])
     end
+end
+
+function assign_label(x::AbstractArray, y::AbstractArray{Int64}, imageI::AbstractArray, k, train::Bool)
+    kNearestNeighbors = get_k_nearest_neighbors(x, imageI, k, train)
+    counts = Dict{Int, Int}()
+    highestCount = 0
+    mostPopularLabel = 0
+    for n in kNearestNeighbors
+        labelOfN = y[n]
+        if !haskey(counts, labelOfN)
+            counts[labelOfN] = 0
+        end
+        counts[labelOfN] += 1
+        if counts[labelOfN] > highestCount
+            highestCount = counts[labelOfN]
+            mostPopularLabel = labelOfN
+        end
+     end
+    mostPopularLabel
 end
