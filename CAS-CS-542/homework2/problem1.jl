@@ -3,7 +3,7 @@
 #%% author: Alec Hoyland
 #%% data : 2019-06-03
 #%% options :
-#%%     doctype: md2html
+#%%     doctype: md2pdf
 #%% ---
 
 #%% ## Introduction
