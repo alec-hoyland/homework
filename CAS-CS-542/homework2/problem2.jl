@@ -18,11 +18,9 @@ cd("/home/alec/code/homework/CAS-CS-542/homework2/")
 using DataFrames
 using CSV
 using StatsBase
+using Combinatorics
 
-# load the data into a Data Frame
-df = CSV.File("data/crx.data.training", header = false, missingstring = "?") |> DataFrame;
-
-@show df
+## Define the KNN algorithm
 
 function impute_missing_data!(df)
     # iterate through the columns of the data frame
@@ -33,7 +31,10 @@ function impute_missing_data!(df)
             # force conversion to Float64 type for numerical data
             df[n] = df[n] .* float(1);
             df[n] = coalesce.(df[n], mean(skipmissing(df[df[:Column16] .== "+", n])));
+        elseif Base.nonmissingtype(eltype(df[n])) <: String
+            df[n] = coalesce.(df[n], mode(skipmissing(df[df[:Column16] .== "+", n])));
         else
+            df[n] = map(char -> convert(String, char), df[n])
             df[n] = coalesce.(df[n], mode(skipmissing(df[df[:Column16] .== "+", n])));
         end
     end
@@ -52,6 +53,7 @@ function normalize_features!(df)
 end
 
 function distance(a, b)
+    # computes the distance metric between points a and b
 
     function point_dist(a::T, b::T) where T <: Number
         return d = (a-b)^2
@@ -73,65 +75,26 @@ function distance(a, b)
     return sqrt(d)
 end
 
-function majority_vote(labels::Vector)
-    counts = countmap(labels)
-    res = labels[1]
-    max_value = -1
-    for (k, v) in counts
-        if v > max_value
-            res, max_value = k, v
-        end
+function distancesFrom(testPoint, trainingData::DataFrame)
+    dist = zeros(size(trainingData, 1))
+    for i in size(trainingData, 1)
+        dist[i] = distance(testPoint, trainingData[i, :])
     end
-    return res
+    return dist
 end
 
-function predict(training, testing, k=5)
-    # output vector
-    predictedLabels = String[]
-    # compute the distance between each high-dimensional point
-    for i = 1:size(testing, 1)
-        sourcePoint = testing[i, :]
-        distances = Float64[]
-        for j in 1:size(training, 1)-1
-            destPoint = training[j, :]
-            dist = distance(sourcePoint, destPoint)
-            push!(distances, dist)
-        end
-        # sort the candidates
-        candidates = training[sortperm(distances)[1:k]]
-        predictedLabel = skim(candidates)
-        # append the best guess
-        push!(predictedLabels, predictedLabel)
-    end
-    return predictedLabels
+function predict(testPoint, trainingData::DataFrame, k)
+    sortedNeighbors = sortperm(distancesFrom(testPoint, trainingData));
+    return sortedNeighbors[1:k]
 end
 
-df = impute_missing_data!(df);
-df = normalize_features!(df);
-
-function get_all_distances(imageI::AbstractArray, x::AbstractArray)
-    diff = imageI .- x
-    distances = vec(sum(diff .* diff,1))
-end
-
-function get_k_nearest_neighbors(x::AbstractArray, imageI::AbstractArray, k::Int = 3, train = true)
-    nRows, nCols = size(x)
-    distances = get_all_distances(imageI, x)
-    sortedNeighbors = sortperm(distances)
-    if train
-        return kNearestNeighbors = Array(sortedNeighbors[2:k+1])
-    else
-        return kNearestNeighbors = Array(sortedNeighbors[1:k])
-    end
-end
-
-function assign_label(x::AbstractArray, y::AbstractArray{Int64}, imageI::AbstractArray, k, train::Bool)
-    kNearestNeighbors = get_k_nearest_neighbors(x, imageI, k, train)
-    counts = Dict{Int, Int}()
+function assign_label(testPoint, trainingData::DataFrame, k, labels)
+    kNearestNeighbors = predict(testPoint, trainingData, k)
+    counts = Dict{String, Int}()
     highestCount = 0
-    mostPopularLabel = 0
+    mostPopularLabel = ""
     for n in kNearestNeighbors
-        labelOfN = y[n]
+        labelOfN = labels[n]
         if !haskey(counts, labelOfN)
             counts[labelOfN] = 0
         end
@@ -140,6 +103,80 @@ function assign_label(x::AbstractArray, y::AbstractArray{Int64}, imageI::Abstrac
             highestCount = counts[labelOfN]
             mostPopularLabel = labelOfN
         end
-     end
-    mostPopularLabel
+    end
+    return mostPopularLabel
 end
+
+## Set up the training dataset
+
+# load the data into a Data Frame
+trainingData = CSV.File("data/crx.data.training", header = false, missingstring = "?") |> DataFrame;
+# make the data pretty
+impute_missing_data!(trainingData);
+normalize_features!(trainingData);
+
+@show first(trainingData, 6)
+
+## Load the testing data
+
+testingData = CSV.File("data/crx.data.testing", header = false, missingstring = "?") |> DataFrame;
+impute_missing_data!(testingData);
+normalize_features!(testingData);
+@show first(testingData, 6)
+
+## Testing the algorithm
+
+predictedLabels = fill("-", size(testingData, 1))
+actualLabels = testingData[:, 16]
+accuracy = zeros(3);
+k = [3, 10, 23]
+for (i, k) in enumerate(k)
+    for j = 1:size(testingData, 1)
+        predictedLabels[j] = assign_label(testingData[j, 1:15], trainingData[:, 1:15], k, trainingData[:, 16])
+    end
+    accuracy[i] = sum(predictedLabels .== actualLabels) / length(predictedLabels)
+end
+
+#%% ## Results
+#%% I tested the dataset for three values of the hyperparameter `k`,
+
+@show DataFrame(k=k, accuracy=accuracy)
+
+#%% and see that ``k=23`` provides the best accuracy on the dataset for the values tested.
+#%% Here, accuracy is the fraction of the correct labeling,
+#%% given the known labels of the testing set.
+
+#%% ## Using the algorithm on a new dataset
+#%% I applied the k-nearest-neighbors algorithm to the `lenses` dataset.
+
+testingData = CSV.File("data/lenses.testing", header = false, missingstring = "?") |> DataFrame;
+trainingData = CSV.File("data/lenses.training", header = false, missingstring = "?") |> DataFrame;
+
+function makeCategorical!(df::DataFrame)
+    for n in names(df)
+        df[n] = map(string, df[n])
+    end
+    return df
+end
+
+makeCategorical!(testingData)
+makeCategorical!(trainingData)
+
+predictedLabels = fill("1", size(testingData, 1))
+actualLabels = testingData[:, 5]
+k = [3, 4, 10]
+accuracy = zeros(3)
+for (i, k) in enumerate(k)
+    for j = 1:size(testingData, 1)
+        predictedLabels[j] = assign_label(testingData[j, 1:4], trainingData[:, 1:4], k, trainingData[:, 5])
+    end
+    accuracy[i] = sum(predictedLabels .== actualLabels) / length(predictedLabels)
+end
+
+#%% I tested the dataset for three values of the hyperparameter `k`,
+
+@show DataFrame(k=k, accuracy=accuracy)
+
+#%% and see that ``k=10`` provides the best accuracy on the dataset for the values tested.
+#%% Here, accuracy is the fraction of the correct labeling,
+#%% given the known labels of the testing set.
