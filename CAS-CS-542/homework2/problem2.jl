@@ -1,5 +1,5 @@
 #%% ---
-#%% title : Homework #2, Problem 2
+#%% title : Homework 2, Problem 2
 #%% author: Alec Hoyland
 #%% data : 2019-06-05
 #%% options :
@@ -107,7 +107,7 @@ function assign_label(testPoint, trainingData::DataFrame, k, labels)
     return mostPopularLabel
 end
 
-## Set up the training dataset
+#%% ## Set up the training dataset
 
 # load the data into a Data Frame
 trainingData = CSV.File("data/crx.data.training", header = false, missingstring = "?") |> DataFrame;
@@ -115,16 +115,16 @@ trainingData = CSV.File("data/crx.data.training", header = false, missingstring 
 impute_missing_data!(trainingData);
 normalize_features!(trainingData);
 
-@show first(trainingData, 6)
+first(trainingData, 6)
 
-## Load the testing data
+#%% ## Load the testing data
 
 testingData = CSV.File("data/crx.data.testing", header = false, missingstring = "?") |> DataFrame;
 impute_missing_data!(testingData);
 normalize_features!(testingData);
-@show first(testingData, 6)
+first(testingData, 6)
 
-## Testing the algorithm
+#%% ## Testing the algorithm
 
 predictedLabels = fill("-", size(testingData, 1))
 actualLabels = testingData[:, 16]
@@ -140,7 +140,7 @@ end
 #%% ## Results
 #%% I tested the dataset for three values of the hyperparameter `k`,
 
-@show DataFrame(k=k, accuracy=accuracy)
+DataFrame(k=k, accuracy=accuracy)
 
 #%% and see that ``k=23`` provides the best accuracy on the dataset for the values tested.
 #%% Here, accuracy is the fraction of the correct labeling,
@@ -175,7 +175,7 @@ end
 
 #%% I tested the dataset for three values of the hyperparameter `k`,
 
-@show DataFrame(k=k, accuracy=accuracy)
+DataFrame(k=k, accuracy=accuracy)
 
 #%% and see that ``k=10`` provides the best accuracy on the dataset for the values tested.
 #%% Here, accuracy is the fraction of the correct labeling,
