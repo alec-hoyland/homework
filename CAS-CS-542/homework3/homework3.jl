@@ -46,7 +46,7 @@ function normalizeData!(x)
     return x
 end
 
-#%% ### Building the Neural Network
+#%% ### Step 2: Building the Neural Network
 #%% I'm going to try to do this in Julia, which is the language I am familiar with.
 #%% So we will see how that goes. Unfortunately for this assignment,
 #%% it means that I am going to have to write a lot of my own code,
