@@ -7,3 +7,7 @@
 *.tex
 *.html
 *.out
+*.npy
+*.mat
+*.jld
+*.jld2
