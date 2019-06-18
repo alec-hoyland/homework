@@ -14,9 +14,12 @@ cd("/home/alec/code/homework/CAS-CS-542/homework3/")
 
 #%% ### Step 1: Generate Training Data
 
+using LinearAlgebra
+using JuMP
 using NPZ
 using StatsBase
 using NLopt
+using Plotly
 
 function sampleImages(images, n=10000; patch_size=8)
     # output matrix
@@ -93,22 +96,22 @@ end
 #%% a neural network, and I wanted to see exactly how the matrices are composed (and decomposed).
 #%% Though I know that the [Flux](https://fluxml.ai/) package in particular has great tools for this.
 
-function autoencoder(theta::Vector{T}, visiblesize, hiddensize, data::Array{T, 2}, grad::Vector{T},
+function autoencoder(theta::Vector{T}, visiblesize, hiddensize, data::Array{T, 2}, grad::Vector{T};
             λ::T = 0.0, ρ::T = 0.01, β::T = 0.0) where T <: Real
     # store the parameters
     W1, W2, b1, b2 = unravel(theta, visiblesize, hiddensize)
     # other useful variables
-    m= size(data, 2)
+    m = size(data, 2)
 
     # perform the first pass encoding
     a1 = data
     z2 = W1 * a1 .+ b1
-    a2 = σ(z2)
+    a2 = σ.(z2)
     z3 = W2 * a2 .+ b2
-    a3 = σ(z3)
+    a3 = σ.(z3)
     output = a3
 
-    average_hidden_activity = mean(a2, 2)
+    average_hidden_activity = mean(a2)
     sparsity_cost = sparsityCost(ρ, average_hidden_activity)
     least_squares_cost = sum((output - data).^2) / (2 * m)
     regularization_cost = 1 / 2 * sum(theta[1:2*hiddensize*visiblesize].^2)
@@ -128,10 +131,10 @@ function autoencoder(theta::Vector{T}, visiblesize, hiddensize, data::Array{T, 2
         d2 = (W2' * d3 .+ sparsity_term) .* a2′
 
         # build the gradient vector
-        grad[1:visiblesize*hiddensize] = (d2*a1'/m + lambda*W1) |> vec
-        grad[visiblesize*hiddensize+1:2*visiblesize*hiddensize] = (d3*a2'/m + lambda*W2) |> vec
-        grad[2*visiblesize*hiddensize+1:2*hiddensize*visiblesize+hiddensize] = (sum(d2,2)/m) |> vec
-        grad[2*hiddensize*visiblesize+hiddensize+1:end] = (sum(d3,2)/m) |> vec
+        grad[1:visiblesize*hiddensize] = (d2*a1'/m + λ*W1) |> vec
+        grad[visiblesize*hiddensize+1:2*visiblesize*hiddensize] = (d3*a2'/m + λ*W2) |> vec
+        grad[2*visiblesize*hiddensize+1:2*hiddensize*visiblesize+hiddensize] = (sum(d2, dims=2)/m) |> vec
+        grad[2*hiddensize*visiblesize+hiddensize+1:end] = (sum(d3, dims=2)/m) |> vec
     end
     return cost, grad
 end
@@ -164,7 +167,7 @@ function testGradient()
 
     # read the data
     images = npzread("images.npy")
-    traindata = Array(Float64, 64, 100)
+    traindata = Array{Float64, 2}(undef, 64, 100)
     samples = sampleImages(images)
 
     # parameters
@@ -185,7 +188,7 @@ function testGradient()
     # compute the gradient using the numerical scheme
     grad_num = computeNumericalGradient(justcost, theta)
     # compute the normalized difference, 0 => perfect
-    diff = norm(numgrad - grad) / norm(numgrad + grad)^2
+    diff = norm(grad_num - grad) / norm(grad_num + grad)^2
 
     return diff, grad, grad_num
 end
@@ -201,15 +204,15 @@ diff, grad, grad_num = testGradient()
 
 function initialize(hiddensize, visiblesize)
     r = sqrt(6) / sqrt(hiddensize+visiblesize+1)
-    W1 = rand(hiddensize,visiblesize)*2*r - r
-    W2 = rand(visiblesize,hiddensize)*2*r - r
+    W1 = rand(hiddensize,visiblesize)*2*r .- r
+    W2 = rand(visiblesize,hiddensize)*2*r .- r
     b1 = zeros(hiddensize)
     b2 = zeros(visiblesize)
-    return [W1[:],W2[:],b1,b2]
+    return vcat(W1[:],W2[:],b1,b2)
 end
 
 function autoencode(data, hiddensize, visiblesize; λ=1e-4, β=3.0, ρ=0.01, maxiter=400)
-    theta::Vector{Float64} = initializeparameters(hiddensize,visiblesize)
+    theta::Vector{Float64} = initialize(hiddensize,visiblesize)
     count = 0
 
     function objective(x,grad)
@@ -245,7 +248,7 @@ function main()
     ρ = 0.01
 
     f,W1,W2,b1,b2 = autoencode(traindata,hiddensize,visiblesize)
-    displaynetwork(W1', "hw3-autoencoder")
+    # displaynetwork(W1', "hw3-autoencoder")
 end
 
 # The following function was copied from kjchavez on GitHub
@@ -253,15 +256,15 @@ end
 
 function displaynetwork(A,filename)
         m,n = size(A)
-        sz = int(sqrt(m))
-        A -= mean(A)
+        sz = Int(sqrt(m))
+        A = A .- mean(A)
         layout = [
             "autosize" => false,
             "width" => 500,
             "height"=> 500
         ]
 
-        gridsize = int(ceil(sqrt(n)))
+        gridsize = Int(ceil(sqrt(n)))
         buffer = 1
         griddata = ones(gridsize*(sz+1)+1,gridsize*(sz+1)+1)
         index = 1
@@ -270,8 +273,8 @@ function displaynetwork(A,filename)
                         if index > n
                                 continue
                         end
-                        columnlimit = maximum(abs(A[:,index]))
-                        griddata[buffer+(i-1)*(sz+buffer)+(1:sz),buffer+(j-1)*(sz+buffer)+(1:sz)] = reshape(A[:,index],sz,sz)/columnlimit
+                        columnlimit = maximum(abs.(A[:,index]))
+                        griddata[buffer+(i-1)*(sz+buffer).+(1:sz),buffer.+(j-1)*(sz.+buffer).+(1:sz)] = reshape(A[:,index],sz,sz)/columnlimit
                         index += 1
                 end
         end
