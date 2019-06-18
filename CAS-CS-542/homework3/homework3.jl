@@ -15,7 +15,7 @@ cd("/home/alec/code/homework/CAS-CS-542/homework3/")
 #%% ### Step 1: Generate Training Data
 
 using LinearAlgebra
-using JuMP
+# using JuMP
 using NPZ
 using StatsBase
 using NLopt
