@@ -286,3 +286,6 @@ function displaynetwork(A,filename)
         response = Plotly.plot(data, ["layout" => layout, "filename" => filename, "fileopt" => "overwrite"])
         plot_url = response["url"]
 end
+
+# Run it!
+main()
