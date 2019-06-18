@@ -15,7 +15,7 @@ cd("/home/alec/code/homework/CAS-CS-542/homework3/")
 #%% ### Step 1: Generate Training Data
 
 using LinearAlgebra
-# using JuMP
+using Statistics
 using NPZ
 using StatsBase
 using NLopt
@@ -38,13 +38,13 @@ end
 
 function normalizeData!(x)
     # squash data to [0.1, 0.9]
-    x -= mean(x)
+    x = x .- mean(x)
     # truncate to 3 standard deviations and normalize
     pstd = 3 * std(x)
-    max(min(x, pstd))/pstd
+    @. max(min(x, pstd))/pstd
 
     # rescale from [-1, 1] to [0.1, 0.9]
-    x = (x + 1) * 0.4 + 0.1
+    @. x = (x + 1) * 0.4 + 0.1
     return x
 end
 
@@ -199,6 +199,10 @@ diff, grad, grad_num = testGradient()
 #%% As our parameter ``\epsilon`` decreases, we should see convergence in accuracy.
 #%% Since both of our schemes are numerical here, we just hope for decent accordance between the methods.
 #%% This will tell us that our backpropagation is working.
+#%% This is very much *not* what we find here. The gradient function works for the first iteration and then results in NaNs.
+#%% I've spent some time debugging this, and can't find out what's wrong.
+#%% I think I'm going to stick to using autodifferentiation in the future...
+#%% Anyways, this is why my algorithm doesn't work, so I am going to submit the code, and we'll see what happens.
 
 #%% ### Step 4: Using the algorithm
 
@@ -218,7 +222,7 @@ function autoencode(data, hiddensize, visiblesize; λ=1e-4, β=3.0, ρ=0.01, max
     function objective(x,grad)
         count += 1
         println("iteration $count")
-        return autoencoder(x, visible, hidden, traindata, grad, λ=λ, ρ=ρ, β=β)
+        return autoencoder(x, visiblesize, hiddensize, traindata, grad, λ=λ, ρ=ρ, β=β)
     end
 
     opt = Opt(:LD_LBFGS,length(theta))
@@ -237,7 +241,7 @@ end
 
 function main()
     # load the data
-    images = npzread("images.npy")
+    images = normalizeData!(npzread("images.npy"))
     traindata = sampleImages(images)
 
     # useful parameters
