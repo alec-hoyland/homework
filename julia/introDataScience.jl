@@ -55,7 +55,7 @@ using DataFrames, Plots, CSV; gr()
 
 # load the data
 # download("http://samplecsvs.s3.amazonaws.com/Sacramentorealestatetransactions.csv","houses.csv")
-houses = CSV.read("/home/ahoyland/code/homework/julia/houses.csv")
+houses = CSV.read("/home/alec/code/homework/julia/houses.csv")
 
 # visualize the data
 scatter(houses[:sq__ft], houses[:price], markersize=3)
