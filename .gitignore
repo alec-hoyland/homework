@@ -4,7 +4,6 @@
 *.bmp
 *.log
 *.aux
-*.tex
 *.html
 *.out
 *.npy
