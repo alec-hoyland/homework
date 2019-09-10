@@ -10,3 +10,7 @@
 *.mat
 *.jld
 *.jld2
+*fdb_latexmk
+*fls
+*.synctex.gz
+*.xdv
