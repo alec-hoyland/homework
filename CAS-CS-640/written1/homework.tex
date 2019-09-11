@@ -114,7 +114,28 @@ I ducked for ``Northpointe AI''. Here are the first four relevant results:
 
     \questionpart
 
+    Canetti \textit{et al.} discuss several different methods for making AI decision systems more equitable.
+    In Example 3.1, they show that even using a group-blind post-processor,
+    the unprivileged group is held to a higher standard in order to make the positive predictive values equal.
+    This means that a non-deferring threshold post-processor has fundamental
+    difficulties promoting totally equitable situations.
+    The deferral rates are higher in the Canetti model vs. the original \texttt{COMPAS} algorithm,
+    because Canetti \textit{et al.} are taking the extra step of equalizing the accuracies
+    by deferring more cases.
+    This leads to an increased number of deferrals.
+    While deferring only on the smaller group does result in fewer total referrals (without loss of equity),
+    there are still more deferrals than a naive approach (\textit{viz.} without post-processing).
 
+    \questionpart
+
+    The authors aren't sure why this happens.
+    In the two-threshold method, it's clear that when the classifier is unsure
+    (\textit{i.e.} the classifier score is middling) that the classifier defers.
+    I suspect this result happens because of the minimization procedure.
+    Removing extremely high- or low-scoring cases would swing the distribution,
+    since there are fewer cases scoring in the extrema.
+    I would guess that the minimization algorithm is picking up on this,
+    and this is causing the "shoe-in" cases to be deferred.
 
 \end{arabicparts}
 
