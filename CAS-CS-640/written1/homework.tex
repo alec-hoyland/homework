@@ -273,6 +273,24 @@ and then have to restart entirely.
 
 \part{Logic and Planning}
 
+\question
+
+Convert block-world assertions into axioms in 1st-order logic
+without any free variables.
+
+\begin{arabicparts}
+
+    \questionpart \( \mathrm{On}(b, a) \)
+    \questionpart \( \mathrm{On}(A, table) \)
+    \questionpart \( \mathrm{On}(c, table) \lor \mathrm{On}(c, a) \)
+    \questionpart \( \mathrm{BlueBlock}(d) \land \mathrm{On}(d, table) \)
+    \questionpart \( \exists z [\mathrm{RedBlock}(z)] \land \exists w [\mathrm{BlueBlock}(w)] \)
+    \questionpart \( \forall x, y [(\mathrm{On}(x, y) \land \mathrm{Equal}(y, table)) \Rightarrow \mathrm{On}(x, table)] \)
+    \questionpart \( \forall x, y [\mathrm{Pyramid}(x) \Rightarrow  \neg \mathrm{On}(y, x)] \)
+    \questionpart \( \forall x, y [\mathrm{Pyramid}(x) \Rightarrow  \neg \mathrm{On}(y, x)] \)
+
+\end{arabicparts}
+
 \part{ROC Analysis}
 
 % Your content
