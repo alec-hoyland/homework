@@ -141,6 +141,136 @@ I ducked for ``Northpointe AI''. Here are the first four relevant results:
 
 \part{Rule-based Systems}
 
+\question
+
+Use a forward-chaining algorithm to determine what the book is named.
+The set of assertions in the working memory are:
+
+    A1: Book X has two copies \\
+    A2: Book X is missing pages \\
+    A3: Book X has tea stains \\
+    A4: Book X is about science \\
+    A5: Book X is donated by Prof. Betke \\
+    A6: Book X is heavy \\
+
+\begin{tabular}{lll}
+    \textbf{Rule matched} & \textbf{With assertion(s)} & \textbf{Assertion addition(s)} \\
+    R7 & A5, A6 & A8: Book X is heavy \\
+    R11 & A8, A1, A2, A3, A4 & A9: Book X is \textit{AI}
+\end{tabular}
+
+\question
+
+Use a backward-chaining algorithm to prove that the book is \textit{Artificial Intelligence}
+using a depth-first search order.
+
+The set of assertions in the working memory are:
+
+BCA1: Book X is \textit{Artificial Intelligence}.
+
+\begin{tabular}{lll}
+    \textbf{Rule matched} & \textbf{With assertion(s)} & \textbf{Assertion addition(s)} \\
+    R11 & BCA1 & BCA2: Book X is textbook \\
+    & & BCA3: Book X has two copies \\
+    & & BCA4: Book X is missing pages \\
+    & & BCA5: Book X has tea stains \\
+    & & BCA6: Book X is about science \\
+\end{tabular}
+
+Now that we have exhausted the only rule where the consequence is
+"is \textit{Artificial Intelligence}",
+we consider rules one at a time,
+where the consequence is a "backward-chaining" assertion.
+
+\begin{tabular}{lll}
+    \textbf{Rule matched} & \textbf{With assertion(s)} & \textbf{Assertion addition(s)} \\
+    R6 & BCA2 & BCA7: Book X is donated by Prof. Betke \\
+    & & BCA8: Book X has notes
+\end{tabular}
+
+We can't prove BCA8, so we backtrack.
+
+\begin{tabular}{lll}
+    \textbf{Rule matched} & \textbf{With assertion(s)} & \textbf{Assertion addition(s)} \\
+    R7 & BCA2 & BCA7: Book X is donated by Prof. Betke \\
+    & & BCA9: Book X is heavy
+\end{tabular}
+
+We now have confirmed all of our working memory assertions via back-chaining.
+
+\question
+
+A1: Book X has two copies \\
+A2: Book X is missing pages \\
+A3: Book X has tea stains \\
+A4: Book X is about science \\
+A5: Book X is donated by Prof. Betke \\
+A6: Book X is heavy \\
+A7: Book X has doodles
+
+\begin{arabicparts}
+
+\questionpart
+
+\begin{tabular}{lll}
+    \textbf{Rule matched} & \textbf{With assertion(s)} & \textbf{Assertion addition(s)} \\
+    R5 & A5, A7 & A8: Book X is fiction \\
+    R7 & A5, A6 & A9: Book X is textbook \\
+    R9 & A8, A3, A4 & Book X is \textit{I, Robot}
+\end{tabular}
+
+This is a different answer than before, because of the precedence of the rules.
+I followed the rules in order, $1-n$.
+When a rule was shown to be true, given the assertions,
+I added the consequence to the working memory assertion list,
+and started over at Rule 1, skipping any rules that were already proven.
+
+\questionpart
+
+\begin{enumerate}
+
+    \item With backward-chaining, we begin with R11,
+    and show that A1, A2, A3, and A4 are satisfied.
+    We need to confirm that "A8: Book X is textbook" is true though.
+
+    \item R6 and R7 have the consequence, "Book X is textbook".
+    We begin with R6, and find that A5 is satisfied.
+    We must prove now that "A9: Book X has notes" is true though.
+
+    \item We cannot prove if Book X has notes. There is no rule for that.
+    So we default to trying to prove R7.
+    If R7, then A5 and A6 are satisified, and we are finished.
+
+\end{enumerate}
+
+Backward-chaining says that the book is \textit{Artificial Intelligence}.
+
+\end{arabicparts}
+
+\question
+
+We cannot add to, or remove from the assertion list,
+and we cannot add to or remove any the rules we initially had.
+We can do the following:
+(a) add new rules, and
+(b) reorder rules.
+
+The problem is that the rule that leads to \textit{I, Robot}
+has a set of claims that are a subset of the claims that lead to \textit{Artificial Intelligence}.
+
+By moving the precedence of R7 up to above R5, we could solve the problem,
+at least in this particular instance.
+Then, we would conclude that the book is \textit{AI} first,
+without reaching the conclusion that the book could be fiction.
+
+We could also add a rule that precludes a book from being both a textbook and fiction.
+We would need two rules: $\mathrm{Fiction}(X) \Rightarrow \neg \mathrm{Textbook}(X)$ and $\mathrm{Textbook}(X) \Rightarrow \neg \mathrm{Fiction}(X)$. These rules would have to have high precedence,
+and wouldn't protect us if we were using a depth-first search,
+since we would conclude that the book is \textit{I, Robot} if we didn't restart at the top of the rule list.
+This might make the problem undecidable though,
+since we would get to a contradiction,
+and then have to restart entirely.
+
 \part{Logic and Planning}
 
 \part{ROC Analysis}
