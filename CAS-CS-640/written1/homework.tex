@@ -1,0 +1,159 @@
+\documentclass[11pt,largemargins, anonymous]{homework}
+
+\usepackage[titlesize=18pt]{colophon}
+
+% TODO: replace these with your information
+\newcommand{\hwname}{Alec Hoyland}
+\newcommand{\hwemail}{U83403624}
+\newcommand{\hwtype}{Homework}
+\newcommand{\hwnum}{1}
+\newcommand{\hwclass}{CAS CS 640}
+\newcommand{\hwlecture}{0}
+\newcommand{\hwsection}{A1/A5}
+
+\begin{document}
+\maketitle
+
+\part{Responsible AI}
+
+\question
+
+\textbf{Who codes matters}
+
+Code is written by people with thoughts on how to implement a certain algorithm or tool.
+What their experiences are directly influences what sorts of bugs or flaws we notice,
+and what our priorities are.
+Joy's facial recognition problems in college were caused by engineers
+neglecting to test their software on people with dark complexions.
+\\
+
+\textbf{How we code matters}
+
+Rigorous testing should include not just bug testing, but construct validation.
+Is your algorithm biased? In statistics, this can be rigorously evaluated,
+but if equity in your dataset isn't on the forefront of your mind,
+it's easy to omit construct validation testing if no one makes it a point to remember.
+\\
+
+\textbf{Why we code matters}
+
+The purpose, or objective, of code shapes how it affects the world.
+If code is written, someone is often footing the bill, someone with their own motivations.
+Code written for the EFF has a much different use-case than that written for police departments.
+We should keep the teleology of our software in mind.
+
+\question
+
+\begin{arabicparts}
+
+    \questionpart
+
+I ducked for ``Northpointe AI''. Here are the first four relevant results:
+
+\begin{enumerate}
+    \item "Rise of the racist robots" (The Guardian)
+    \item "Inspecting algorithms for bias" (MIT Tech Review)
+    \item "Towards a code of ethics in artificial intelligence" (Future of Life)
+    \item "Machine Bias" (ProPublica)
+\end{enumerate}
+
+    Let me begin by saying, \textit{holy shit}, this is \textit{not} a responsible use of AI.
+    There are obvious benefits to using AI in the legal system, for the same reason that it's useful in medicine.
+    Seeing a judge or doctor is a time-intensive endeavor, since there are not a lot of judges and doctors,
+    and reviewing a case reviews synthesizing a lot of documentation.
+    Handling large amounts of data and making a decision is a thing that artificial intelligence is great at.
+    The problem is, neural networks just do a kind of nonlinear regression
+    where the basis functions and the weights vary during training.
+    This means that neural networks are the victims of their training datasets,
+    and the twin curses of overfitting and dimensionality.
+
+    In the ProPublica report, they showed that not only were the Northpointe ROC curves shadier than previously reported,
+    but that when compared race-by-score, that black defendants were actually less at-risk than white defendants for recidivism.
+    In order to test for false positives or false negatives, they culled the dataset,
+    and found that in all cases, black defendants were judged too harshly by the algorithm.
+
+    I believe this is likely due to a flawed dataset.
+    Reality does not lie, but data are what they measure, not what you think they measure.
+    If the legal system of Broward County included even an iota of racism, \textit{e.g.}
+    harsher sentencing, more arrests/criminal complaints, fewer economic and educational opportunities...
+    this would likely show up in the dataset used to train the \texttt{COMPAS} algorithm.
+    If racism shows up in the dataset, then it will show up in the trained classifier.
+
+    While I understand that automated classification will speed up the legal process -- which is a good thing,
+    it needs to be rigorously tested for bias before being deployed,
+    since people's lives and freedoms are at risk here.
+    Broward County and the \texttt{COMPAS} designers should be held responsible.
+
+    \questionpart
+
+    Deferral rates refer to cases where the algorithm does not make a decision,
+    but passes the case to a human evaluator instead.
+    At this point, there are two possible options.
+    Either the case is evaluated, or it is tabled for later.
+    In the case of a prisoner, this is the difference between being considered for parole,
+    and being left in prison until the next possible parole date,
+    which is tantamount to a "high risk" score by the \texttt{COMPAS} algorithm.
+
+    So long as the first case is true, it will result in a generally more fair legal system,
+    provided that the people running the legal apparatus are not racists themselves.
+    The deferral rate essentially represents how much work cannot be offloaded to the algorithm,
+    so an algorithm with a deferral rate of about 20\% with respect to the total caseload,
+    will require humans to do 20\% of the work themselves.
+    So, an algorithm with a low deferral rate is better for the workloads of the legal workers.
+    Of course, one could design an algorithm that just flips a coin for each case,
+    and has a deferral rate of 0\%.
+    That would be the most efficient, and save so much paperwork!
+    It also has the advantage of not being racist at all.
+    But of course, there are other issues to consider.
+
+    If the deferral rate is uneven between races or genders or what-have you,
+    this basically results in a system where one group is being punished more for the same crimes,
+    because they are serving longer sentences.
+    This has economic and social ramifications,
+    since the incarcerated are essentially disenfranchised in political, social, and economic spheres.
+
+    \questionpart
+
+    Canetti \textit{et al.} discuss several different methods for making AI decision systems more equitable.
+    In Example 3.1, they show that even using a group-blind post-processor,
+    the unprivileged group is held to a higher standard in order to make the positive predictive values equal.
+    This means that a non-deferring threshold post-processor has fundamental
+    difficulties promoting totally equitable situations.
+    The deferral rates are higher in the Canetti model vs. the original \texttt{COMPAS} algorithm,
+    because Canetti \textit{et al.} are taking the extra step of equalizing the accuracies
+    by deferring more cases.
+    This leads to an increased number of deferrals.
+    While deferring only on the smaller group does result in fewer total referrals (without loss of equity),
+    there are still more deferrals than a naive approach (\textit{viz.} without post-processing).
+
+    \questionpart
+
+    The authors aren't sure why this happens.
+    In the two-threshold method, it's clear that when the classifier is unsure
+    (\textit{i.e.} the classifier score is middling) that the classifier defers.
+    I suspect this result happens because of the minimization procedure.
+    Removing extremely high- or low-scoring cases would swing the distribution,
+    since there are fewer cases scoring in the extrema.
+    I would guess that the minimization algorithm is picking up on this,
+    and this is causing the "shoe-in" cases to be deferred.
+
+\end{arabicparts}
+
+\part{Rule-based Systems}
+
+\part{Logic and Planning}
+
+\part{ROC Analysis}
+
+% Your content
+
+\begin{colophon}
+    This document was typeset using the \LaTeXe{} document processing system
+    originally developed by Leslie Lamport, based on the \TeX{} typesetting system
+    created by Donald Knuth.
+    The class is \texttt{latex-homework-class} by Jake Zimmerman,
+    released under the MIT license.
+    All above work was done by the authors.
+\end{colophon}
+
+\end{document}

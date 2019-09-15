@@ -1,0 +1,256 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[a4paper,text={16.5cm,25.2cm},centering]{geometry}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1.2ex}
+
+\hypersetup
+       {   pdfauthor = { Alec Hoyland },
+           pdftitle={ Homework },
+           colorlinks=TRUE,
+           linkcolor=black,
+           citecolor=blue,
+           urlcolor=blue
+       }
+
+\title{ Homework }
+
+\author{ Alec Hoyland }
+
+
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{upquote}
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    upquote=true,
+    breaklines=true,
+    keepspaces=true,
+    showspaces=false,
+    columns=fullflexible,
+    showtabs=false,
+    showstringspaces=false,
+    escapeinside={(*@}{@*)},
+    extendedchars=true,
+}
+\newcommand{\HLJLt}[1]{#1}
+\newcommand{\HLJLw}[1]{#1}
+\newcommand{\HLJLe}[1]{#1}
+\newcommand{\HLJLeB}[1]{#1}
+\newcommand{\HLJLo}[1]{#1}
+\newcommand{\HLJLk}[1]{\textcolor[RGB]{148,91,176}{\textbf{#1}}}
+\newcommand{\HLJLkc}[1]{\textcolor[RGB]{59,151,46}{\textit{#1}}}
+\newcommand{\HLJLkd}[1]{\textcolor[RGB]{214,102,97}{\textit{#1}}}
+\newcommand{\HLJLkn}[1]{\textcolor[RGB]{148,91,176}{\textbf{#1}}}
+\newcommand{\HLJLkp}[1]{\textcolor[RGB]{148,91,176}{\textbf{#1}}}
+\newcommand{\HLJLkr}[1]{\textcolor[RGB]{148,91,176}{\textbf{#1}}}
+\newcommand{\HLJLkt}[1]{\textcolor[RGB]{148,91,176}{\textbf{#1}}}
+\newcommand{\HLJLn}[1]{#1}
+\newcommand{\HLJLna}[1]{#1}
+\newcommand{\HLJLnb}[1]{#1}
+\newcommand{\HLJLnbp}[1]{#1}
+\newcommand{\HLJLnc}[1]{#1}
+\newcommand{\HLJLncB}[1]{#1}
+\newcommand{\HLJLnd}[1]{\textcolor[RGB]{214,102,97}{#1}}
+\newcommand{\HLJLne}[1]{#1}
+\newcommand{\HLJLneB}[1]{#1}
+\newcommand{\HLJLnf}[1]{\textcolor[RGB]{66,102,213}{#1}}
+\newcommand{\HLJLnfm}[1]{\textcolor[RGB]{66,102,213}{#1}}
+\newcommand{\HLJLnp}[1]{#1}
+\newcommand{\HLJLnl}[1]{#1}
+\newcommand{\HLJLnn}[1]{#1}
+\newcommand{\HLJLno}[1]{#1}
+\newcommand{\HLJLnt}[1]{#1}
+\newcommand{\HLJLnv}[1]{#1}
+\newcommand{\HLJLnvc}[1]{#1}
+\newcommand{\HLJLnvg}[1]{#1}
+\newcommand{\HLJLnvi}[1]{#1}
+\newcommand{\HLJLnvm}[1]{#1}
+\newcommand{\HLJLl}[1]{#1}
+\newcommand{\HLJLld}[1]{\textcolor[RGB]{148,91,176}{\textit{#1}}}
+\newcommand{\HLJLs}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsa}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsb}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsc}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsd}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsdB}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsdC}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLse}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLsh}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsi}[1]{#1}
+\newcommand{\HLJLso}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsr}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLss}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLssB}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLnB}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLnbB}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLnfB}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLnh}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLni}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLnil}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLnoB}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLoB}[1]{\textcolor[RGB]{102,102,102}{\textbf{#1}}}
+\newcommand{\HLJLow}[1]{\textcolor[RGB]{102,102,102}{\textbf{#1}}}
+\newcommand{\HLJLp}[1]{#1}
+\newcommand{\HLJLc}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLch}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLcm}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLcp}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLcpB}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLcs}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLcsB}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLg}[1]{#1}
+\newcommand{\HLJLgd}[1]{#1}
+\newcommand{\HLJLge}[1]{#1}
+\newcommand{\HLJLgeB}[1]{#1}
+\newcommand{\HLJLgh}[1]{#1}
+\newcommand{\HLJLgi}[1]{#1}
+\newcommand{\HLJLgo}[1]{#1}
+\newcommand{\HLJLgp}[1]{#1}
+\newcommand{\HLJLgs}[1]{#1}
+\newcommand{\HLJLgsB}[1]{#1}
+\newcommand{\HLJLgt}[1]{#1}
+
+
+\begin{document}
+
+\maketitle
+
+
+\subsection{Introduction}
+Detroit is a lovely city, but it also has a serious crime problem. Here, we use linear least-squares regression to determine a minimal model that predicts the homicide rate, using data from J.C. Fisher (1976).
+
+
+\begin{lstlisting}
+(*@\HLJLnf{cd}@*)(*@\HLJLp{(}@*)(*@\HLJLs{"/home/alec/code/homework/CAS-CS-542/homework2/"}@*)(*@\HLJLp{)}@*)
+
+(*@\HLJLcs{{\#} preamble}@*)
+(*@\HLJLk{using}@*) (*@\HLJLn{NPZ}@*)
+(*@\HLJLk{using}@*) (*@\HLJLn{DataFrames}@*)
+(*@\HLJLk{using}@*) (*@\HLJLn{StatsModels}@*)
+(*@\HLJLk{using}@*) (*@\HLJLn{GLM}@*)
+
+(*@\HLJLcs{{\#} load the data set}@*)
+(*@\HLJLn{df}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{npzread}@*)(*@\HLJLp{(}@*)(*@\HLJLs{"data/detroit.npy"}@*)(*@\HLJLp{)}@*) (*@\HLJLoB{|>}@*) (*@\HLJLn{DataFrame}@*)(*@\HLJLp{;}@*)
+(*@\HLJLn{colnames}@*) (*@\HLJLoB{=}@*) (*@\HLJLp{[}@*)(*@\HLJLsc{:FTP}@*)(*@\HLJLp{,}@*) (*@\HLJLsc{:UEMP}@*)(*@\HLJLp{,}@*) (*@\HLJLsc{:MAN}@*)(*@\HLJLp{,}@*) (*@\HLJLsc{:LIC}@*)(*@\HLJLp{,}@*) (*@\HLJLsc{:GR}@*)(*@\HLJLp{,}@*) (*@\HLJLsc{:NMAN}@*)(*@\HLJLp{,}@*) (*@\HLJLsc{:GOV}@*)(*@\HLJLp{,}@*) (*@\HLJLsc{:HE}@*)(*@\HLJLp{,}@*) (*@\HLJLsc{:WE}@*)(*@\HLJLp{,}@*) (*@\HLJLsc{:HOM}@*)(*@\HLJLp{]}@*)
+(*@\HLJLnf{names!}@*)(*@\HLJLp{(}@*)(*@\HLJLn{df}@*)(*@\HLJLp{,}@*) (*@\HLJLn{colnames}@*)(*@\HLJLp{)}@*)
+
+(*@\HLJLn{df}@*)
+\end{lstlisting}
+
+
+\begin{tabular}{r|cccccccccc}
+	& FTP & UEMP & MAN & LIC & GR & NMAN & GOV & HE & WE & HOM\\
+	\hline
+	& Float64 & Float64 & Float64 & Float64 & Float64 & Float64 & Float64 & Float64 & Float64 & Float64\\
+	\hline
+	1 & 260.35 & 11.0 & 455.5 & 178.15 & 215.98 & 538.1 & 133.9 & 2.98 & 117.18 & 8.6 \\
+	2 & 269.8 & 7.0 & 480.2 & 156.41 & 180.48 & 547.6 & 137.6 & 3.09 & 134.02 & 8.9 \\
+	3 & 272.04 & 5.2 & 506.1 & 198.02 & 209.57 & 562.8 & 143.6 & 3.23 & 141.68 & 8.52 \\
+	4 & 272.96 & 4.3 & 535.8 & 222.1 & 231.67 & 591.0 & 150.3 & 3.33 & 147.98 & 8.89 \\
+	5 & 272.51 & 3.5 & 576.0 & 301.92 & 297.65 & 626.1 & 164.3 & 3.46 & 159.85 & 13.07 \\
+	6 & 261.34 & 3.2 & 601.7 & 391.22 & 367.62 & 659.8 & 179.5 & 3.6 & 157.19 & 14.57 \\
+	7 & 268.89 & 4.1 & 577.3 & 665.56 & 616.54 & 686.2 & 187.5 & 3.73 & 155.29 & 21.36 \\
+	8 & 295.99 & 3.9 & 596.9 & 1131.21 & 1029.75 & 699.6 & 195.4 & 2.91 & 131.75 & 28.03 \\
+	9 & 319.87 & 3.6 & 613.5 & 837.6 & 786.23 & 729.9 & 210.3 & 4.25 & 178.74 & 31.49 \\
+	10 & 341.43 & 7.1 & 569.3 & 794.9 & 713.77 & 757.8 & 223.8 & 4.47 & 178.3 & 37.39 \\
+	11 & 356.59 & 8.4 & 548.8 & 817.74 & 750.43 & 755.3 & 227.7 & 5.04 & 209.54 & 46.26 \\
+	12 & 376.69 & 7.7 & 563.4 & 583.17 & 1027.38 & 787.0 & 230.9 & 5.47 & 240.05 & 47.24 \\
+	13 & 390.19 & 6.3 & 609.3 & 709.59 & 666.5 & 819.8 & 230.2 & 5.76 & 258.05 & 52.33 \\
+\end{tabular}
+
+
+\subsection{Determining a linear model fit}
+We attempt to predict the homicide rate \texttt{HOM} as a linear function of \texttt{FTP}, \texttt{WE}, and some other variable. We will therefore make 8 fits, each using a model $HOM \sim FTP + WE + X$, where \texttt{X} is one of the other variables in the dataset. Since we want the model to have four parameters and depend on only three independent variables, and two of them are fixed, I have decided not to use the PRESS criterion for evaluating the goodness of a parsimonious model. Instead, I have opted to use the Bayesian information criterion. Since all models use the same data and have the same number of parameters, the model which minimizes the residual sum of squares (equivalently, the negative log-likelihood) is the best model fit.
+
+
+\begin{lstlisting}
+(*@\HLJLcs{{\#} determine a linear model with individual effects}@*)
+(*@\HLJLn{vars}@*) (*@\HLJLoB{=}@*) (*@\HLJLp{[}@*)(*@\HLJLsc{:UEMP}@*)(*@\HLJLp{,}@*) (*@\HLJLsc{:MAN}@*)(*@\HLJLp{,}@*) (*@\HLJLsc{:LIC}@*)(*@\HLJLp{,}@*) (*@\HLJLsc{:GR}@*)(*@\HLJLp{,}@*) (*@\HLJLsc{:NMAN}@*)(*@\HLJLp{,}@*) (*@\HLJLsc{:GOV}@*)(*@\HLJLp{,}@*) (*@\HLJLsc{:HE}@*)(*@\HLJLp{]}@*)
+(*@\HLJLn{f}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{Array}@*)(*@\HLJLp{{\{}}@*)(*@\HLJLn{Formula}@*)(*@\HLJLp{{\}}(}@*)(*@\HLJLn{undef}@*)(*@\HLJLp{,}@*) (*@\HLJLnf{length}@*)(*@\HLJLp{(}@*)(*@\HLJLn{vars}@*)(*@\HLJLp{))}@*)
+(*@\HLJLn{ols}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{Array}@*)(*@\HLJLp{{\{}}@*)(*@\HLJLn{StatsModels}@*)(*@\HLJLoB{.}@*)(*@\HLJLn{DataFrameRegressionModel}@*)(*@\HLJLp{{\}}(}@*)(*@\HLJLn{undef}@*)(*@\HLJLp{,}@*) (*@\HLJLnf{length}@*)(*@\HLJLp{(}@*)(*@\HLJLn{vars}@*)(*@\HLJLp{))}@*)
+(*@\HLJLk{for}@*) (*@\HLJLp{(}@*)(*@\HLJLn{i}@*)(*@\HLJLp{,}@*) (*@\HLJLn{var}@*)(*@\HLJLp{)}@*) (*@\HLJLkp{in}@*) (*@\HLJLnf{enumerate}@*)(*@\HLJLp{(}@*)(*@\HLJLn{vars}@*)(*@\HLJLp{)}@*)
+    (*@\HLJLn{f}@*)(*@\HLJLp{[}@*)(*@\HLJLn{i}@*)(*@\HLJLp{]}@*) (*@\HLJLoB{=}@*) (*@\HLJLnd{@eval}@*) (*@\HLJLnd{@formula}@*)(*@\HLJLp{(}@*)(*@\HLJLn{HOM}@*) (*@\HLJLoB{{\textasciitilde}}@*) (*@\HLJLni{1}@*) (*@\HLJLoB{+}@*) (*@\HLJLn{FTP}@*) (*@\HLJLoB{+}@*) (*@\HLJLn{WE}@*) (*@\HLJLoB{+}@*) (*@\HLJLoB{{\$}}@*)(*@\HLJLn{var}@*)(*@\HLJLp{)}@*)
+    (*@\HLJLn{ols}@*)(*@\HLJLp{[}@*)(*@\HLJLn{i}@*)(*@\HLJLp{]}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{fit}@*)(*@\HLJLp{(}@*)(*@\HLJLn{LinearModel}@*)(*@\HLJLp{,}@*) (*@\HLJLn{f}@*)(*@\HLJLp{[}@*)(*@\HLJLn{i}@*)(*@\HLJLp{],}@*) (*@\HLJLn{df}@*)(*@\HLJLp{)}@*)
+(*@\HLJLk{end}@*)
+
+(*@\HLJLn{BIC}@*) (*@\HLJLoB{=}@*) (*@\HLJLn{deviance}@*)(*@\HLJLoB{.}@*)(*@\HLJLp{(}@*)(*@\HLJLn{ols}@*)(*@\HLJLp{)}@*)
+(*@\HLJLn{vars}@*)(*@\HLJLp{[}@*)(*@\HLJLnf{argmin}@*)(*@\HLJLp{(}@*)(*@\HLJLn{BIC}@*)(*@\HLJLp{)]}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+:LIC
+\end{lstlisting}
+
+
+The variable to add is :LIC.
+
+
+Formal justification The variable that should be factored into the linear model is \texttt{LIC}. The Bayesian information criterion is formally defined as $\mathrm{BIC} = \ln(n)k - 2 \ln(\hat{\mathcal{L}})$ where $\hat{\mathcal{L}}$ is the maximized value of the likelihood function $\mathcal{L} = p(x | \hat{\theta}, M)$ where $M$ is the model and $\hat{\theta}$ are the parameter values that maximize the likelihood. $n$ is the number of data points in $x$, the observed data, and $k$ is the number of parameters.
+
+
+For a prior for $\theta$ under model $M$ we can integrate out the parameters.
+
+$p(x | M) = \int p(x | \theta, M) p(\theta | M) \mathrm{d}\theta$
+
+Then, considering the log-likelihood $\ln(p(x | \theta, M))$, and expanding to a second-order Taylor series about the maximum-likelihood estimate $\hat{\theta}$,
+
+$\ln(p(x | \theta, M)) = \ln\hat{\mathcal{L}} - \frac{1}{2}(\theta - \hat{\theta})^T n \mathcal{I}(\theta) (\theta - \hat{\theta})$
+
+Here, $\mathcal{I}(\theta)$ is the expected Fisher information per observation. The first-order terms disappear because we expanded about the maximum likelihood, hence the first derivative is zero. If we chose a prior such that it is relatively linear near the MLE, we can integrate and get
+
+$p(x | M) \approx \hat{\mathcal{L}}(2\pi / n)^{k/2} | \mathcal{I}(\hat{\theta}) | ^{-1/2} p(\hat{\theta})$
+
+For large $n$, we can ignore the terms of constant order, to approximate:
+
+$p(M | x) \propto p(x | M) p(M) \approx \exp(\ln (\hat{\mathcal{L}}) - \frac{k}{2} \ln (n))$
+
+from which we define $\mathrm{BIC} = \ln(n)k - 2 \ln(\hat{\mathcal{L}})$. For an ordinary least squares fit, minimizing the negative logarithm of the likelihood is equivalent to minimizing the residual sum of squares error. We prove this in homework \#2, question 1 part D. Therefore, since we have restricted our model to three explanatory variables, and two are chosen for us, we can select the best model by choosing the one with the third variable which results in the lowest residual sum of squares error after ordinary least squares fitting.
+
+
+\subsection{Results without regularization}
+
+\begin{lstlisting}
+(*@\HLJLk{using}@*) (*@\HLJLn{Plots}@*)(*@\HLJLp{;}@*) (*@\HLJLnf{gr}@*)(*@\HLJLp{()}@*)
+
+(*@\HLJLnf{scatter}@*)(*@\HLJLp{(}@*)(*@\HLJLni{1961}@*)(*@\HLJLoB{:}@*)(*@\HLJLni{1973}@*)(*@\HLJLp{,}@*) (*@\HLJLn{df}@*)(*@\HLJLoB{.}@*)(*@\HLJLn{HOM}@*)(*@\HLJLp{,}@*)
+    (*@\HLJLn{xlabel}@*) (*@\HLJLoB{=}@*) (*@\HLJLs{"year"}@*)(*@\HLJLp{,}@*)
+    (*@\HLJLn{ylabel}@*) (*@\HLJLoB{=}@*) (*@\HLJLs{"homicide rate"}@*)(*@\HLJLp{,}@*)
+    (*@\HLJLn{label}@*) (*@\HLJLoB{=}@*) (*@\HLJLs{"real data"}@*)(*@\HLJLp{)}@*)
+(*@\HLJLnf{scatter!}@*)(*@\HLJLp{(}@*)(*@\HLJLni{1961}@*)(*@\HLJLoB{:}@*)(*@\HLJLni{1973}@*)(*@\HLJLp{,}@*) (*@\HLJLnf{predict}@*)(*@\HLJLp{(}@*)(*@\HLJLn{ols}@*)(*@\HLJLp{[}@*)(*@\HLJLnf{argmin}@*)(*@\HLJLp{(}@*)(*@\HLJLn{BIC}@*)(*@\HLJLp{)]),}@*) (*@\HLJLn{label}@*) (*@\HLJLoB{=}@*) (*@\HLJLs{"predicted"}@*)(*@\HLJLp{,}@*) (*@\HLJLn{legend}@*) (*@\HLJLoB{=}@*) (*@\HLJLsc{:topleft}@*)(*@\HLJLp{)}@*)
+\end{lstlisting}
+
+\includegraphics[width=\linewidth]{/home/alec/code/homework/CAS-CS-542/homework2/tmp7fqCNW/problem1_3_1.pdf}
+
+\subsection{Further steps with regularization}
+Regularization consists of adding a penalty term to the sum of squares residual that penalizes overfitting. This extra term adds an artificial constraint on the least-squares process. Since there are potentially infinite solutions to minimizing the sum of squares residual, regularization provides a method by which a more desirable solution can be reached.
+
+
+Consider the finite approximation of the Neumann series for an invertible matrix $A$ where $||I - A|| < 1$.
+
+$\sum_{i=0}^{T-1} (I - A)^i \approx A^{-1}$
+
+The least-square parameters $w$ can be determined from the least-squares equation
+
+$w = (X'X)^{-1}X'Y$
+
+where $X$ and $Y$ comprise the measured data. When the Neumann series approxiation is inserted,
+
+$w_T = \frac{\gamma}{n} \sum_{i=0}^{T-1} (I - \frac{\gamma}{n}X'X)^i X'Y$
+
+Here, $\gamma$ is a constant to ensure the norm is less than one (so that the series converges) and $n$ is the dimension of the vectors. The exact solution of the above equation is the unregularized least-squares solution, which will minimize the empirical error \ensuremath{\endash} though not necessarily provide a satisfying generalization. The free parameter $T$ determines the "optimal stopping", and therefore limits overfitting if chosen correctly. This is exactly the same as limiting the number of steps in a gradient descent optimization scheme.
+
+
+LASSO (least absolute shrinkage and selection operator) is a regression analysis method that includes regularization. One advantage that LASSO has over ridge regression is that LASSO can set coefficients to zero. This is because LASSO uses the piecewise linear $\mathcal{L}_1$ norm for regularization, whereas ridge regression uses the quadratic $\mathcal{L}_2$ norm.
+
+
+
+\end{document}

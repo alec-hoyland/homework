@@ -4,6 +4,13 @@
 *.bmp
 *.log
 *.aux
-*.tex
 *.html
 *.out
+*.npy
+*.mat
+*.jld
+*.jld2
+*fdb_latexmk
+*fls
+*.synctex.gz
+*.xdv
