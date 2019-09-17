@@ -293,6 +293,32 @@ without any free variables.
 
 \end{arabicparts}
 
+\question
+
+Prove the following theorem: \( \mathrm{CanProgram}(Alex) \).
+
+We have the axioms:
+
+\begin{enumerate}
+    \item \( \mathrm{CSSenior}(Alex) \)
+    \item \( \forall x [\mathrm{CSSenior}(x) \Rightarrow \mathrm{CanProgram}(x)] \)
+\end{enumerate}
+
+The proof of the theorem is straightforward.
+We suppose the negation of the theorem: \( \neg \mathrm{CanProgram}(Alex) \)
+
+We first replace implications in axiom 2.
+
+\[ \forall x [\neg \mathrm{CSSenior}(x) \lor \mathrm{CanProgram}(x)] \]
+
+By specialization:
+
+\[ \neg \mathrm{CSSenior}(Alex) \lor \mathrm{CanProgram}(Alex) \]
+
+We note that 
+
+
+
 \part{ROC Analysis}
 
 % Your content
