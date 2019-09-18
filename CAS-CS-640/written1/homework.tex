@@ -318,7 +318,67 @@ We note that by axiom 1, \( \mathrm{CSSenior}(Alex) \), so
 
 \[ \mathrm{CanProgram}(Alex) \]
 
+\question
 
+Transform the following expressions into clause form
+
+\begin{arabicparts}
+    \questionpart
+        Initial expression
+        \[ \exists student: [\mathrm{FriendsWith}(Anna, student)] \]
+        Skolemize to remove existential quantifiers by instantiating a Skolem constant \( a \leftarrow f() \)
+        \[ \mathrm{FriendsWith}(Anna, a) \]
+    \questionpart
+        Initial expression
+        \[ \forall tire, \forall rim: [\mathrm{RobotHas}(tire) \Rightarrow \mathrm{RobotCanMountOn}(tire, rim)] \]
+        Eliminate implications
+        \[ \forall tire, \forall rim: [\neg \mathrm{RobotHas}(tire) \lor \mathrm{RobotCanMountOn}(tire, rim)] \]
+        Eliminate universal quantifiers
+        \[ \neg \mathrm{RobotHas}(tire) \lor \mathrm{RobotCanMountOn}(tire, rim) \]
+    \questionpart
+        Initial expression
+        \[ \forall x: [\exists y: \mathrm{FriendsWith}(x, y) \Rightarrow \neg \mathrm{Misanthropist}(x)] \]
+        Eliminate implications
+        \[ \forall x: [\exists y: \neg \mathrm{FriendsWith}(x, y) \lor \neg \mathrm{Misanthropist}(x)] \]
+        Skolemize by \( y \leftarrow f(x) \)
+        \[ \forall x: [\neg \mathrm{FriendsWith}(x, f(x)) \lor \neg \mathrm{Misanthropist}(x)] \]
+        Eliminate universal quantifiers
+        \[ \neg \mathrm{FriendsWith}(x, f(x)) \lor \neg \mathrm{Misanthropist}(x) \]
+    \questionpart
+        Initial expression
+        \[ \forall x: [\mathrm{Dog}(x) \Rightarrow [\exists y: [ \mathrm{Loves}(x, y) \land \neg \mathrm{Cat}(y) ] ] ] \]
+        Eliminate implications
+        \[ \forall x: [\neg \mathrm{Dog}(x) \lor [\exists y: [ \mathrm{Loves}(x, y) \land \neg \mathrm{Cat}(y) ] ] ] \]
+        Skolemize by \( y \leftarrow f(x) \)
+        \[ \forall x: [\neg \mathrm{Dog}(x) \lor [ \mathrm{Loves}(x, f(x)) \land \neg \mathrm{Cat}(f(x)) ] ] \]
+        Distribute disjunctions across conjunctions
+        \[ \forall x: [ [\neg \mathrm{Dog}(x) \lor \mathrm{Loves}(x, f(x))] \land [ \neg \mathrm{Dog}(x) \lor \neg \mathrm{Cat}(f(x)) ] ] \]
+        Break across conjunctions
+        \[ \forall x: [\neg \mathrm{Dog}(x) \lor \mathrm{Loves}(x, f(x)) ] \]
+        \[ \forall x: [ \neg \mathrm{Dog}(x) \lor \neg \mathrm{Cat}(f(x)) ] \]
+        Eliminate universal quantifiers
+        \[ \neg \mathrm{Dog}(x) \lor \mathrm{Loves}(x, f(x)) \]
+        \[ \neg \mathrm{Dog}(x) \lor \neg \mathrm{Cat}(f(x)) \]
+
+\end{arabicparts}
+
+\question
+
+Construct a resolution proof with situation variables that serves as a plan
+for moving a robot through an open door using Green's trick.
+Let $R$ denote the robot, $D$ the door, $S$ the start situation, and $s_f$ the final situation.
+
+Axioms:
+
+\begin{enumerate}
+    \item \( \mathrm{Open}(D, S) \)
+    \item \( \mathrm{Behind}(D, R, S) \)
+    \item \( \forall x, y, s [ \mathrm{Behind}(x, y, s) \land \mathrm{Open}(x, s) \Rightarrow \mathrm{InFront}(x, y, \mathrm{Advance}(y, s)) ] \)
+\end{enumerate}
+
+Prove the theorem:
+
+\[ \exists s_f [ \mathrm{InFront}(D, R, s_f)] \]
 
 \part{ROC Analysis}
 
