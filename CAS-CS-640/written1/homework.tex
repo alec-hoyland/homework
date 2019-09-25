@@ -380,7 +380,89 @@ Prove the theorem:
 
 \[ \exists s_f [ \mathrm{InFront}(D, R, s_f)] \]
 
+Let's consider a proof by contradiction.
+Start with assuming the negation of the theorem:
+
+\[ \neg \mathrm{InFront}(D, R, s_f) \]
+
+and add an "answer" term (Green's trick).
+
+\[ \neg \mathrm{InFront}(D, R, s_f) \lor \mathrm{Answer}(s_f) \]
+
+Let's begin: \( \mathrm{Open}(D, S) \) and \( \mathrm{Behind}(D, R, S) \) imply
+
+\[ \mathrm{Behind}(D, R, S) \land \mathrm{Open}(D, S) \Rightarrow \mathrm{InFront}(D, R, \mathrm{Advance}(R, S)) \]
+
+\( \mathrm{InFront}(D, R, \mathrm{Advance}(R, S)) \) implies
+
+\[ \mathrm{InFront}(D, R, \mathrm{Advance}(R, S)) \lor \mathrm{Answer}(\mathrm{Advance}(R, S)) \]
+
+Since \( \neg \mathrm{InFront}(D, R, s_f) \), by \textit{modus ponens},
+
+\[ \mathrm{Answer}(\mathrm{Advance}(R, S)) \]
+
+
 \part{ROC Analysis}
+
+\question
+
+\begin{arabicparts}
+    \questionpart
+
+    The true positive rate is computed as the true positives divided by the total positives,
+    \( \mathrm{TPR} = \frac{\mathrm{TP}}{\mathrm{P}} \).
+    The false negative rate is \( \mathrm{FNR} = 1 - \mathrm{TPR} \).
+    The false positive rate is \( \mathrm{FPR} = \frac{\mathrm{FP}}{N} \).
+    The true negative rate is \( \mathrm{TNR} = 1 - \mathrm{FPR} \).
+
+    For model A, the TPR is $26/(26 + 30) = 0.46$.
+    The FNR is $ 1 - \mathrm{TPR} = 0.54 $.
+    The FPR is $ 18 / (18 + 26) = 0.41 $.
+    The TNR is $ 1 - \mathrm{FPR} = 0.59 $.
+
+    For model B, the TPR is $ 13 / (13 + 32) = 0.29 $.
+    The FNR is 0.71.
+    The FPR is $ 38 / (38 + 17) =  0.69 $.
+    The TNR is $ 0.21 $.
+
+    \questionpart
+
+    Accuracy is defined as $ \mathrm{ACC} = \frac{\mathrm{TP} + \mathrm{TN}}{P + N} $.
+    For model A, the accuracy is $ (26 + 26) / (26 + 30 + 18 + 26) = 0.52 $.
+    For model B, the accuracy is $ (13 + 17) / (13  + 32 + 38 + 17) = 0.30 $.
+
+    Precision is defined as $ \mathrm{TP} / (\mathrm{TP} + \mathrm{FP}) $.
+    For model A, the precision is $ 26 / (26 + 18) = 0.59 $.
+    For model B, the precision is $ 13 / (13 + 38) = 0.25 $.
+
+    Recall is the same as the true positive rate,
+    since it measures the fraction of relevant instances that have been retrieved.
+
+    The F-1 score is the harmonic mean of precision and sensitivity.
+
+    \[ \mathrm{F_1} = 2 \cdot \frac{\mathrm{PPV} \cdot \mathrm{TPR}}{\mathrm{PPV} \cdot \mathrm{TPR}} = \frac{2 \cdot \mathrm{TP}}{2 \cdot \mathrm{TP} + \mathrm{FP} + \mathrm{FN}} \]
+
+    For model A, it's $ 2 \cdot 26 / (2 \cdot 26 + 18 + 30) = 0.52 $.
+    For model B, it's $ 2 \cdot 13 / (2 \cdot 13 + 38 + 32) = 0.27 $.
+
+\end{arabicparts}
+
+\question
+
+Model 1 is the better one.
+A good ROC curve is above the diagonal.
+This is because perfect classification means that all positives are classified as positives,
+(i.e. TPR of 1), and no negatives are classified as positives (i.e. FPR of 0).
+This point is at $(0, 1)$ in the top-left corner.
+Model A likely produced ROC curve #1,
+since it has a higher TPR and lower FPR.
+
+\question
+
+If you want to minimize the number of false positives,
+you want the threshold to be high,
+so that only strong quakes would trip the system.
+Too sensitive (low threshold), and anything could set it off.
 
 % Your content
 
@@ -394,3 +476,5 @@ Prove the theorem:
 \end{colophon}
 
 \end{document}
+
+On(x,Table, s3)∨On(x,Table,STORE(x, s3))
