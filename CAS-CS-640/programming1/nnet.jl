@@ -37,12 +37,12 @@ function NeuralNetwork(structure)
 end
 
 # forward propagation
-function forward(nn::NeuralNetwork)
-    ai = σ(X)
-    zj = transpose(weights_ij) * ai + bj
-    aj = σ(zj)
-    zk = transpose(weights_jk) * aj + bk
-    ak = σ(zk)
+function forward(nn::NeuralNetwork, X)
+    ai = σ.(X)
+    zj = transpose(nn.weights[1]) * ai .+ nn.biases[1]
+    aj = σ.(zj)
+    zk = transpose(nn.weights[2]) * aj .+ nn.biases[2]
+    ak = σ.(zk)
     return (ai, zj, aj, zk, ak)
 end
 
@@ -55,7 +55,7 @@ function backward(nn::NeuralNetwork, target, ai, zj, aj, zk, ak)
 
     # compute gradient of the error w.r.t. the output layer parameters
     for k in 1:nn.structure[3]
-        δk[k] = delta_k(ak[k], target[k], zk[k])
+        δk[k] = delta_k.(ak[k], target[k], zk[k])
     end
 
     for j in 1:nn.structure[2], k in 1:nn.structure[3]
@@ -78,11 +78,11 @@ function update_params!(params, gradient, learning_rate)
     return params - learning_rate * gradient
 end
 
-function update_params!(nn::NeuralNetwork, learning_rate, gradient_ij, gradient_jk, δj, δk)
-    update_params!(nn.weights[1], gradient_ij, learning_rate)
-    update_params!(nn.weights[2], gradient_jk, learning_rate)
-    update_params!(nn.biases[1], δj, learning_rate)
-    update_params!(nn.biases[2], δk, learning_rate)
+function update_params!(nn::NeuralNetwork, gradient_ij, gradient_jk, δj, δk)
+    update_params!(nn.weights[1], gradient_ij, nn.learning_rate)
+    update_params!(nn.weights[2], gradient_jk, nn.learning_rate)
+    update_params!(nn.biases[1], δj, nn.learning_rate)
+    update_params!(nn.biases[2], δk, nn.learning_rate)
 end
 
 function cost(predictions, targets)
@@ -96,5 +96,13 @@ function delta_k(prediction, target, z)
 end
 
 function delta_j(zj, δk, weights_jk)
-    return σ′(zj) * dot(δk, weights_jk)
+    return σ′.(zj) .* dot(δk, weights_jk)
+end
+
+function train!(nn::NeuralNetwork, X, Y)
+    (ai, zj, aj, zk, ak) = forward(nn, X)
+    (gradient_ij, gradient_jk, δj, δk) = backward(nn, Y, ai, zj, aj, zk, ak)
+    update_params!(nn, gradient_ij, gradient_jk, δj, δk)
+    print("Cost is $(cost(ak, Y))")
+    return nn
 end
