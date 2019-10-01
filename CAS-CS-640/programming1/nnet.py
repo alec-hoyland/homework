@@ -11,19 +11,18 @@ import matplotlib
 # %matplotlib inline
 matplotlib.rcParams['figure.figsize'] = (10.0, 8.0)
 
-# %% 2
-np.random.seed(3)
-X, y = sklearn.datasets.make_moons(200, noise=0.20)
-plt.scatter(X[:,0], X[:,1], s=40, c=y, cmap=plt.cm.Spectral)
-
-# %% 3
-# Train the logistic rgeression classifier
-clf = sklearn.linear_model.LogisticRegressionCV()
-clf.fit(X, y)
+# # %% 2
+# np.random.seed(3)
+# X, y = sklearn.datasets.make_moons(200, noise=0.20)
+# plt.scatter(X[:,0], X[:,1], s=40, c=y, cmap=plt.cm.Spectral)
+#
+# # %% 3
+# # Train the logistic rgeression classifier
+# clf = sklearn.linear_model.LogisticRegressionCV()
+# clf.fit(X, y)
 
 # %% 4
 # Helper function to plot a decision boundary.
-# If you don't fully understand this function don't worry, it just generates the contour plot below.
 def plot_decision_boundary(pred_func):
     # Set min and max values and give it some padding
     x_min, x_max = X[:, 0].min() - .5, X[:, 0].max() + .5
@@ -40,17 +39,17 @@ def plot_decision_boundary(pred_func):
 
 # %% 12
 # Plot the decision boundary
-plot_decision_boundary(lambda x: clf.predict(x))
-plt.title("Logistic Regression")
+# plot_decision_boundary(lambda x: clf.predict(x))
+# plt.title("Logistic Regression")
 
 # %% 15
-num_examples = len(X) # training set size
-nn_input_dim = 2 # input layer dimensionality
-nn_output_dim = 2 # output layer dimensionality
-
-# Gradient descent parameters (I picked these by hand)
-epsilon = 0.01 # learning rate for gradient descent
-reg_lambda = 0.01 # regularization strength
+# num_examples = len(X) # training set size
+# nn_input_dim = 2 # input layer dimensionality
+# nn_output_dim = 2 # output layer dimensionality
+#
+# # Gradient descent parameters (I picked these by hand)
+# epsilon = 0.01 # learning rate for gradient descent
+# reg_lambda = 0.01 # regularization strength
 
 # %% 7
 # Helper function to evaluate the total loss on the dataset
