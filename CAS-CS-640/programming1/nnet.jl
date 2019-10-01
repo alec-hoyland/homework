@@ -28,11 +28,11 @@ end
 function NeuralNetwork(structure)
     # initialize the neural network with randomized parameters
     weights = Array{Array{Float64, 2}, 1}()
-    biases = Array{Array{Float64, 1}, 1}()
+    biases = Array{Array{Float64, 2}, 1}()
     push!(weights, 0.1 * randn(structure[1], structure[2]))
     push!(weights, 0.1 * randn(structure[2], structure[3]))
-    push!(biases, 0.1 * randn(structure[2]))
-    push!(biases, 0.1 * randn(structure[3]))
+    push!(biases, 0.1 * randn(structure[2], 1))
+    push!(biases, 0.1 * randn(structure[3], 1))
     return NeuralNetwork(structure, weights, biases, 0.1)
 end
 
@@ -75,14 +75,16 @@ function backward(nn::NeuralNetwork, target, ai, zj, aj, zk, ak)
 end
 
 function update_params!(params, gradient, learning_rate)
-    return params - learning_rate * gradient
+    params = params - learning_rate * gradient
+    return params
 end
 
 function update_params!(nn::NeuralNetwork, gradient_ij, gradient_jk, δj, δk)
-    update_params!(nn.weights[1], gradient_ij, nn.learning_rate)
-    update_params!(nn.weights[2], gradient_jk, nn.learning_rate)
-    update_params!(nn.biases[1], δj, nn.learning_rate)
-    update_params!(nn.biases[2], δk, nn.learning_rate)
+    nn.weights[1] = update_params!(nn.weights[1], gradient_ij, nn.learning_rate)
+    nn.weights[2] = update_params!(nn.weights[2], gradient_jk, nn.learning_rate)
+    nn.biases[1] = update_params!(nn.biases[1], δj, nn.learning_rate)
+    nn.biases[2] = update_params!(nn.biases[2], δk, nn.learning_rate)
+    return nn
 end
 
 function cost(predictions, targets)
@@ -102,7 +104,7 @@ end
 function train!(nn::NeuralNetwork, X, Y)
     (ai, zj, aj, zk, ak) = forward(nn, X)
     (gradient_ij, gradient_jk, δj, δk) = backward(nn, Y, ai, zj, aj, zk, ak)
-    update_params!(nn, gradient_ij, gradient_jk, δj, δk)
-    print("Cost is $(cost(ak, Y))")
+    nn = update_params!(nn, gradient_ij, gradient_jk, δj, δk)
+    print("Cost is $(cost(ak, Y)) \n")
     return nn
 end
