@@ -1,4 +1,4 @@
-## Linear Data
+## Nonlinear Data
 # 1. Confusion matrix
 # 2. Precision
 # 3. Recall
