@@ -358,3 +358,87 @@ accuracy:  0.864
 
 number of epochs: 100
 ![](q2_4.png)
+
+## Digit detection
+
+```
+Number of Neurons:  10
+-----------------
+accuracy:  0.9287305122494433
+
+Number of Neurons:  30
+-----------------
+accuracy:  0.9454342984409799
+
+Number of Neurons:  100
+-----------------
+accuracy:  0.9398663697104677
+
+Number of Neurons:  200
+-----------------
+accuracy:  0.9387527839643652
+
+Number of Neurons:  300
+-----------------
+accuracy:  0.933184855233853
+
+Regularization Coefficient:  0.001
+-----------------
+accuracy:  0.9409799554565702
+
+Regularization Coefficient:  0.003
+-----------------
+accuracy:  0.9409799554565702
+
+Regularization Coefficient:  0.01
+-----------------
+accuracy:  0.9398663697104677
+
+Regularization Coefficient:  0.03
+-----------------
+accuracy:  0.9398663697104677
+
+Regularization Coefficient:  0.1
+-----------------
+accuracy:  0.9420935412026726
+
+Learning Rate:  0.0001
+-----------------
+accuracy:  0.9432071269487751
+
+Learning Rate:  0.0003
+-----------------
+accuracy:  0.9420935412026726
+
+Learning Rate:  0.003
+-----------------
+accuracy:  0.8385300668151447
+
+Learning Rate:  0.001
+-----------------
+accuracy:  0.9398663697104677
+
+Learning Rate:  0.003
+-----------------
+accuracy:  0.8385300668151447
+
+Number of Epochs:  100
+-----------------
+accuracy:  0.10133630289532294
+
+Number of Epochs:  200
+-----------------
+accuracy:  0.09799554565701558
+
+Number of Epochs:  2000
+-----------------
+accuracy:  0.8307349665924276
+
+Number of Epochs:  10000
+-----------------
+accuracy:  0.8173719376391982
+
+Number of Epochs:  20000
+-----------------
+accuracy:  0.8385300668151447
+```

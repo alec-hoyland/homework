@@ -54,7 +54,7 @@ def evaluateResults(y_test, yhat):
     # accuracy = (true_positives + true_negatives) / (sum(all_positives) + sum(all_negatives))
 
     print("-----------------")
-    print("accuracy: ", sum(yhat == y) / len(y))
+    print("accuracy: ", sum(yhat == y_test) / len(y))
     print(" ")
 
 config = Config()
@@ -68,7 +68,7 @@ model = build_model(X, y, config, 100, num_passes=20000, print_loss=False)
 yhat = predict(model, X_test)
 
 ## Varying number of neurons
-nNodes = [10, 30, 100, 300, 1000]
+nNodes = [10, 30, 100, 200, 300]
 
 for node_num in nNodes:
     model = build_model(X, y, config, node_num, num_passes=20000, print_loss=False)
