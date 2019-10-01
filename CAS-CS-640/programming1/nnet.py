@@ -11,17 +11,17 @@ class Config:
     reg_lambda = 0.01  # regularization strength
 
 
-def generate_data():
-    np.random.seed(0)
-    X, y = datasets.make_moons(200, noise=0.20)
-    return X, y
+# def generate_data():
+#     np.random.seed(0)
+#     X, y = datasets.make_moons(200, noise=0.20)
+#     return X, y
 
 
-def visualize(X, y, model):
-    # plt.scatter(X[:, 0], X[:, 1], s=40, c=y, cmap=plt.cm.Spectral)
-    # plt.show()
-    plot_decision_boundary(lambda x:predict(model,x), X, y)
-    plt.title("Logistic Regression")
+# def visualize(X, y, model):
+#     # plt.scatter(X[:, 0], X[:, 1], s=40, c=y, cmap=plt.cm.Spectral)
+#     # plt.show()
+#     plot_decision_boundary(lambda x:predict(model,x), X, y)
+#     plt.title("Logistic Regression")
 
 
 def plot_decision_boundary(pred_func, X, y):
@@ -133,12 +133,12 @@ def classify(X, y):
     pass
 
 
-def main():
-    X, y = generate_data()
-    config = Config()
-    model = build_model(X, y, config, 3, print_loss=True)
-    visualize(X, y, model)
-
-
-if __name__ == "__main__":
-    main()
+# def main():
+#     X, y = generate_data()
+#     config = Config()
+#     model = build_model(X, y, config, 3, print_loss=True)
+#     visualize(X, y, model)
+#
+#
+# if __name__ == "__main__":
+#     main()

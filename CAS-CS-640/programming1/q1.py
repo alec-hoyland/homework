@@ -14,10 +14,8 @@ import sklearn.datasets
 import sklearn.linear_model
 import matplotlib
 
-# num_examples = len(X) # training set size
-# nn_input_dim = 2 # input layer dimensionality
-# nn_output_dim = 2 # output layer dimensionality
-#
-# # Gradient descent parameters (I picked these by hand)
-# epsilon = 0.01 # learning rate for gradient descent
-# reg_lambda = 0.01 # regularization strength
+# load the dataset
+data = np.genfromtxt('data/dataset1/LinearX.csv', delimiter=",")
+
+config = Config()
+config.nn_output_dim = 1
