@@ -512,7 +512,7 @@ Too few epochs will result in a poorly-trained model.
 This is shown by my 100-epoch digit-task training,
 with an accuracy a little over 10%.
 
-## Contributions
+## Credits & Contributions
 
 I worked on this assignment by myself, but I did get a lot of help from the internet/textbooks.
 I used Bishop's Machine Learning textbook for the backpropagation algorithm.
