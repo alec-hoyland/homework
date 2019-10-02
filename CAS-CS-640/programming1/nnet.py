@@ -1,27 +1,16 @@
 import numpy as np
-from sklearn import datasets, linear_model
 import matplotlib.pyplot as plt
 
 
+# hold onto some parameters
 class Config:
-    nn_input_dim = 2  # input layer dimensionality
-    nn_output_dim = 2  # output layer dimensionality
-    epsilon = 0.01  # learning rate for gradient descent
-    reg_lambda = 0.01  # regularization strength
+    nn_input_dim = 2
+    nn_output_dim = 2
+    epsilon = 0.01 # learning rate
+    reg_lambda = 0.01
 
-# def generate_data():
-#     np.random.seed(0)
-#     X, y = datasets.make_moons(200, noise=0.20)
-#     return X, y
-
-
-# def visualize(X, y, model):
-#     # plt.scatter(X[:, 0], X[:, 1], s=40, c=y, cmap=plt.cm.Spectral)
-#     # plt.show()
-#     plot_decision_boundary(lambda x:predict(model,x), X, y)
-#     plt.title("Logistic Regression")
-
-
+# I wasn't sure how to do this, so I grabbed this function from the internet
+# https://github.com/dennybritz/nn-from-scratch/blob/0b52553c84c8bd5fed4f0c890c98af802e9705e9/nn_from_scratch.py#L27
 def plot_decision_boundary(pred_func, X, y):
     # Set min and max values and give it some padding
     x_min, x_max = X[:, 0].min() - .5, X[:, 0].max() + .5
@@ -38,105 +27,95 @@ def plot_decision_boundary(pred_func, X, y):
     plt.show()
 
 
-# Helper function to evaluate the total loss on the dataset
 def calculate_loss(model, X, y):
-    num_examples = len(X)  # training set size
+    """ evaluates the loss, for printing during training """
+    nExamples = len(X)  # training set size
     W1, b1, W2, b2 = model['W1'], model['b1'], model['W2'], model['b2']
-    # Forward propagation to calculate our predictions
+    # Forward propagation
     z1 = X.dot(W1) + b1
     a1 = np.tanh(z1)
     z2 = a1.dot(W2) + b2
-    exp_scores = np.exp(z2)
-    probs = exp_scores / np.sum(exp_scores, axis=1, keepdims=True)
+    these_scores = np.exp(z2)
+    these_p = these_scores / np.sum(these_scores, axis=1, keepdims=True)
     # Calculating the loss
-    corect_logprobs = -np.log(probs[range(num_examples), y])
-    data_loss = np.sum(corect_logprobs)
-    # Add regulatization term to loss (optional)
+    log_p = -np.log(these_p[range(nExamples), y])
+    data_loss = np.sum(log_p)
+    # Add regularization term to loss
+    # This is the L2 norm with coefficient reg_lambda/2
     data_loss += Config.reg_lambda / 2 * (np.sum(np.square(W1)) + np.sum(np.square(W2)))
-    return 1. / num_examples * data_loss
+    return 1. / nExamples * data_loss
 
 
 def predict(model, x):
+    """ use a trained model to predict, based on input x """
     W1, b1, W2, b2 = model['W1'], model['b1'], model['W2'], model['b2']
     # Forward propagation
     z1 = x.dot(W1) + b1
     a1 = np.tanh(z1)
     z2 = a1.dot(W2) + b2
-    exp_scores = np.exp(z2)
-    probs = exp_scores / np.sum(exp_scores, axis=1, keepdims=True)
-    return np.argmax(probs, axis=1)
+    these_scores = np.exp(z2)
+    # soft argmax output
+    these_p = these_scores / np.sum(these_scores, axis=1, keepdims=True)
+    return np.argmax(these_p, axis=1)
 
-
-# This function learns parameters for the neural network and returns the model.
-# - nn_hdim: Number of nodes in the hidden layer
-# - num_passes: Number of passes through the training data for gradient descent
-# - print_loss: If True, print the loss every 1000 iterations
 def build_model(X, y, config, nn_hdim, num_passes=20000, print_loss=False):
-    # Initialize the parameters to random values. We need to learn these.
-    num_examples = len(X)
+    """ build a model and train it """
+    nExamples = len(X)
+    # be consistent with the randomness
     np.random.seed(0)
+    # set up the parameters with random values, drawn from the normal distribution
+    # parameters are normalized/scaled by the square root of the input dimensionality
+    # to keep the input to a given hidden/output node small
     W1 = np.random.randn(config.nn_input_dim, nn_hdim) / np.sqrt(config.nn_input_dim)
     b1 = np.zeros((1, nn_hdim))
     W2 = np.random.randn(nn_hdim, config.nn_output_dim) / np.sqrt(nn_hdim)
     b2 = np.zeros((1, config.nn_output_dim))
 
-    # This is what we return at the end
+    # initialize outputs
     model = {}
 
-    # Gradient descent. For each batch...
+    # gradient descent, over num_passes epochs
     for i in range(0, num_passes):
 
-        # Forward propagation
+        ## Forward propagation
         z1 = X.dot(W1) + b1
         a1 = np.tanh(z1)
         z2 = a1.dot(W2) + b2
-        exp_scores = np.exp(z2)
-        probs = exp_scores / np.sum(exp_scores, axis=1, keepdims=True)
+        these_scores = np.exp(z2)
+        these_p = these_scores / np.sum(these_scores, axis=1, keepdims=True)
 
-        # Backpropagation
-        delta3 = probs
-        delta3[range(num_examples), y] -= 1
+        ## Backpropagation
+        delta3 = these_p
+        # clever hack for one-hot data
+        delta3[range(nExamples), y] -= 1
+        # compute the "gradient" of the output weights
         dW2 = (a1.T).dot(delta3)
+        # compute the "gradient" of the output biases
         db2 = np.sum(delta3, axis=0, keepdims=True)
+        # compute the errors for the hidden layer
+        # output errors times the derivative of the activation function
         delta2 = delta3.dot(W2.T) * (1 - np.power(a1, 2))
+        # compute the "gradient" of the hidden layer weights
         dW1 = np.dot(X.T, delta2)
+        # compute the "gradient" of the hidden layer biases
         db1 = np.sum(delta2, axis=0)
 
-        # Add regularization terms (b1 and b2 don't have regularization terms)
+        ## Add regularization terms
+        # I didn't add any regularization to biases, I think this is fine...
         dW2 += config.reg_lambda * W2
         dW1 += config.reg_lambda * W1
 
-        # Gradient descent parameter update
+        ## Gradient descent parameter update step
         W1 += -config.epsilon * dW1
         b1 += -config.epsilon * db1
         W2 += -config.epsilon * dW2
         b2 += -config.epsilon * db2
 
-        # Assign new parameters to the model
+        ## Update model
         model = {'W1': W1, 'b1': b1, 'W2': W2, 'b2': b2}
 
-        # Optionally print the loss.
-        # This is expensive because it uses the whole dataset, so we don't want to do it too often.
+        # do you want to print the loss?
         if print_loss and i % 1000 == 0:
             print("Loss after iteration %i: %f" % (i, calculate_loss(model, X, y)))
 
     return model
-
-
-def classify(X, y):
-    # clf = linear_model.LogisticRegressionCV()
-    # clf.fit(X, y)
-    # return clf
-
-    pass
-
-
-# def main():
-#     X, y = generate_data()
-#     config = Config()
-#     model = build_model(X, y, config, 3, print_loss=True)
-#     visualize(X, y, model)
-#
-#
-# if __name__ == "__main__":
-#     main()
