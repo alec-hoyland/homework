@@ -511,3 +511,14 @@ skyrockets as the number of epochs increase, before decreasing again with a larg
 Too few epochs will result in a poorly-trained model.
 This is shown by my 100-epoch digit-task training,
 with an accuracy a little over 10%.
+
+## Contributions
+
+I worked on this assignment by myself, but I did get a lot of help from the internet/textbooks.
+I used Bishop's Machine Learning textbook for the backpropagation algorithm.
+I reproduced [this function](https://github.com/dennybritz/nn-from-scratch/blob/0b52553c84c8bd5fed4f0c890c98af802e9705e9/nn_from_scratch.py#L27)
+for the decision boundary.
+I also read these articles:
+* https://towardsdatascience.com/how-to-build-your-own-neural-network-from-scratch-in-python-68998a08e4f6
+* https://iamtrask.github.io/2015/07/12/basic-python-network/
+* https://www.analyticsvidhya.com/blog/2017/05/neural-network-from-scratch-in-python-and-r/
