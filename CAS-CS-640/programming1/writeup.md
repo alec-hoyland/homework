@@ -361,6 +361,13 @@ number of epochs: 100
 
 ## Digit detection
 
+I applied the neural network to digit detection.
+In this task, there are 10 possible classes, one for each digit,
+and the input dimensionality is 64.
+
+
+### Varying the number of nodes
+
 ```
 Number of Neurons:  10
 -----------------
@@ -381,7 +388,11 @@ accuracy:  0.9387527839643652
 Number of Neurons:  300
 -----------------
 accuracy:  0.933184855233853
+```
 
+### Varying the regularization coefficient
+
+```
 Regularization Coefficient:  0.001
 -----------------
 accuracy:  0.9409799554565702
@@ -401,7 +412,11 @@ accuracy:  0.9398663697104677
 Regularization Coefficient:  0.1
 -----------------
 accuracy:  0.9420935412026726
+```
 
+### Varying the learning rate
+
+```
 Learning Rate:  0.0001
 -----------------
 accuracy:  0.9432071269487751
@@ -421,7 +436,11 @@ accuracy:  0.9398663697104677
 Learning Rate:  0.003
 -----------------
 accuracy:  0.8385300668151447
+```
 
+### Varying the number of epochs
+
+```
 Number of Epochs:  100
 -----------------
 accuracy:  0.10133630289532294
@@ -442,3 +461,53 @@ Number of Epochs:  20000
 -----------------
 accuracy:  0.8385300668151447
 ```
+
+## Conclusions
+
+In general, it is good to have a good number of neurons,
+though too many seems to result in too many parameters to train,
+and therefore worse results, unless other parameters are changed as well
+(such as the number of epochs).
+
+Increasing the regularization coefficient decreases the amount of overfitting.
+Overfitting occurs when the model over-specializes on the training dataset,
+which make it very accurate for the training dataset, but less accurate
+against novel data.
+When your data are noisy, it's better to have a model that overfits less.
+In the nonlinear dataset, I saw that increasing the regularization coefficient
+resulted a less accurate model, but a higher F-1 score.
+For the digit dataset,
+picking a higher regularization coefficient resulted in higher accuracy.
+Overall, I think this parameter should be hand-tuned,
+and depends heavily on the quality of your training dataset.
+
+A finer learning rate decreases the rate at which an optimization procedure
+converges, however it increases the likelihood that the optimization procedure
+will find a true minimum.
+A coarser learning rate therefore decreases the time it takes to train a model,
+but results an a less precisely-trained model.
+
+In my neural network, I don't look for convergence of the optimization.
+Instead, I train for a fixed number of epochs.
+This means that the learning rate determines how closely I get to some minimum
+of the loss function -- since too small of a learning rate means I don't get close,
+but too coarse of a learning rate means I might not find one at all.
+
+For example, in the digit-learning task, I had to use a learning rate
+of less than 0.003, or my model would completely fail at the task (0% accuracy).
+Generally, a lower learning rate was helpful here.
+
+Really, a training a good model means having a tiny learning rate
+and a large number of epochs, but this is time-expensive,
+since more epochs mean more training time.
+
+I think the effect works in the opposite direction with epochs
+and the regularization coefficient.
+This is because letting a model train for more epochs
+increases the degree to which it will overfit.
+I see this in my results with the nonlinear dataset, where the number of false positivess
+skyrockets as the number of epochs increase, before decreasing again with a large number of epochs.
+
+Too few epochs will result in a poorly-trained model.
+This is shown by my 100-epoch digit-task training,
+with an accuracy a little over 10%. 
