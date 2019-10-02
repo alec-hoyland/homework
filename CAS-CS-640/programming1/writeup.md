@@ -497,7 +497,7 @@ For example, in the digit-learning task, I had to use a learning rate
 of less than 0.003, or my model would completely fail at the task (0% accuracy).
 Generally, a lower learning rate was helpful here.
 
-Really, a training a good model means having a tiny learning rate
+Really, training a good model means having a tiny learning rate
 and a large number of epochs, but this is time-expensive,
 since more epochs mean more training time.
 
@@ -510,4 +510,4 @@ skyrockets as the number of epochs increase, before decreasing again with a larg
 
 Too few epochs will result in a poorly-trained model.
 This is shown by my 100-epoch digit-task training,
-with an accuracy a little over 10%. 
+with an accuracy a little over 10%.
