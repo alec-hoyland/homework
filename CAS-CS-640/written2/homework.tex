@@ -26,6 +26,22 @@
     \questionpart
     The point in ROC space is at $\left ( FP / (FP + TN) , TP / (TP + TN) \right )$.
     Therefore, $ ( 4 / (4 + 8) , 16 / (16 + 8) ) = (0.33, 0.67)$.
+
+    \questionpart
+    The F-1 score is $2 TP / (2 TP + FP + FN)$.
+    Therefore, $F_1 = 2 * 16 / (2 * 16 + 4 + 2) = 0.84$
+\end{alphaparts}
+
+\question
+In this neural network, the activation function is an x-shifted Heaviside function.
+
+\begin{alphaparts}
+    \questionpart
+    The input vector is $[0, 0, 1, 0, 0, 1]$.
+    This leads to a hidden layer state of $[2, 2]$, which is activated to
+    $[1, 1]$.
+    This leads to an output layer state of $[4, -4]$, which is activated to $[1, 0]$.
+    Thus, the neural network concludes that Romeo and Juliet are acquaintances.
 \end{alphaparts}
 
 \begin{colophon}
