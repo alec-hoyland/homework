@@ -35,7 +35,6 @@
 }
 
 \begin{document}
-% \nipsfinalcopy is no longer used
 
 \maketitle
 
@@ -46,6 +45,106 @@
   bold, and in point size 12. Two line spaces precede the abstract. The abstract
   must be limited to one paragraph.
 \end{abstract}
+
+\section{Introduction}
+
+Symbolic processing is an important feature of general intelligence,
+crucial for understanding underlying rules and latent features,
+to develop models of the world that can be used for prediction.
+In animals, simple prediction tasks such as object tracking and navigation,
+are necessary for survival.
+These tasks fall under the umbrella of symbolic processing.
+One of the most straightfoward symbolic processing tasks
+which can be abstracted to a computational model is trajectory prediction.
+
+This task involves observing a system with a state that evolves in time
+for a few epochs, before making predictions of the system's future state
+based on those observations.
+Real-world applications involve pedestrian and vehicle tracking, and
+robot navigation and agility.
+In essence, it is a type of supervised learning problem,
+in which the prediction model is being updated at each time step.
+
+\subsection{What is a trajectory?}
+
+For the purpose of this section, a \textit{trajectory} is an ordered set of states
+which are evolved according to one or more rules.
+The purpose of symbolic trajectory prediction is, if given a few states of the trajectory,
+to intuit the latent rules and predict future states.
+In a real-world scenario, the agent predicts simultaneously to the evolution of the trajectory in time,
+meaning that more data are available to the agent each time step.
+
+Mathematically, a trajectory is formally represented as a sequence of values $\left[ f^k(x) \right]_{k \in \mathbb{N}}$,
+calcuilated by the iterated application of a mapping $f$ to an element $x$ of its source.
+It is analogous to the time-ordered set of states in a dynamical system (\textit{e.g.} a Poincar\'e map) (CITE)
+such as the function of position produced by integrating the equations of motion in Newtonian mechanics.
+
+\subsection{What is a feature?}
+
+A feature is any important defining characteristic of a snapshot of a trajectory.
+For example, if the trajectory represents the motion of a ball in flight across a 2-dimensional coordinate grid,
+the crucial features are the coordinates $(x, y)$ parametrixed by the time-coordinate $t$.
+If the color of the ball mattered (\textit{i.e.} isn't time-invariant), then it would also be a feature.
+For the purpose of this paper, the agent is assumed to be able to discern which features are important and which are not.
+From a biological perspective, we will take for granted the miraculous specificity of the visual system in mammals.
+In artificial intelligence, we will assume a sufficiently-advanced computer vision algorithm and peripherals.
+If, for example, three polygonal shapes were drawn on a blackboard and the agent were asked to determine the pattern,
+it is reasonable to neglect the minute deviations in the lines caused by the hand of an unskilled artist.
+Similarly, imperfections in printed symbols could be ignored as well.
+The best heuristic for determining what is a feature and what is not relies on comparing adjacent states of the trajectory.
+Major differences are feature; minor differences can be neglected.
+
+\subsection{Representing the trajectory as a vector transformation}
+
+One way to imagine a trajectory is to consider a series of points in the plane formed by the time-coordinate $t$
+and a function $f(t)$ which produces a vector output $\vec{x}$,
+where each element in $\vec{x}$ is the numerical value of a feature at time $t$.
+In this situation, the trajectory is a vector parametrized by the time-coordinate.
+To compare adjacent states, the first time-derivative can be taken.
+Since time is discrete, the derivative operator is best represented by the finite difference.
+
+A finite difference is a mathematical expression of the form $f(x + b) - f(x - a)$.
+If the finite difference is divided by $b-a$, the different quotient is defined.
+The first forward finite difference is defined by
+
+\begin{equation}
+  \mathrm{D}x_n = x_n - x_{n-1}
+\end{equation}
+
+for variable $x$ at discrete indices $n$ and $n-1$.
+Higher-order finite differences can also be defined, such as the second-order forward finite difference:
+
+\begin{equation}
+  \mathrm{D}^2 x_n = x_n - 2 x_{n-1} + x_{n-2}
+\end{equation}
+
+These finite differences are first-order correct in accuracy with uniform grid-spacing $t_n$.
+More accurate finite differences can be computed using more points.
+At minimum, approximating a numerical derivative of order $k$ with the fewest points requires $k+1$ points.
+
+If two states of the trajectory $x_n$ and $x_{n-1}$ are known, the next point can be approximated as:
+
+\begin{equation}
+  x_{n+1} \approx \frac{1}{\Delta} \mathrm{D}x_n + x_n = \frac{x_n - x_{n-1}}{\Delta} + x_n
+\end{equation}
+
+where $\Delta = t_n - t_{n-1}$ is the difference in the time-coordinate between adjacent indices.
+If higher-order finite differences are used, the estimate will be more accurate,
+up to the derivative order equal to the order of the polynomial representation of the function.
+This requires knowing more past states.
+
+Since any well-behaved function can be approximated by its (truncated) Taylor series,
+the discrete Taylor series generalization, given by Einar Hille,
+can approximate a well-behaved function using finite differences (CITE).
+For $t > 0$
+
+\begin{equation}
+  f(a + t) = \lim_{\Delta \rightarrow 0^+} \sum_{n=0}^{\infty} \frac{t^n}{n! \Delta^n} \mathrm{D}^n f(a)
+\end{equation}
+
+This equation describes how if a function is known to be evaluatable at $a$: $f(a)$,
+and finite differences can be taken,
+then the function can be approximated at any future point $a + t$.
 
 \section{Submission of papers to NeurIPS 2018}
 
