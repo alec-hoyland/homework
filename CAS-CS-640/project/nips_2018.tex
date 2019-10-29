@@ -65,6 +65,10 @@ robot navigation and agility.
 In essence, it is a type of supervised learning problem,
 in which the prediction model is being updated at each time step.
 
+The goal of this paper is to put forward several theories on how this can be practically done,
+with an emphasis on discovering fundamental mathematical relationships
+which could be performed by ensembles of neurons in the brain.
+
 \subsection{What is a trajectory?}
 
 For the purpose of this section, a \textit{trajectory} is an ordered set of states
@@ -94,7 +98,8 @@ Similarly, imperfections in printed symbols could be ignored as well.
 The best heuristic for determining what is a feature and what is not relies on comparing adjacent states of the trajectory.
 Major differences are feature; minor differences can be neglected.
 
-\subsection{Representing the trajectory as a vector transformation}
+\section{Representing the trajectory through vector transformations}
+\label{sec:vectorrepresentation}
 
 One way to imagine a trajectory is to consider a series of points in the plane formed by the time-coordinate $t$
 and a function $f(t)$ which produces a vector output $\vec{x}$,
@@ -139,12 +144,96 @@ can approximate a well-behaved function using finite differences (CITE).
 For $t > 0$
 
 \begin{equation}
+  \label{eq:hille}
   f(a + t) = \lim_{\Delta \rightarrow 0^+} \sum_{n=0}^{\infty} \frac{t^n}{n! \Delta^n} \mathrm{D}^n f(a)
 \end{equation}
 
 This equation describes how if a function is known to be evaluatable at $a$: $f(a)$,
 and finite differences can be taken,
 then the function can be approximated at any future point $a + t$.
+
+The vector transformation formulation is satisfactory for predicting trajectories
+based on linear rules.
+It is mathematically equivalent to least-squares fitting, and therefore can be represented in matrix form (CITE).
+This results in a linear transformation called the predictor:
+
+\begin{equation}
+  \mathrm{P}(a) = \left[ \frac{1}{n!} \mathrm{D}^n f(a) \right]_{n \in \mathbb{N}}
+\end{equation}
+
+The dot product of the predictor can be taken with $\left[ \frac{t^n}{\Delta^n} \right]_{n \in \mathbb{N}}$
+to find the predicted trajectory $f(a + t)$ for $t > 0$.
+
+\subsection{Example: one-dimensional trajectory}
+
+Here we consider a trajectory produced by a linear combination in a polynomial basis.
+The goal is to predict the one-dimensional trajectory
+
+\begin{equation}
+  f(t) = -40 + 100 t - 10 t^2
+\end{equation}
+
+For $\Delta = 0.01$, the first and second finite differences
+are computed at $f(2\Delta)$.
+By the Hille series (\ref{eq:hille}), we can compute
+
+\begin{equation}
+	f(2\Delta + t) = f(0) + \frac{t}{\Delta} \mathrm{D}f(2\Delta) + \frac{t^2}{2 \Delta^2} \mathrm{D}f(2\Delta)
+\end{equation}
+
+which is equivalent to the Taylor series
+
+\begin{equation}
+  f(t) = x_0 + v_0 + \frac{1}{2} a_0 t^2
+\end{equation}
+
+where $x_0$, $v_0$, and $a_0$ are parameters fit by the model.
+Any extra parameters, for example, for a 3rd order polynomial fit are zero, and thus omitted.
+
+ADD CODE \& FIGURE
+
+\subsection{Example: multi-dimensional trajectory}
+
+Here we consider a multi-dimensional example.
+The latent rule is at time $t_n \in \mathbb{N}$, we draw a square,
+where the top-left vertex is at the origin,
+with a side length of $s = t_n + 1$.
+
+Treating the observation mechanism (\textit{e.g.} the visual cortex) as an oracle,
+we identify eight features: the four coordinate-pairs which note the vertices of the square.
+One vertex (top left) never changes position -- it is fixed at the origin.
+The top right vertex proceeds according to the rule $f_{tr}(t_n) = (0, t_n + 1)$.
+The bottom left vertex proceeds according to $f_{bl}(t_n) = (-1 - t, 0)$.
+Corresponding, the bottom right vertex evolves according to $f_{br}(t_n) = (-1 -t, -1 -t)$.
+
+Thus, each coordinate pair evolves either linearly or doesn't change (is constant).
+Finite difference approximations can be taken for each coordinate independently,
+and the rule can be determined after two steps.
+
+ADD CODE \& FIGURE
+
+\section{Representing the trajectory through function transformations}
+
+The idea of mapping vectors across a time-coordinate can be expanded to a larger space of problems.
+In this generalization, the latent rule involves defining a series of functions ordered in time:
+$ \left[ f_n(\mathcal{S})\right]_{n \in \mathbb{N}}$.
+
+Each function acts on a surface $\mathcal{S}$,
+the specifics of which should not matter for the general formalism.
+
+In the field of functional calculus, arithmetic can be defined on functions.
+The ``sum'' of two functions is the convolution $*$, and the ``difference''
+of two functions is the cross-correlation $\star$.
+
+If the rule can be modeled as a first-order transformation in function space,
+the evolution rule is:
+
+\begin{equation}
+  f_{n+1}(\cdot) = (f_n(\cdot) \star f_{n-1}(\cdot)) * f_n(\cdot)
+\end{equation}
+
+This formalism is an extension of the vector representation formalism (\ref{sec:vectorrepresentation}),
+since convolution and cross-correlation are defined for all well-behaved functions.
 
 \section{Submission of papers to NeurIPS 2018}
 
