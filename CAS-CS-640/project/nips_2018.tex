@@ -16,6 +16,8 @@
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
 
+\bibliographystyle{unsrt}
+
 \title{Symbolic Processing for Trajectory Prediction}
 
 % The \author macro works with any number of authors. There are two commands
@@ -141,7 +143,7 @@ This requires knowing more past states.
 
 Since any well-behaved function can be approximated by its (truncated) Taylor series,
 the discrete Taylor series generalization, given by Einar Hille,
-can approximate a well-behaved function using finite differences (CITE).
+can approximate a well-behaved function using finite differences \citep{hilleFunctionalAnalysisSemigroups1957}.
 For $t > 0$
 
 \begin{equation}
@@ -258,8 +260,12 @@ has broad implications for trajectory prediction,
 since convolution and cross-correlation in the time domain are multiplication in the Laplace domain:
 
 \begin{equation}
-  F_{n+1}(t) = F_n(t) \cdot \bar{F}_{n-1}(t) \cdot F_n(t)
+  F_{n+1}(t) = F_n(t) \cdot \bar{F}^*_{n-1}(t) \cdot F_n(t)
 \end{equation}
+
+where $f^*$ is the complex conjugate of $f$.
+This provides a convenient mathematical framework for exploring spatiotemporal navigation in a systems neuroscience context,
+however in practice, the theory is difficult to implement in quantitative models.
 
 
 \section{Related Works}
@@ -567,7 +573,8 @@ since convolution and cross-correlation in the time domain are multiplication in
 % go at the end of the paper. Do not include acknowledgments in the anonymized
 % submission, only in the final paper.
 %
-% \section*{References}
+
+\bibliography{bibliography}
 %
 % References follow the acknowledgments. Use unnumbered first-level heading for
 % the references. Any choice of citation style is acceptable as long as you are
