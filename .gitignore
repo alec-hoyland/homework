@@ -16,6 +16,8 @@
 *.xdv
 *.csv
 gsubmit*
+*.bbl
+*.blg
 
 # don't ignore pdfs in current classes
 !CAS-CS-640/**/*.pdf
