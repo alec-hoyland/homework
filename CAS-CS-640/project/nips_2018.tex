@@ -48,6 +48,19 @@
   must be limited to one paragraph.
 \end{abstract}
 
+\section{Proposal}
+
+The purpose of this project is to develop algorithms for trajectory prediction
+based on first-principles.
+
+We explicate the core theory to trajectory prediction,
+and propose both biologically plausible and artificial network architectures
+for predicting a trajectory without any training data,
+or in-built physics models.
+
+We build and evaluate a factorized neural relational inference machine,
+as well as a dense, two-layer neural network for ODE and SDE prediction.
+
 \section{Introduction}
 
 Symbolic processing is an important feature of general intelligence,
@@ -267,6 +280,8 @@ where $f^*$ is the complex conjugate of $f$.
 This provides a convenient mathematical framework for exploring spatiotemporal navigation in a systems neuroscience context,
 however in practice, the theory is difficult to implement in quantitative models \citep{tsaoIntegratingTimeExperience2018}.
 
+One could conceive of a network where each neuron receives an input, and decays down to some
+
 \subsection{Universal approximation with neural networks}
 
 The problem of predicting a trajectory is equivalent to that of fitting a function to the trajectory.
@@ -286,7 +301,8 @@ which proves that arbitrarily wide feedforward neural networks are universal app
 can approximate with arbitrary precision any Lebesgue measure zero function.
 
 This is an extremely powerful result, which shows that artificial neural networks
-can
+of sufficient size can approximate a large class of functions.
+
 
 
 
