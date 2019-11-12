@@ -18,7 +18,7 @@
 
 \bibliographystyle{unsrt}
 
-\title{Symbolic Processing for Trajectory Prediction}
+\title{Tooling around with MNIST: what's the best model architecture?}
 
 % The \author macro works with any number of authors. There are two commands
 % used to separate the names and addresses of multiple authors: \And and \AND.
@@ -41,68 +41,14 @@
 \maketitle
 
 \begin{abstract}
-  The abstract paragraph should be indented \nicefrac{1}{2}~inch (3~picas) on
-  both the left- and right-hand margins. Use 10~point type, with a vertical
-  spacing (leading) of 11~points.  The word \textbf{Abstract} must be centered,
-  bold, and in point size 12. Two line spaces precede the abstract. The abstract
-  must be limited to one paragraph.
-\end{abstract}
-
-\section{Proposal}
-
-The purpose of this project is to develop algorithms for trajectory prediction
-based on first-principles.
-
-We explicate the core theory of trajectory prediction,
-and propose both biologically plausible and artificial network architectures
-for predicting a trajectory without any training data,
-or in-built physics models.
-
-We build and evaluate a factorized neural relational inference machine,
-as well as a dense, two-layer neural network for ODE and SDE prediction.
-We also advance the theory on associative-memory machines for trajectory prediction.
-If I have time, I intend to also implement this theory as a computational model.
-
-The goal of this project is to explore how these models handle prediction without pre-training,
-as well as to evaluate how well they can be used to elucidate basic principle of symbolic processing.
+  This is the abstract.
+\end{abstract}W
 
 \section{Introduction}
 
-Symbolic processing is an important feature of general intelligence,
-crucial for understanding underlying rules and latent features,
-to develop models of the world that can be used for prediction.
-In animals, simple prediction tasks such as object tracking and navigation,
-are necessary for survival.
-These tasks fall under the umbrella of symbolic processing.
-One of the most straightfoward symbolic processing tasks
-which can be abstracted to a computational model is trajectory prediction.
+This is the introduction
 
-This task involves observing a system with a state that evolves in time
-for a few epochs, before making predictions of the system's future state
-based on those observations.
-Real-world applications involve pedestrian and vehicle tracking,
-robot navigation and agility, automated physics tracking,
-and aeronautics.
-In essence, it is a type of supervised learning problem,
-in which the prediction model is being updated at each time step.
-
-The goal of this paper is to put forward several theories on how this can be practically done,
-with an emphasis on discovering fundamental mathematical relationships
-which could be performed by ensembles of neurons in the brain.
-
-\subsection{What is a trajectory?}
-
-For the purpose of this section, a \textit{trajectory} is an ordered set of states
-which are evolved according to one or more rules.
-The purpose of symbolic trajectory prediction is, if given a few states of the trajectory,
-to intuit the latent rules and predict future states.
-In a real-world scenario, the agent predicts simultaneously to the evolution of the trajectory in time,
-meaning that more data are available to the agent each time step.
-
-Mathematically, a trajectory is formally represented as a sequence of values $\left[ f^k(x) \right]_{k \in \mathbb{N}}$,
-calculated by the iterated application of a mapping $f$ to an element $x$ of its source.
-It is analogous to the time-ordered set of states in a dynamical system (\textit{e.g.} a Poincar\'e map)
-such as the function of position produced by integrating the equations of motion in Newtonian mechanics.
+\subsection{The MNIST dataset}
 
 \subsection{What is a feature?}
 
