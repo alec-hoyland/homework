@@ -132,3 +132,6 @@ end
 
 # train the model and output the loss for the trained and tested data at each step
 Flux.train!(L, params(model), Iterators.repeated(training_batch, 1000), Descent(0.01), cb = Flux.throttle(update_loss!, 1))
+
+prediction(i) = findmax(model(preprocess(images[i])))[2] - 1
+prediction(i) = (images[i] |> preprocess |> model |> findmax)[2] - 1

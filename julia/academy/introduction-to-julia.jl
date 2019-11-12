@@ -13,6 +13,7 @@ kramer_num = pop!(myphonebook, "Kramer")
 myfavoriteanimals = ("penguins", "cats", "sugargliders")
 
 myfavoriteanimals[1]
+myfavoriteanimals[2]
 
 # NOTE: tuples are immutable
 
