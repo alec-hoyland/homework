@@ -38,9 +38,48 @@
 
 \section{Introduction}
 
-This is the introduction
+Optical character recognition (OCR) is the ability to take as input an image including handwritten or printed text,
+and output the sequence of characters contained within the image.
+OCR engines have many applications, including data entry (e.g. for checks, passports, invoices),
+book-scanning (e.g. for Project Gutenberg), pen computing, and in assistive devices
+(e.g. for blind and visually-impaired individuals).
+In an OCR engine, text is read from a scanned document or image,
+and translate the images into a form manipulable by the computer, such as plain text,
+enabling a multitude of other analyses and operations.
+As the saying goes, ``You can't grep dead trees!''
+
+In this paper, we will explore a convolutional neural network, feedforward neural network,
+and several autoencoders for use in labeling digits from the MNIST dataset.
 
 \section{Related Works}
+
+The MNIST dataset \citep{bottouComparisonClassifierMethods1994, HandwrittenDigitDatabase}
+has been used as a standard machine learning benchmark
+for more than two decades.
+It is comprised of 60,000 28x28 grayscale images of handwritten digits 0-9.
+The handwriting samples themselves were written by American high school students,
+and American Census Bureau employees.
+While concerns about the construct validity of the dataset have been raised in recent years \citep{yadavColdCaseLost2019}
+the dataset and its variants remains a staple of machine learning benchmarking,
+and serves well for evaluating the quality of various model architectures.
+
+The MNIST dataset is suited to a classification task,
+where the image is read as input, and the output is the numerical digit label (i.e. 0-9).
+Many different model architectures have been implemented to achieve highest accuracy on the classification task.
+
+Many different model architectures have been tested against the MNIST dataset.
+Linear classifiers comprise some of the simplest of models, and traditionally fare poorly on digit identification
+\citep{bottouComparisonClassifierMethods1994}.
+Some of the first attempts based on multilayer neural networks with backpropagation \citep{bottouComparisonClassifierMethods1994, lecunGradientbasedLearningApplied1998},
+were performed by the original curators of the MNIST dataset.
+Many variations have been tested, including limited receptive field models \citep{kussulImprovedMethodHandwritten2004},
+and convolutional neural networks \citep{simardBestPracticesConvolutional2003}.
+The latter exploits elastic training image deformations, which achieved state-of-the-art accuracy.
+Image deformation has also been explored in hidden Markov models \citep{keysersDeformationModelsImage2007}.
+Since then, methods have improved in GPU-based computations in deep, big simple neural networks
+\citep{ciresanDeepBigSimple2010, ciresanMulticolumnDeepNeural2012}.
+Support vector machines \citep{decosteTrainingInvariantSupport2002} have also been used for image-recognition tasks.
+
 
 \section{Methods}
 
