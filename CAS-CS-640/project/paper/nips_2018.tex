@@ -80,8 +80,69 @@ Since then, methods have improved in GPU-based computations in deep, big simple 
 \citep{ciresanDeepBigSimple2010, ciresanMulticolumnDeepNeural2012}.
 Support vector machines \citep{decosteTrainingInvariantSupport2002} have also been used for image-recognition tasks.
 
-
 \section{Methods}
+
+In this paper, four models are implemented and compared to each other.
+The goal is to determine what sort of basic model architecture performs the best,
+in efficiency of training/evaluating, as well as in accuracy of the resultant classification.
+
+
+\subsection{Autoencoder}
+``
+The autoencoder model encodes the MNIST images as compressed vectors
+that can later be decoded back into images.
+The vector input data is 784-dimensional, and the output dimension of this model is 32-dimensional.
+This implies that the encoding is a strongly compressed (lossy) representation.
+
+The encoder has a single hidden layer with 784 inputs, 32 hidden units, and a leaky
+rectifying linear unit (leaky ReLU) output layer.
+
+The decoder also has a single hidden layer, with 32 input units, and 784 output units.
+
+Training was performed using the mean-squared error, with the Adam optimizer \citep{kingmaAdamMethodStochastic2017}.
+Data were partitioned into batches of size 1000.
+
+Since autoencoding is used for data representation, after training,
+the decoder was scrapped, and replaced with a fully-connected classifier layer with a softargmax output.
+
+\subsection{Convolutional neural network}
+
+The convolutional neural network (CNN) consists of three convolutional layers,
+a fully-connected layer, and a softargmax output.
+
+The first convolutional layer operates on a 28x28 image, with a 3x3 window,
+padding of (1, 1), and a ReLU activation.
+This leads to 16 units in the second convolution layer,
+which operate with a 3x3 window and padding of (1, 1) on 14x14 images.
+This convolutional layer passes through ReLU activation to a third convolution layer,
+which acts on 7x7 images, with the same padding and ReLU activation as before.
+
+Each convolutional layer is separated by a 2x2 maximum pooling layer.
+
+Finally, the 3-dimensional tensor is flattened to 2 dimensions,
+and passed to a 288-unit fully-connected layer with linear activation,
+and 10 outputs (corresponding to the digits).
+The softargmax function is used to squash the outputs to normalized probabilities.
+
+Loss is computed by the cross-entropy function, and Adam with $\beta = 0.001$
+is used for training.
+
+Several strategies were implemented to try to improve the model.
+First, the input data was fuzzed with Gaussian noise ($\xi = 0.1$)
+to try to make the model more robust.
+Secondly, early-stopping would be triggered at 99.9\% accuracy,
+in order to prevent overfitting.
+Finally, an adaptive learning rate was implemented.
+If no improvement was seen in 5 epochs, the learning rate was decreased by 90\%
+to a minimum of $10^{-6}$.
+If no improvement was seen after 10 epochs, the model will stop training as well.
+
+\subsection{Fully-connected neural network}
+
+A multi-layer neural network was also tested.
+This network consists of 2 fully-connected layers each with 32 hidden units.
+ReLU activation is used between the hidden layers,
+and the softargmax function is used to squash outputs.
 
 \section{Results}
 
