@@ -48,8 +48,27 @@ and translate the images into a form manipulable by the computer, such as plain 
 enabling a multitude of other analyses and operations.
 As the saying goes, ``You can't grep dead trees!''
 
-In this paper, we will explore a convolutional neural network, feedforward neural network,
-and several autoencoders for use in labeling digits from the MNIST dataset.
+A successful model is one which accurately predicts the correct label for the image
+(i.e. recognizes the digit), and does so quickly.
+A model that fails to accurately label is not useful, as is one that labels accurately,
+but too slowly to be useful in real-world applications.
+
+We describe two measures of efficiency,
+training time and testing time.
+The former is the total runtime of the training phase,
+and the latter is the total runtime of the testing phase.
+Since the model need only be trained once (or perhaps fine-tuned later),
+minimizing runtime on the testing set is more important,
+since in a real-world scenario, the ``testing'' set will be monumentally larger,
+consisting of any documents or images the model is used to annotate.
+
+Intuition indicates that simpler models,
+which involve less computationally-involved operations,
+will perform better on measures of efficiency,
+though it is possible that the decrease in accuracy would be unacceptable.
+
+In this paper, we will explore a convolutional neural network and a feedforward neural network,
+with various training schedules, and benchmark accuracy and runtime speed.
 
 \section{Related Works}
 
@@ -86,23 +105,23 @@ In this paper, four models are implemented and compared to each other.
 The goal is to determine what sort of basic model architecture performs the best,
 in efficiency of training/evaluating, as well as in accuracy of the resultant classification.
 
-\subsection{Autoencoder}
-``
-The autoencoder model encodes the MNIST images as compressed vectors
-that can later be decoded back into images.
-The vector input data is 784-dimensional, and the output dimension of this model is 32-dimensional.
-This implies that the encoding is a strongly compressed (lossy) representation.
-
-The encoder has a single hidden layer with 784 inputs, 32 hidden units, and a leaky
-rectifying linear unit (leaky ReLU) output layer.
-
-The decoder also has a single hidden layer, with 32 input units, and 784 output units.
-
-Training was performed using the mean-squared error, with the Adam optimizer \citep{kingmaAdamMethodStochastic2017}.
-Data were partitioned into batches of size 1000.
-
-Since autoencoding is used for data representation, after training,
-the decoder was scrapped, and replaced with a fully-connected classifier layer with a softargmax output.
+% \subsection{Autoencoder}
+% ``
+% The autoencoder model encodes the MNIST images as compressed vectors
+% that can later be decoded back into images.
+% The vector input data is 784-dimensional, and the output dimension of this model is 32-dimensional.
+% This implies that the encoding is a strongly compressed (lossy) representation.
+%
+% The encoder has a single hidden layer with 784 inputs, 32 hidden units, and a leaky
+% rectifying linear unit (leaky ReLU) output layer.
+%
+% The decoder also has a single hidden layer, with 32 input units, and 784 output units.
+%
+% Training was performed using the mean-squared error, with the Adam optimizer \citep{kingmaAdamMethodStochastic2017}.
+% Data were partitioned into batches of size 1000.
+%
+% Since autoencoding is used for data representation, after training,
+% the decoder was scrapped, and replaced with a fully-connected classifier layer with a softargmax output.
 
 \subsection{Convolutional neural network}
 
@@ -123,27 +142,88 @@ and passed to a 288-unit fully-connected layer with linear activation,
 and 10 outputs (corresponding to the digits).
 The softargmax function is used to squash the outputs to normalized probabilities.
 
-Loss is computed by the cross-entropy function, and Adam with $\beta = 0.001$
-is used for training.
+Loss is computed by the cross-entropy function, and the Adam optimizer with $\beta = 0.001$
+is used for training \citep{kingmaAdamMethodStochastic2017}.
 
-Several strategies were implemented to try to improve the model.
-First, the input data was fuzzed with Gaussian noise ($\xi = 0.1$)
-to try to make the model more robust.
-Secondly, early-stopping would be triggered at 99.9\% accuracy,
-in order to prevent overfitting.
-Finally, an adaptive learning rate was implemented.
-If no improvement was seen in 5 epochs, the learning rate was decreased by 90\%
-to a minimum of $10^{-6}$.
-If no improvement was seen after 10 epochs, the model will stop training as well.
+% Several strategies were implemented to try to improve the model.
+% First, the input data was fuzzed with Gaussian noise ($\xi = 0.1$)
+% to try to make the model more robust.
+% Secondly, early-stopping would be triggered at 99.9\% accuracy,
+% in order to prevent overfitting.
+% Finally, an adaptive learning rate was implemented.
+% If no improvement was seen in 5 epochs, the learning rate was decreased by 90\%
+% to a minimum of $10^{-6}$.
+% If no improvement was seen after 10 epochs, the model will stop training as well.
 
 \subsection{Fully-connected neural network}
 
 A multi-layer neural network was also tested.
-This network consists of 2 fully-connected layers each with 32 hidden units.
+This network consists of 2 fully-connected, feedforward layers each with 32 hidden units.
 ReLU activation is used between the hidden layers,
 and the softargmax function is used to squash outputs.
 
-The model follows the same training scheme with modifications as the CNN model.
+The cross-entropy loss is used, and Adam is the optimizer algorithm.
+
+\subsection{Modifications to existing models}
+
+Several alterations were made to the base models to attempt to improve accuracy and efficiency.
+
+First, the input data were fuzzed with Gaussian noise ($\xi = 0.1$)
+to try to make the model more robust.
+Second, an modified training schedule was implemented,
+with early-stopping at 99.9\% accuracy to prevent overfitting,
+and an adaptive learning rate.
+
+In the adaptive learning rate schedule,
+if no improvement was seen in 5 epochs, the learning rate was decreased by 90\%
+to a minimum of $10^{-6}$.
+If no improvement was seen after 10 epochs, training stops early,
+as the model is assumed to have converged to a local minimum.
+
+These modifications result in a total of eight models evaluated:
+
+\begin{itemize}
+  \item \textsc{Conv}, the base convolutional neural network
+  \item \textsc{ConvFuzz}, CNN with input fuzzing
+  \item \textsc{ConvAdpt}, CNN with adaptive learning rate
+  \item \textsc{ConvFull}, CNN with both input fuzzing and adaptive learning rate
+  \item \textsc{Dense}, the base fully-connected feedforward neural network
+  \item \textsc{DenseFuzz}, feedforward network with input fuzzing
+  \item \textsc{DenseAdpt}, feedforward network with adaptive learning rate
+  \item \textsc{DenseFull}, feedforward network with both input fuzzing and adaptive learning rate
+\end{itemize
+
+\subsection{Evaluating quality of models}
+
+Models were evaluated for accuracy and efficiency.
+
+Accuracy is defined as the number of correct labels divided by the size of the test set.
+Efficiency was measured by training time, and testing time.
+Training time is defined as the amount of time for which the model is trained.
+Testing time is the amount of time it takes for the model to label the testing set.
+
+Unless training time is prohibitively long, testing time is more important.
+This is because possessing a model that can identify characters and glyphs quickly,
+is important for real-world applications of optical character recognition.
+A model does not need only to be accurate, it should also be fast.
+
+% \begin{table}
+%   \caption{Models tested}
+%   \label{tbl:models}
+%   \centering
+%   \begin{tabular}{lll}
+%     \toprule
+%
+%     \multicolumn{2}{c}{Part}                   \\
+%     \cmidrule(r){1-2}
+%     Name     & Description     & Size ($\mu$m) \\
+%     \midrule
+%     Dendrite & Input terminal  & $\sim$100     \\
+%     Axon     & Output terminal & $\sim$10      \\
+%     Soma     & Cell body       & up to $10^6$  \\
+%     \bottomrule
+%   \end{tabular}
+% \end{table}
 
 \section{Results}
 
