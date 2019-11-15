@@ -6,6 +6,8 @@ using Flux: onehotbatch, onecold, crossentropy, throttle
 using Base.Iterators: repeated, partition
 using Printf, BSON
 
+outfile = "mnist_conv.bson"
+
 # Load labels and images from Flux.Data.MNIST
 @info("Loading data set")
 train_labels = MNIST.labels()
@@ -87,4 +89,4 @@ end
 testing_time = @elapsed model(test_set[1])
 testing_accuracy = accuracy(test_set...)
 
-BSON.@save joinpath(dirname(@__FILE__), 'mnist_conv.bson') model training_time testing_time testing_accuracy
+BSON.@save joinpath(dirname(@__FILE__), outfile) model training_time testing_time testing_accuracy
