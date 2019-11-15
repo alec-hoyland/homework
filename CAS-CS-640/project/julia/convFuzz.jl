@@ -6,6 +6,8 @@ using Flux: onehotbatch, onecold, crossentropy, throttle
 using Base.Iterators: repeated, partition
 using Printf, BSON
 
+outfile = "mnist_convFuzz.bson"
+
 # Load labels and images from Flux.Data.MNIST
 @info("Loading data set")
 train_labels = MNIST.labels()
@@ -64,9 +66,15 @@ model = gpu(model)
 # Make sure our model is nicely precompiled before starting our training loop
 model(train_set[1][1])
 
-# `loss()` calculates the crossentropy loss between our prediction `y_hat`
-# (calculated from `model(x)`) and the ground truth `y`.
-loss(x, y) = crossentropy(model(x), y)
+# loss() calculates the crossentropy loss between our prediction
+# and the ground truth.
+# It is augmented by adding Gaussian random noise to the image.
+
+function loss(x, y)
+    x_aug = x .+ 0.1f0 * gpu(randn(eltype(x), size(x)))
+    y_hat = model(x_aug)
+    return crossentropy(y_hat, y)
+end
 
 # accuracy() computes the accuracy in a vectorized format
 accuracy(x, y) = mean(onecold(model(x)) .== onecold(y))
@@ -87,4 +95,4 @@ end
 testing_time = @elapsed model(test_set[1])
 testing_accuracy = accuracy(test_set...)
 
-BSON.@save joinpath(dirname(@__FILE__), 'mnist_conv.bson') model training_time testing_time testing_accuracy
+BSON.@save joinpath(dirname(@__FILE__), outfile) model training_time testing_time testing_accuracy
