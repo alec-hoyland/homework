@@ -20,7 +20,11 @@ model = Chain(
   Dense(32, 10),
   softmax) |> gpu
 
-loss(x, y) = crossentropy(model(x), y)
+function loss(x, y)
+    x_aug = x .+ 0.1f0 * gpu(randn(eltype(x), size(x)))
+    y_hat = model(x_aug)
+    return crossentropy(y_hat, y)
+end
 
 accuracy(x, y) = mean(onecold(model(x)) .== onecold(y))
 
