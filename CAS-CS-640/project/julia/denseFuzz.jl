@@ -3,7 +3,7 @@ using Flux: onehotbatch, onecold, crossentropy, throttle
 using Base.Iterators: repeated
 # using CuArrays
 
-outfile = "mnist_dense.bson"
+outfile = "mnist_denseFuzz.bson"
 
 # Classify MNIST digits with a simple multi-layer-perceptron
 
