@@ -93,4 +93,4 @@ testing_accuracy = accuracy(test_set...)
 
 ## Save the results
 
-BSON.@save joinpath(dirname(@__FILE__), outfile) model training_time testing_time testing_accuracy
+BSON.@save joinpath(pwd(), outfile) training_time testing_time testing_accuracy
