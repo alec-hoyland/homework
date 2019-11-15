@@ -8,7 +8,7 @@ using Base.Iterators: repeated, partition
 using Printf, BSON
 # using CuArrays
 
-outfile = "mnist_denseAdpt.bson"
+outfile = "mnist_denseFull.bson"
 
 # Classify MNIST digits with a simple multi-layer-perceptron
 
