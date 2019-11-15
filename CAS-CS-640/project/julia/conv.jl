@@ -77,7 +77,7 @@ accuracy(x, y) = mean(onecold(model(x)) .== onecold(y))
 # printing out performance against the test set as we go.
 opt = ADAM(0.001)
 
-# callback function prints the loss
+## Begin training
 
 @info("Beginning training loop...")
 training_time = @elapsed for epoch_idx in 1:100
@@ -86,7 +86,11 @@ training_time = @elapsed for epoch_idx in 1:100
     Flux.train!(loss, params(model), train_set, opt)
 end
 
+## Compute the metrics
+
 testing_time = @elapsed model(test_set[1])
 testing_accuracy = accuracy(test_set...)
+
+## Save the results
 
 BSON.@save joinpath(dirname(@__FILE__), outfile) model training_time testing_time testing_accuracy
