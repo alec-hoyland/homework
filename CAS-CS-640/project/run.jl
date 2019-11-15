@@ -6,6 +6,7 @@ using Pkg
 Pkg.activate("./julia")
 Pkg.instantiate()
 
+Pkg.add("CuArrays")
 using CuArrays
 
 # run the scripts in sequence

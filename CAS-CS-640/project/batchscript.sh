@@ -9,6 +9,9 @@
 #$ -l gpus=0.25
 #$ -l gpu_c=3.5
 
+rm -f err
+rm -f log
+
 module load cuda
 module load julia
 
