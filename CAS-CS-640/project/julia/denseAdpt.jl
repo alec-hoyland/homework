@@ -5,7 +5,7 @@ Pkg.instantiate()
 using Flux, Flux.Data.MNIST, Statistics
 using Flux: onehotbatch, onecold, crossentropy, throttle
 using Base.Iterators: repeated, partition
-using Printf
+using Printf, BSON
 # using CuArrays
 
 outfile = "mnist_denseAdpt.bson"
