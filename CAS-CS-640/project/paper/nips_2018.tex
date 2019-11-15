@@ -101,27 +101,11 @@ Support vector machines \citep{decosteTrainingInvariantSupport2002} have also be
 
 \section{Methods}
 
-In this paper, four models are implemented and compared to each other.
+In this paper, eight models are implemented and compared to each other.
 The goal is to determine what sort of basic model architecture performs the best,
 in efficiency of training/evaluating, as well as in accuracy of the resultant classification.
-
-% \subsection{Autoencoder}
-% ``
-% The autoencoder model encodes the MNIST images as compressed vectors
-% that can later be decoded back into images.
-% The vector input data is 784-dimensional, and the output dimension of this model is 32-dimensional.
-% This implies that the encoding is a strongly compressed (lossy) representation.
-%
-% The encoder has a single hidden layer with 784 inputs, 32 hidden units, and a leaky
-% rectifying linear unit (leaky ReLU) output layer.
-%
-% The decoder also has a single hidden layer, with 32 input units, and 784 output units.
-%
-% Training was performed using the mean-squared error, with the Adam optimizer \citep{kingmaAdamMethodStochastic2017}.
-% Data were partitioned into batches of size 1000.
-%
-% Since autoencoding is used for data representation, after training,
-% the decoder was scrapped, and replaced with a fully-connected classifier layer with a softargmax output.
+We consider a convolutional neural network and a fully-connected feedforward neural network,
+with modifications to the loss function and training schedule.
 
 \subsection{Convolutional neural network}
 
@@ -162,7 +146,7 @@ This network consists of 2 fully-connected, feedforward layers each with 32 hidd
 ReLU activation is used between the hidden layers,
 and the softargmax function is used to squash outputs.
 
-The cross-entropy loss is used, and Adam is the optimizer algorithm.
+Cross-entropy loss is used, and Adam is the optimizer algorithm.
 
 \subsection{Modifications to existing models}
 
@@ -226,6 +210,29 @@ A model does not need only to be accurate, it should also be fast.
 % \end{table}
 
 \section{Results}
+
+Models were run on a 4-core cluster computer equipped with an NVIDIA Tesla K40m GPU.
+Results are tabulated below:
+
+\begin{table}
+  \caption{Results of simulations}
+  \label{tbl:results}
+  \centering
+  \begin{tabular}{llll}
+    \toprule
+    Model Name & Training Time (s) & Testing Time (s) & Testing Accuracy \\
+    \midrule
+    \textsc{Conv}         & 0 & 0 & 0 \\
+    \textsc{ConvFuzz}     & 0 & 0 & 0 \\
+    \textsc{ConvAdpt}     & 0 & 0 & 0 \\
+    \textsc{ConvFull}     & 0 & 0 & 0 \\
+    \textsc{Dense}        & 0 & 0 & 0 \\
+    \textsc{DenseFuzz}    & 0 & 0 & 0 \\
+    \textsc{DenseAdpt}    & 0 & 0 & 0 \\
+    \textsc{DenseFull}    & 0 & 0 & 0 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \section{Discussion}
 
