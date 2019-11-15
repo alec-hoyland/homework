@@ -3,26 +3,58 @@ using Pkg
 Pkg.activate(".")
 Pkg.instantiate()
 
-@info "including conv"
+try
+    @info "including conv"
 include("conv.jl")
+catch
+    this_error
+end
 
-@info "including convFuzz"
+try
+    @info "including convFuzz"
 include("convFuzz.jl")
+catch
+    this_error
+end
 
-@info "including convAdpt"
+try
+    @info "including convAdpt"
 include("convAdpt.jl")
+catch
+    this_error
+end
 
-@info "including convFull"
+try
+    @info "including convFull"
 include("convFull.jl")
+catch
+    this_error
+end
 
-@info "including dense"
+try
+    @info "including dense"
 include("dense.jl")
+catch
+    this_error
+end
 
-@info "including denseFuzz"
+try
+    @info "including denseFuzz"
 include("denseFuzz.jl")
+catch
+    this_error
+end
 
-@info "including denseAdpt"
+try
+    @info "including denseAdpt"
 include("denseAdpt.jl")
+catch
+    this_error
+end
 
-@info "including denseFull"
+try
+    @info "including denseFull"
 include("denseFull.jl")
+catch
+    this_error
+end
