@@ -1,19 +1,49 @@
+using Pkg
+Pkg.activate("/home/alec/code/homework/CAS-CS-640/project/julia")
+Pkg.instantiate()
+
 using Flux, Flux.Data.MNIST, Statistics
 using Flux: onehotbatch, onecold, crossentropy, throttle
-using Base.Iterators: repeated
+using Base.Iterators: repeated, partition
+using Printf
 # using CuArrays
 
 outfile = "mnist_denseAdpt.bson"
 
 # Classify MNIST digits with a simple multi-layer-perceptron
 
-imgs = MNIST.images()
-# Stack images into one large batch
-X = hcat(float.(reshape.(imgs, :))...) |> gpu
+## Preprocess the data
 
-labels = MNIST.labels()
-# One-hot-encode the labels
-Y = onehotbatch(labels, 0:9) |> gpu
+function preprocess(imgs)
+    # return the images as a single matrix of features × samples
+    return hcat(float.(reshape.(imgs, :))...) |> gpu
+end
+
+function make_minibatch(X, Y, idxs)
+    # collect the inputs and the labels in a tuple
+    # group as minibatches
+    X_batch = Array{Float32}(undef, size(X, 1), length(idxs))
+    for i in 1:length(idxs)
+        X_batch[:, i] = Float32.(X[:, i])
+    end
+    Y_batch = onehotbatch(Y[idxs], 0:9) |> gpu
+    return (X_batch, Y_batch)
+end
+
+# load the MNIST dataset
+training_images = MNIST.images() |> preprocess
+training_labels = MNIST.labels()
+# partition the training data into batches
+batch_size = 128
+mb_idxs = partition(1:size(training_images, 2), batch_size)
+training_set = [make_minibatch(X, training_labels, i) for i in mb_idxs]
+
+# construct the testing set as one giant minibatch
+testing_images = MNIST.images(:test) |> preprocess
+testing_labels = MNIST.labels(:test)
+testing_set = make_minibatch(testing_images, testing_labels, 1:size(testing_images, 2))
+
+## Construct the model
 
 model = Chain(
   Dense(28^2, 32, relu),
@@ -24,9 +54,7 @@ loss(x, y) = crossentropy(model(x), y)
 
 accuracy(x, y) = mean(onecold(model(x)) .== onecold(y))
 
-dataset = repeated((X, Y), 100)
-evalcb = () -> @show(loss(X, Y))
-opt = ADAM()
+opt = ADAM(0.001)
 
 ## Begin training
 
@@ -36,10 +64,10 @@ last_improvement = 0
 training_time = @elapsed for epoch_idx in 1:100
     global best_acc, last_improvement
     # Train for a single epoch
-    Flux.train!(loss, params(model), dataset, opt)
+    Flux.train!(loss, params(model), training_set, opt)
 
     # Calculate accuracy:
-    acc = accuracy(dataset...)
+    acc = accuracy(testing_set...)
     @info(@sprintf("[%d]: Test accuracy: %.4f", epoch_idx, acc))
 
     # If our accuracy is good enough, quit out.
