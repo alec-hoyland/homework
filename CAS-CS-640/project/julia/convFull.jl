@@ -86,6 +86,8 @@ opt = ADAM(0.001)
 ## Begin training
 
 @info("Beginning training loop...")
+best_acc = 0.0
+last_improvement = 0
 training_time = @elapsed for epoch_idx in 1:100
     global best_acc, last_improvement
     # Train for a single epoch
