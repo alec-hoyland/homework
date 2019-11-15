@@ -6,7 +6,7 @@ using Flux: onehotbatch, onecold, crossentropy, throttle
 using Base.Iterators: repeated, partition
 using Printf, BSON
 
-outfile = "mnist_conv.bson"
+outfile = "mnist_convFull.bson"
 
 # Load labels and images from Flux.Data.MNIST
 @info("Loading data set")
