@@ -12,4 +12,4 @@ Pkg.instantiate()
 # run the scripts in sequence
 
 @info("including conv.jl")
-include("./julia/conv.jl")
+include("/projectnb/cs640grp/ahoyland/homework/CAS-CS-640/project/julia/conv.jl")

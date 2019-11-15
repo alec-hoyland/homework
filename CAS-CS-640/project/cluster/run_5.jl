@@ -13,4 +13,4 @@ Pkg.instantiate()
 # run the scripts in sequence
 
 @info("including dense.jl")
-include("./julia/dense.jl")
+include("/projectnb/cs640grp/ahoyland/homework/CAS-CS-640/project/julia/dense.jl")

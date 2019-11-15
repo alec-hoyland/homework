@@ -13,4 +13,4 @@ Pkg.instantiate()
 # run the scripts in sequence
 
 @info("including denseFuzz.jl")
-include("./julia/denseFuzz.jl")
+include("/projectnb/cs640grp/ahoyland/homework/CAS-CS-640/project/julia/denseFuzz.jl")
