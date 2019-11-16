@@ -19,6 +19,7 @@ gsubmit*
 *.bbl
 *.blg
 *.mp4
+data*
 
 # don't ignore pdfs in current classes
 !CAS-CS-640/**/*.pdf

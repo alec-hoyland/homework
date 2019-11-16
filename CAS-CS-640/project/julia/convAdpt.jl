@@ -1,15 +1,12 @@
-# Classifies MNIST digits with a convolutional network.
-# Writes out saved model to the file "mnist_conv.bson".
-# Demonstrates basic model construction, training, saving,
-# conditional early-exit, and learning rate scheduling.
-#
-# This model, while simple, should hit around 99% test
-# accuracy after training for approximately 20 epochs.
+## convolutional neural network
+# basic model
 
 using Flux, Flux.Data.MNIST, Statistics
 using Flux: onehotbatch, onecold, crossentropy, throttle
 using Base.Iterators: repeated, partition
 using Printf, BSON
+
+outfile = "mnist_convAdpt.bson"
 
 # Load labels and images from Flux.Data.MNIST
 @info("Loading data set")
@@ -25,6 +22,7 @@ function make_minibatch(X, Y, idxs)
     Y_batch = onehotbatch(Y[idxs], 0:9)
     return (X_batch, Y_batch)
 end
+
 batch_size = 128
 mb_idxs = partition(1:length(train_imgs), batch_size)
 train_set = [make_minibatch(train_imgs, train_labels, i) for i in mb_idxs]
@@ -69,25 +67,22 @@ model = gpu(model)
 model(train_set[1][1])
 
 # `loss()` calculates the crossentropy loss between our prediction `y_hat`
-# (calculated from `model(x)`) and the ground truth `y`.  We augment the data
-# a bit, adding gaussian random noise to our image to make it more robust.
-function loss(x, y)
-    # We augment `x` a little bit here, adding in random noise
-    x_aug = x .+ 0.1f0*gpu(randn(eltype(x), size(x)))
+# (calculated from `model(x)`) and the ground truth `y`.
+loss(x, y) = crossentropy(model(x), y)
 
-    y_hat = model(x_aug)
-    return crossentropy(y_hat, y)
-end
+# accuracy() computes the accuracy in a vectorized format
 accuracy(x, y) = mean(onecold(model(x)) .== onecold(y))
 
 # Train our model with the given training set using the ADAM optimizer and
 # printing out performance against the test set as we go.
 opt = ADAM(0.001)
 
+## Begin training
+
 @info("Beginning training loop...")
 best_acc = 0.0
 last_improvement = 0
-for epoch_idx in 1:10
+training_time = @elapsed for epoch_idx in 1:5
     global best_acc, last_improvement
     # Train for a single epoch
     Flux.train!(loss, params(model), train_set, opt)
@@ -104,8 +99,7 @@ for epoch_idx in 1:10
 
     # If this is the best accuracy we've seen so far, save the model out
     if acc >= best_acc
-        @info(" -> New best accuracy! Saving model out to mnist_conv.bson")
-        BSON.@save joinpath(dirname(@__FILE__), "mnist_conv.bson") model epoch_idx acc
+        @info(" -> New best accuracy!")
         best_acc = acc
         last_improvement = epoch_idx
     end
@@ -124,3 +118,13 @@ for epoch_idx in 1:10
         break
     end
 end
+
+
+## Compute the metrics
+
+testing_time = @elapsed model(test_set[1])
+testing_accuracy = accuracy(test_set...)
+
+## Save the results
+
+BSON.@save joinpath(pwd(), outfile) training_time testing_time testing_accuracy

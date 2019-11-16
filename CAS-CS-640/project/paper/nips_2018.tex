@@ -101,27 +101,11 @@ Support vector machines \citep{decosteTrainingInvariantSupport2002} have also be
 
 \section{Methods}
 
-In this paper, four models are implemented and compared to each other.
+In this paper, eight models are implemented and compared to each other.
 The goal is to determine what sort of basic model architecture performs the best,
 in efficiency of training/evaluating, as well as in accuracy of the resultant classification.
-
-% \subsection{Autoencoder}
-% ``
-% The autoencoder model encodes the MNIST images as compressed vectors
-% that can later be decoded back into images.
-% The vector input data is 784-dimensional, and the output dimension of this model is 32-dimensional.
-% This implies that the encoding is a strongly compressed (lossy) representation.
-%
-% The encoder has a single hidden layer with 784 inputs, 32 hidden units, and a leaky
-% rectifying linear unit (leaky ReLU) output layer.
-%
-% The decoder also has a single hidden layer, with 32 input units, and 784 output units.
-%
-% Training was performed using the mean-squared error, with the Adam optimizer \citep{kingmaAdamMethodStochastic2017}.
-% Data were partitioned into batches of size 1000.
-%
-% Since autoencoding is used for data representation, after training,
-% the decoder was scrapped, and replaced with a fully-connected classifier layer with a softargmax output.
+We consider a convolutional neural network and a fully-connected feedforward neural network,
+with modifications to the loss function and training schedule.
 
 \subsection{Convolutional neural network}
 
@@ -162,7 +146,7 @@ This network consists of 2 fully-connected, feedforward layers each with 32 hidd
 ReLU activation is used between the hidden layers,
 and the softargmax function is used to squash outputs.
 
-The cross-entropy loss is used, and Adam is the optimizer algorithm.
+Cross-entropy loss is used, and Adam is the optimizer algorithm.
 
 \subsection{Modifications to existing models}
 
@@ -191,7 +175,7 @@ These modifications result in a total of eight models evaluated:
   \item \textsc{DenseFuzz}, feedforward network with input fuzzing
   \item \textsc{DenseAdpt}, feedforward network with adaptive learning rate
   \item \textsc{DenseFull}, feedforward network with both input fuzzing and adaptive learning rate
-\end{itemize
+\end{itemize}
 
 \subsection{Evaluating quality of models}
 
@@ -207,31 +191,35 @@ This is because possessing a model that can identify characters and glyphs quick
 is important for real-world applications of optical character recognition.
 A model does not need only to be accurate, it should also be fast.
 
-% \begin{table}
-%   \caption{Models tested}
-%   \label{tbl:models}
-%   \centering
-%   \begin{tabular}{lll}
-%     \toprule
-%
-%     \multicolumn{2}{c}{Part}                   \\
-%     \cmidrule(r){1-2}
-%     Name     & Description     & Size ($\mu$m) \\
-%     \midrule
-%     Dendrite & Input terminal  & $\sim$100     \\
-%     Axon     & Output terminal & $\sim$10      \\
-%     Soma     & Cell body       & up to $10^6$  \\
-%     \bottomrule
-%   \end{tabular}
-% \end{table}
-
 \section{Results}
+
+Models were run on a 4-core cluster computer equipped with an NVIDIA Tesla K40m GPU.
+Results are tabulated below:
+
+\begin{table}
+  \caption{Results of simulations}
+  \label{tbl:results}
+  \centering
+  \begin{tabular}{llll}
+    \toprule
+    Model Name & Training Time (s) & Testing Time (s) & Testing Accuracy \\
+    \midrule
+    \textsc{Conv}         & 320 & 3.72 & 0.985 \\
+    \textsc{ConvFuzz}     & 314 & 3.42 & 0.984 \\
+    \textsc{ConvAdpt}     & 336 & 3.78 & 0.987 \\
+    \textsc{ConvFull}     & 376 & 3.38 & 0.986 \\
+    \textsc{Dense}        & 67.9 & 0.053 & 0.906 \\
+    \textsc{DenseFuzz}    & 144 & 0.055 & 0.901 \\
+    \textsc{DenseAdpt}    & 9.51 & 0.058 & 0.116 \\
+    \textsc{DenseFull}    & 0.114 & 0.103 & 0.117 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \section{Discussion}
 
 \section{Conclusion}
 
 \bibliography{bibliography}
-
 
 \end{document}
