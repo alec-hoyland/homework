@@ -129,16 +129,6 @@ The softargmax function is used to squash the outputs to normalized probabilitie
 Loss is computed by the cross-entropy function, and the Adam optimizer with $\beta = 0.001$
 is used for training \citep{kingmaAdamMethodStochastic2017}.
 
-% Several strategies were implemented to try to improve the model.
-% First, the input data was fuzzed with Gaussian noise ($\xi = 0.1$)
-% to try to make the model more robust.
-% Secondly, early-stopping would be triggered at 99.9\% accuracy,
-% in order to prevent overfitting.
-% Finally, an adaptive learning rate was implemented.
-% If no improvement was seen in 5 epochs, the learning rate was decreased by 90\%
-% to a minimum of $10^{-6}$.
-% If no improvement was seen after 10 epochs, the model will stop training as well.
-
 \subsection{Fully-connected neural network}
 
 A multi-layer neural network was also tested.
@@ -154,17 +144,19 @@ Several alterations were made to the base models to attempt to improve accuracy 
 
 First, the input data were fuzzed with Gaussian noise ($\xi = 0.1$)
 to try to make the model more robust.
-Second, an modified training schedule was implemented,
+Second, a modified training schedule was implemented,
 with early-stopping at 99.9\% accuracy to prevent overfitting,
 and an adaptive learning rate.
 
 In the adaptive learning rate schedule,
-if no improvement was seen in 5 epochs, the learning rate was decreased by 90\%
+while the loss function was used to train the model,
+stopping was determined by the accuracy on the testing dataset.
+If no improvement was seen in 5 epochs, the learning rate was decreased by 90\%
 to a minimum of $10^{-6}$.
 If no improvement was seen after 10 epochs, training stops early,
 as the model is assumed to have converged to a local minimum.
 
-These modifications result in a total of eight models evaluated:
+These modifications result in a total of eight models:
 
 \begin{itemize}
   \item \textsc{Conv}, the base convolutional neural network
@@ -193,11 +185,45 @@ A model does not need only to be accurate, it should also be fast.
 
 \section{Results}
 
-Models were run on a 4-core cluster computer equipped with an NVIDIA Tesla K40m GPU.
-Results are tabulated below:
+Models were written in \textsc{Julia} \citep{bezansonJuliaFreshApproach2017a}
+using the \textsc{Flux} package for autodifferentiation and machine learning \citep{innesFluxElegantMachine2018}.
+Computations were performed on a 16-core computer at 3.7 GHz,
+with 32 GB of RAM.
+No GPU-acceleration was used.
 
-\begin{table}
-  \caption{Results of simulations}
+Models were compiled, and timed using built-in macros.
+
+Training time is defined as the amount of time it took to train the model to a stopping point.
+In non-adaptive models, this is the time of 5 epochs through the training set (60,000 images).
+In adaptive models, the models ran until assumed convergence (10 epochs).
+
+Testing time is defined as the amount of time it took to run the model on the 10,000 image testing set.
+
+Testing accuracy is the ratio of number of correct classifications divided by the total
+for all images in the testing set.
+
+We see that the \textsc{Conv}-family of models perform the best in accuracy,
+but take the longest to run, both in training time and in testing time.
+Convolutional neural networks perform well on image-classification tasks
+because they treat the image as a matrix, which can be filtered over several convolutional layers.
+In contrast, traditional feedforward \textsc{Dense} networks accept rasterized image input.
+The convolutional layers allow sub-features to be extracted out, leading to better classification.
+However, convolution is an expensive operation, requiring more time.
+
+We also see that \textsc{Dense} adaptive models perform terribly in accuracy.
+The testing accuracy does not decrease fast enough from an untrained (randomly-initialized) model
+for the adaptive learning rate heuristic to be of any use.
+Instead, the model quits training too early, resulting in a poorly-trained model.
+
+Of the models tested, the adaptive learning rate is useful when training computationally-expensive
+models for many epochs.
+In these cases, the model will quit when the accuracy is maximized,
+avoiding overfitting, or performing excessive training without an increase in accuracy.
+Since the number of epochs trained for was low, the adaptive learning rate
+did not make a significant difference.
+
+\begin{table}[h]
+  \caption{Results of simulations (5 epochs)}
   \label{tbl:results}
   \centering
   \begin{tabular}{llll}
