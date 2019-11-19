@@ -88,7 +88,7 @@ opt = ADAM(0.001)
 @info("Beginning training loop...")
 best_acc = 0.0
 last_improvement = 0
-training_time = @elapsed for epoch_idx in 1:10
+training_time = @elapsed for epoch_idx in 1:20
     global best_acc, last_improvement
     # Train for a single epoch
     Flux.train!(loss, params(model), train_set, opt)
