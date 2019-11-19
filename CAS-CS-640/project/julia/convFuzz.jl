@@ -95,4 +95,11 @@ end
 testing_time = @elapsed model(test_set[1])
 testing_accuracy = accuracy(test_set...)
 
-BSON.@save joinpath(pwd(), outfile) training_time testing_time testing_accuracy
+function fuzz(x)
+    return x .+ 0.1f0 * gpu(randn(eltype(x), size(x)))
+end
+
+test_set_fuzzed = fuzz(test_set[1])
+testing_accuracy_fuzzed = accuracy(test_set_fuzzed, test_set[2])
+
+BSON.@save joinpath(pwd(), outfile) training_time testing_time testing_accuracy testing_accuracy_fuzzed

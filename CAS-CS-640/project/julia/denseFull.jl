@@ -112,6 +112,12 @@ tY = onehotbatch(MNIST.labels(:test), 0:9) |> gpu
 testing_time = @elapsed model(tX)
 testing_accuracy = accuracy(tX, tY)
 
+function fuzz(x)
+    return x .+ 0.1f0 * gpu(randn(eltype(x), size(x)))
+end
+
+testing_accuracy_fuzzed = accuracy(fuzz(tX), tY)
+
 ## Save the results
 
-BSON.@save joinpath(pwd(), outfile) training_time testing_time testing_accuracy
+BSON.@save joinpath(pwd(), outfile) training_time testing_time testing_accuracy testing_accuracy_fuzzed
