@@ -4,8 +4,8 @@
 %     \PassOptionsToPackage{numbers, compress}{natbib}
 % before loading neurips_2018
 
-\usepackage[preprint]{nips_2018}
-% \usepackage[final]{nips_2018}
+% \usepackage[preprint]{nips_2018}
+\usepackage[final]{nips_2018}
 
 \usepackage[utf8]{inputenc} % allow utf-8 input
 \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
@@ -35,27 +35,34 @@
 \maketitle
 
 \begin{abstract}
-  This is the abstract.
+  We evaluated four convolutional neural network models and four fully-connected feedforward neural network models,
+  on the MNIST handwritten digit recognition task.
+  We implemented adaptive learning schedules and fuzzy loss functions to test model accuracy and efficiency
+  with respect to the testing set, and a noisy testing set.
+  Convolutional networks are found to be much more accurate, though dense, feedforward networks are much faster.
+  The adaptive learning schedule is uneffective at improving the models,
+  though this may be because the limited number of training epochs or the ease of the task.
+  The fuzzy loss function improves robustness against noisy inputs but increases training time.
 \end{abstract}
 
 \section{Introduction}
 
-Optical character recognition (OCR) is the ability to take as input an image including handwritten or printed text,
+Optical character recognition (OCR) is the ability to take an image as input, including handwritten or printed text,
 and output the sequence of characters contained within the image.
 OCR engines have many applications, including data entry (e.g. for checks, passports, invoices),
 book-scanning (e.g. for Project Gutenberg), pen computing, and in assistive devices
 (e.g. for blind and visually-impaired individuals).
-In an OCR engine, text is read from a scanned document or image,
-and translate the images into a form manipulable by the computer, such as plain text,
+In an OCR engine, text is read from a scanned document or image.
+The images are translated into a form manipulable by the computer, such as plain text,
 enabling a multitude of other analyses and operations.
 As the saying goes, ``You can't grep dead trees!''
 
 A successful model is one which accurately predicts the correct label for the image
-(i.e. recognizes the digit), and does so quickly.
+(i.e. recognizes the digit) and does so quickly.
 A model that fails to accurately label is not useful, as is one that labels accurately,
 but too slowly to be useful in real-world applications.
 
-We describe two measures of efficiency,
+We describe two measures of efficiency:
 training time and testing time.
 The former is the total runtime of the training phase,
 and the latter is the total runtime of the testing phase.
@@ -74,31 +81,31 @@ with various training schedules, and benchmark accuracy and runtime speed.
 
 \section{Related Works}
 
-The MNIST dataset \citep{bottouComparisonClassifierMethods1994, HandwrittenDigitDatabase}
+The MNIST dataset \citep{bottouComparisonClassifierMethods1994, krishnakantgujarHandwrittenDigitDatabase}
 has been used as a standard machine learning benchmark
 for more than two decades.
 It is comprised of 60,000 28x28 grayscale images of handwritten digits 0-9.
-The handwriting samples themselves were written by American high school students,
+The handwriting samples themselves were written by American high school students
 and American Census Bureau employees.
 While concerns about the construct validity of the dataset have been raised in recent years \citep{yadavColdCaseLost2019}
 the dataset and its variants remains a staple of machine learning benchmarking,
 and serves well for evaluating the quality of various model architectures.
 
 The MNIST dataset is suited to a classification task,
-where the image is read as input, and the output is the numerical digit label (i.e. 0-9).
+where the image is read as input and the output is the numerical digit label (i.e. 0-9).
 Many different model architectures have been implemented to achieve highest accuracy on the classification task.
 
 Many different model architectures have been tested against the MNIST dataset.
-Linear classifiers comprise some of the simplest of models, and traditionally fare poorly on digit identification
+Linear classifiers comprise some of the simplest of models and traditionally fare poorly on digit identification
 \citep{bottouComparisonClassifierMethods1994}.
-Some of the first attempts based on multilayer neural networks with backpropagation \citep{bottouComparisonClassifierMethods1994, lecunGradientbasedLearningApplied1998},
+Some of the first attempts based on multilayer neural networks with backpropagation \citep{bottouComparisonClassifierMethods1994, lecunGradientbasedLearningApplied1998}
 were performed by the original curators of the MNIST dataset.
 Many variations have been tested, including limited receptive field models \citep{kussulImprovedMethodHandwritten2004},
 and convolutional neural networks \citep{simardBestPracticesConvolutional2003}.
 The latter exploits elastic training image deformations, treating the input as a full matrix,
 rather than a vector of features.
 Image deformation has also been explored in hidden Markov models \citep{keysersDeformationModelsImage2007}.
-Methods have improved in GPU-based computations in deep, big simple neural networks
+Methods have improved in GPU-based computations in deep, big, simple neural networks
 \citep{ciresanDeepBigSimple2010, ciresanMulticolumnDeepNeural2012},
 resulting in a broad family of neural network models.
 Support vector machines \citep{decosteTrainingInvariantSupport2002} have also been used for image-recognition tasks.
@@ -106,11 +113,10 @@ Support vector machines \citep{decosteTrainingInvariantSupport2002} have also be
 \section{Methods}
 
 In this paper, eight models are implemented and compared to each other.
-The goal is to determine what sort of basic model architecture performs the best,
+The goal is to determine what sort of basic model architecture performs the best
 in efficiency of training/evaluating, as well as in accuracy of the resultant classification.
 We consider a convolutional neural network and a fully-connected feedforward neural network,
 with modifications to the loss function and training schedule.
-
 In all cases, Adam is used as the optimizer \citep{kingmaAdamMethodStochastic2017}.
 It computes a bias-corrected gradient using the first two moments,
 and can be thought of as a trust-region stochastic gradient descent algorithm.
@@ -134,30 +140,29 @@ a fully-connected layer, and a softargmax output.
 
 The first convolutional layer operates on a 28x28 image, with a 3x3 window,
 padding of (1, 1), and a ReLU activation.
-This leads to 16 units in the second convolution layer,
-which operate with a 3x3 window and padding of (1, 1) on 14x14 images.
-This convolutional layer passes through ReLU activation to a third convolution layer,
-which acts on 7x7 images, with the same padding and ReLU activation as before.
+This leads to 16 units in the second convolution layer.
+These operate with a 3x3 window and padding of (1, 1) on 14x14 images,
+passing through ReLU activation to a third convolution layer.
+This layer acts on 7x7 images with the same padding and ReLU activation as before.
 
-Each convolutional layer is separated by a 2x2 maximum pooling layer,
+Each convolutional layer is separated by a 2x2 maximum pooling layer
 for selecting the most representative features.
 
-Finally, the 3-dimensional tensor is flattened to 2 dimensions,
+Finally, the 3-dimensional tensor is flattened to 2 dimensions
 and passed to a 288-unit fully-connected layer with linear activation,
 and 10 outputs (corresponding to the digits).
 The softargmax function is used to squash the outputs to normalized probabilities.
 
-Loss is computed by the cross-entropy function, and the Adam optimizer with $\beta = 0.001$
+Loss is computed by the cross-entropy function and the Adam optimizer with $\beta = 0.001$
 is used for training \citep{kingmaAdamMethodStochastic2017}.
 
 \subsection{Fully-connected neural network}
 
-A multi-layer neural network was also tested.
-This network consists of 2 fully-connected, feedforward layers each with 32 hidden units.
-ReLU activation is used between the hidden layers,
+The multi-layer neural network consists of network consists of 2 fully-connected, feedforward layers each with 32 hidden units.
+ReLU activation is used between the hidden layers
 and the softargmax function is used to squash outputs.
 
-Cross-entropy loss is used, and Adam is the optimizer algorithm.
+Cross-entropy loss is used and Adam is the optimizer algorithm.
 
 \subsection{Modifications to existing models}
 
@@ -165,9 +170,8 @@ Several alterations were made to the base models to attempt to improve accuracy 
 
 First, the input data were fuzzed with Gaussian noise ($\xi = 0.1$)
 to try to make the model more robust.
-Second, a modified training schedule was implemented,
-with early-stopping at 99.9\% accuracy to prevent overfitting,
-and an adaptive learning rate.
+Second, a modified training schedule was implemented, including an adaptive learning rate
+and early-stopping at 99.9\% accuracy to prevent overfitting.
 
 In the adaptive learning rate schedule,
 while the loss function was used to train the model,
@@ -194,43 +198,43 @@ These modifications result in a total of eight models:
 
 Models were evaluated for accuracy and efficiency.
 
-Accuracy is defined as the number of correct labels divided by the size of the test set.
-Efficiency was measured by training time, and testing time.
-Training time is defined as the amount of time for which the model is trained.
-Testing time is the amount of time it takes for the model to label the testing set.
+Accuracy was defined as the number of correct labels divided by the size of the test set.
+Efficiency was measured by training time and testing time.
+Training time was defined as the amount of time for which the model was trained.
+Testing time was the amount of time it takes for the model to label the testing set.
 
 Unless training time is prohibitively long, testing time is more important.
 This is because possessing a model that can identify characters and glyphs quickly,
 is important for real-world applications of optical character recognition.
-A model does not need only to be accurate, it should also be fast.
+A model does not need only to be accurate; it should also be fast.
 
-We use two testing datasets.
-One is the original, MNIST testing dataset.
-The other is the MNIST testing dataset with Gaussian noise ($\xi = 0.1, \mu = 0, \sigma = 1$) added to each image.
-This ``fuzzed'' dataset is designed to test how well the models can handle noisy data,
+Two testing datasets were used.
+One was the original, MNIST testing dataset, while
+the other was the MNIST testing dataset with Gaussian noise ($\xi = 0.1, \mu = 0, \sigma = 1$) added to each image.
+This ``fuzzed'' dataset was designed to test how well the models can handle noisy data,
 such as in an optical character recognition task on an old manuscript.
 
 \section{Results}
 
-Models were written in \textsc{Julia} \citep{bezansonJuliaFreshApproach2017a}
+Models were written in \textsc{Julia} \citep{bezansonJuliaFreshApproach2017}
 using the \textsc{Flux} package for autodifferentiation and machine learning \citep{innesFluxElegantMachine2018}.
 Computations were performed on a 16-core computer at 3.7 GHz,
 with 32 GB of RAM.
 No GPU-acceleration was used.
 
-Models were compiled, and timed using built-in macros.
+Models were compiled and timed using built-in macros.
 
-Training time is defined as the amount of time it took to train the model to a stopping point.
+Training time was defined as the amount of time it took to train the model to a stopping point.
 We tested $n = \{ 5, 10, 20 \}$ epochs, each time, training through minibatches of the entire training dataset.
-In non-adaptive models, this is the time of $n$. epochs through the training set (60,000 images).
+In non-adaptive models, this was the time of $n$. epochs through the training set (60,000 images).
 In adaptive models, the models ran until assumed convergence.
 
-Testing time is defined as the amount of time it took to run the model on the 10,000 image testing set.
-We define testing speed as the number of digits identified per second (in digits/second).
+Testing time was defined as the amount of time it took to run the model on the 10,000 image testing set.
+We defined testing speed as the number of digits identified per second (in digits/second).
 
-Testing accuracy is the ratio of mean number of correct classifications divided by the total
+Testing accuracy was the ratio of mean number of correct classifications divided by the total
 for all images in the testing set.
-We define testing efficiency as the mean number of digits identified correctly per second (in digits/second).
+We defined testing efficiency as the mean number of digits identified correctly per second (in digits/second).
 
 \begin{align}
   \mathrm{testing~speed} &= \frac{10,000}{\mathrm{testing~time}} \\
@@ -238,15 +242,15 @@ We define testing efficiency as the mean number of digits identified correctly p
   \mathrm{testing~efficiency} &= \mathrm{testing~accuracy} \times \mathrm{testing~speed}
 \end{align}
 
-We see that the \textsc{Conv}-family of models perform the best in accuracy,
-but take the longest to run, both in training time and in testing time.
+We saw that the \textsc{Conv}-family of models perform the best in accuracy,
+but took the longest to run, both in training time and in testing time.
 Convolutional neural networks perform well on image-classification tasks
 because they treat the image as a matrix, which can be filtered over several convolutional layers.
 In contrast, traditional feedforward \textsc{Dense} networks accept rasterized image input.
 The convolutional layers allow sub-features to be extracted out, leading to better classification.
 However, convolution is an expensive operation, requiring more time.
 
-We also see that \textsc{Dense} adaptive models perform terribly in accuracy.
+We also see that \textsc{Dense} adaptive models performed terribly in accuracy.
 The testing accuracy does not decrease fast enough from an untrained (randomly-initialized) model
 for the adaptive learning rate heuristic to be of any use.
 Instead, the model quits training too early, resulting in a poorly-trained model.
@@ -254,7 +258,7 @@ Instead, the model quits training too early, resulting in a poorly-trained model
 Of the models tested, the adaptive learning rate is useful when training computationally-expensive
 models for many epochs.
 In these cases, the model will quit when the accuracy is maximized,
-avoiding overfitting, or performing excessive training without an increase in accuracy.
+avoiding overfitting or performing excessive training without an increase in accuracy.
 Since the number of epochs trained for was low, the adaptive learning rate
 did not make a significant difference.
 
@@ -347,7 +351,7 @@ on classifying images in the MNIST dataset, in terms of accuracy.
 The convolutional neural network achieved $< 98\%$ accuracy after 5 epochs
 for all four models tested.
 This is an order of magnitude better than the dense networks.
-However, the models took significantly longer to train, and perform about 60 times slower
+However, the models took significantly longer to train and perform about 60 times slower
 in the classification task.
 Therefore, it is better to use a convolutional neural network
 when the main objective is accuracy, or when the training/running time are unimportant.
@@ -379,7 +383,7 @@ and because the fuzzy loss function was implemented using global variables in a 
 Using global variables in functions makes it hard for the JIT Julia compiler to optimize vectorized operations.
 In comparison, the model training itself was extremely fast.
 
-Overall, fuzzing does not add significantly to training time, and produces a more robust model.
+Overall, fuzzing does not add significantly to training time and produces a more robust model.
 
 \subsection{Adaptive learning rates are not for everything}
 
