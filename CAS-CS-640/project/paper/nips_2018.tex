@@ -16,6 +16,7 @@
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
 \usepackage{amsmath}        % add align blocks
+\usepackage{siunitx}        % decimal-point-aligned tables
 
 \bibliographystyle{unsrt}
 
@@ -261,18 +262,18 @@ did not make a significant difference.
   \caption{Results of simulations (5 epochs)}
   \label{tbl:results}
   \centering
-  \begin{tabular}{llll}
+  \begin{tabular}{lSSS}
     \toprule
-    Model Name & Training Time (s) & Testing Time (s) & Testing Accuracy \\
+    {Model Name} & {Training Time (s)} & {Testing Time (s)} & {Testing Accuracy} \\
     \midrule
-    \textsc{Conv}         & 320 & 3.72 & 0.985 \\
-    \textsc{ConvFuzz}     & 314 & 3.42 & 0.984 \\
-    \textsc{ConvAdpt}     & 336 & 3.78 & 0.987 \\
-    \textsc{ConvFull}     & 376 & 3.38 & 0.986 \\
-    \textsc{Dense}        & 67.9 & 0.053 & 0.906 \\
-    \textsc{DenseFuzz}    & 144 & 0.055 & 0.901 \\
-    \textsc{DenseAdpt}    & 9.51 & 0.058 & 0.116 \\
-    \textsc{DenseFull}    & 0.114 & 0.103 & 0.117 \\
+    {\textsc{Conv}}         & 320 & 3.72 & 0.985 \\
+    {\textsc{ConvFuzz}}     & 314 & 3.42 & 0.984 \\
+    {\textsc{ConvAdpt}}     & 336 & 3.78 & 0.987 \\
+    {\textsc{ConvFull}}     & 376 & 3.38 & 0.986 \\
+    {\textsc{Dense}}        & 67.9 & 0.053 & 0.906 \\
+    {\textsc{DenseFuzz}}    & 144 & 0.055 & 0.901 \\
+    {\textsc{DenseAdpt}}    & 9.51 & 0.058 & 0.116 \\
+    {\textsc{DenseFull}}    & 0.114 & 0.103 & 0.117 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -281,18 +282,18 @@ did not make a significant difference.
   \caption{Results of simulations (10 epochs)}
   \label{tbl:results2}
   \centering
-  \begin{tabular}{llll}
+  \begin{tabular}{lSSS}
     \toprule
-    Model Name & Training Time (s) & Testing Time (s) & Testing Accuracy \\
+    {Model Name} & {Training Time (s)} & {Testing Time (s)} & {Testing Accuracy} \\
     \midrule
-    \textsc{Conv}         & 762 & 3.83 & 0.986 \\
-    \textsc{ConvFuzz}     & 713 & 3.48 & 0.988 \\
-    \textsc{ConvAdpt}     & 627 & 3.30 & 0.987 \\
-    \textsc{ConvFull}     & 642 & 3.34 & 0.987 \\
-    \textsc{Dense}        & 68.3 & 0.062 & 0.900 \\
-    \textsc{DenseFuzz}    & 145 & 0.0625 & 0.902 \\
-    \textsc{DenseAdpt}    & 22.8 & 0.059 & 0.114 \\
-    \textsc{DenseFull}    & 0.114 & 0.103 & 0.117 \\
+    {\textsc{Conv}}         & 762 & 3.83 & 0.986 \\
+    {\textsc{ConvFuzz}}     & 713 & 3.48 & 0.988 \\
+    {\textsc{ConvAdpt}}     & 627 & 3.30 & 0.987 \\
+    {\textsc{ConvFull}}     & 642 & 3.34 & 0.987 \\
+    {\textsc{Dense}}        & 68.3 & 0.062 & 0.900 \\
+    {\textsc{DenseFuzz}}    & 145 & 0.0625 & 0.902 \\
+    {\textsc{DenseAdpt}}    & 22.8 & 0.059 & 0.114 \\
+    {\textsc{DenseFull}}    & 29.1 & 0.103 & 0.117 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -301,18 +302,18 @@ did not make a significant difference.
   \caption{Results of simulations (20 epochs)}
   \label{tbl:results3}
   \centering
-  \begin{tabular}{lllll}
+  \begin{tabular}{lSSSS}
     \toprule
-    Model Name & Training Time (s) & Testing Time (s) & Testing Accuracy & Testing Efficiency \\
+    {Model Name} & {Training Time (s)} & {Testing Time (s)} & {Testing Accuracy} & {Testing Efficiency} \\
     \midrule
-    \textsc{Conv}         & 762 & 3.83 & 0.986 & 0 \\
-    \textsc{ConvFuzz}     & 713 & 3.48 & 0.988 & 0 \\
-    \textsc{ConvAdpt}     & 627 & 3.30 & 0.987 & 0 \\
-    \textsc{ConvFull}     & 642 & 3.34 & 0.987 & 0 \\
-    \textsc{Dense}        & 68.3 & 0.062 & 0.900 & 0 \\
-    \textsc{DenseFuzz}    & 145 & 0.0625 & 0.902 & 0 \\
-    \textsc{DenseAdpt}    & 22.8 & 0.059 & 0.114 & 0 \\
-    \textsc{DenseFull}    & 0.114 & 0.103 & 0.117 & 0 \\
+    {\textsc{Conv}}         & 1215 & 3.314 & 0.988 & 2982 \\
+    {\textsc{ConvFuzz}}     & 1223 & 3.43 & 0.988 & 2879 \\
+    {\textsc{ConvAdpt}}     & 1338 & 3.44 & 0.99 & 2876 \\
+    {\textsc{ConvFull}}     & 1395 & 3.73 & 0.988 & 2652 \\
+    {\textsc{Dense}}        & 68.1 & 0.053 & 0.899 & 168498 \\
+    {\textsc{DenseFuzz}}    & 143 & 0.054 & 0.903 & 167210 \\
+    {\textsc{DenseAdpt}}    & 35.4 & 0.057 & 0.111 & 20115 \\
+    {\textsc{DenseFull}}    & 33.7 & 0.085 & 0.116 & 13811 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -321,18 +322,18 @@ did not make a significant difference.
   \caption{Results of simulations (20 epochs) with fuzzing}
   \label{tbl:results4}
   \centering
-  \begin{tabular}{lll}
+  \begin{tabular}{lSSS}
     \toprule
-    Model Name & Testing Accuracy & Testing Efficiency \\
+    {Model Name} & {Testing Accuracy} & {Testing Accuracy (fuzzed)} & {Testing Efficiency} \\
     \midrule
-    \textsc{Conv}         & 0 & 0 \\
-    \textsc{ConvFuzz}     & 0 & 0 \\
-    \textsc{ConvAdpt}     & 0 & 0 \\
-    \textsc{ConvFull}     & 0 & 0 \\
-    \textsc{Dense}        & 0 & 0 \\
-    \textsc{DenseFuzz}    & 0 & 0 \\
-    \textsc{DenseAdpt}    & 0 & 0 \\
-    \textsc{DenseFull}    & 0 & 0 \\
+    {\textsc{Conv}}         & 0.989 & 0.982 & 2963 \\
+    {\textsc{ConvFuzz}}     & 0.988 & 0.987 & 2876 \\
+    {\textsc{ConvAdpt}}     & 0.990 & 0.986 & 2865 \\
+    {\textsc{ConvFull}}     & 0.989 & 0.989 & 2651 \\
+    {\textsc{Dense}}        & 0.899 & 0.895 & 167730 \\
+    {\textsc{DenseFuzz}}    & 0.903 & 0.900 & 166544 \\
+    {\textsc{DenseAdpt}}    & 0.115 & 0.111 & 19483 \\
+    {\textsc{DenseFull}}    & 0.117 & 0.116 & 13752 \\
     \bottomrule
   \end{tabular}
 \end{table}
