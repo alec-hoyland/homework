@@ -15,6 +15,7 @@
 \usepackage{amsfonts}       % blackboard math symbols
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
+\usepackage{amsmath}        % add align blocks
 
 \bibliographystyle{unsrt}
 
@@ -93,10 +94,12 @@ Some of the first attempts based on multilayer neural networks with backpropagat
 were performed by the original curators of the MNIST dataset.
 Many variations have been tested, including limited receptive field models \citep{kussulImprovedMethodHandwritten2004},
 and convolutional neural networks \citep{simardBestPracticesConvolutional2003}.
-The latter exploits elastic training image deformations, which achieved state-of-the-art accuracy.
+The latter exploits elastic training image deformations, treating the input as a full matrix,
+rather than a vector of features.
 Image deformation has also been explored in hidden Markov models \citep{keysersDeformationModelsImage2007}.
-Since then, methods have improved in GPU-based computations in deep, big simple neural networks
-\citep{ciresanDeepBigSimple2010, ciresanMulticolumnDeepNeural2012}.
+Methods have improved in GPU-based computations in deep, big simple neural networks
+\citep{ciresanDeepBigSimple2010, ciresanMulticolumnDeepNeural2012},
+resulting in a broad family of neural network models.
 Support vector machines \citep{decosteTrainingInvariantSupport2002} have also been used for image-recognition tasks.
 
 \section{Methods}
@@ -106,6 +109,22 @@ The goal is to determine what sort of basic model architecture performs the best
 in efficiency of training/evaluating, as well as in accuracy of the resultant classification.
 We consider a convolutional neural network and a fully-connected feedforward neural network,
 with modifications to the loss function and training schedule.
+
+In all cases, Adam is used as the optimizer \citep{kingmaAdamMethodStochastic2017}.
+It computes a bias-corrected gradient using the first two moments,
+and can be thought of as a trust-region stochastic gradient descent algorithm.
+
+The cross-entropy function is used as the loss function.
+
+\begin{equation}
+  H(p, q) = - \mathbb{E}(\log q) = - \sum_{s \in \mathcal{S}} p_s \log q_s
+\end{equation}
+
+This function measures the number of bits required to encode an input
+if an encoding scheme is optimized for probability distribution $q$ rather than
+the true distribution $p$.
+In the case where $p = q$, the cross-entropy is the entropy,
+and the loss is minimized.
 
 \subsection{Convolutional neural network}
 
@@ -119,7 +138,8 @@ which operate with a 3x3 window and padding of (1, 1) on 14x14 images.
 This convolutional layer passes through ReLU activation to a third convolution layer,
 which acts on 7x7 images, with the same padding and ReLU activation as before.
 
-Each convolutional layer is separated by a 2x2 maximum pooling layer.
+Each convolutional layer is separated by a 2x2 maximum pooling layer,
+for selecting the most representative features.
 
 Finally, the 3-dimensional tensor is flattened to 2 dimensions,
 and passed to a 288-unit fully-connected layer with linear activation,
@@ -183,6 +203,12 @@ This is because possessing a model that can identify characters and glyphs quick
 is important for real-world applications of optical character recognition.
 A model does not need only to be accurate, it should also be fast.
 
+We use two testing datasets.
+One is the original, MNIST testing dataset.
+The other is the MNIST testing dataset with Gaussian noise ($\xi = 0.1, \mu = 0, \sigma = 1$) added to each image.
+This ``fuzzed'' dataset is designed to test how well the models can handle noisy data,
+such as in an optical character recognition task on an old manuscript.
+
 \section{Results}
 
 Models were written in \textsc{Julia} \citep{bezansonJuliaFreshApproach2017a}
@@ -194,13 +220,22 @@ No GPU-acceleration was used.
 Models were compiled, and timed using built-in macros.
 
 Training time is defined as the amount of time it took to train the model to a stopping point.
-In non-adaptive models, this is the time of 5 epochs through the training set (60,000 images).
-In adaptive models, the models ran until assumed convergence (10 epochs).
+We tested $n = \{ 5, 10, 20 \}$ epochs, each time, training through minibatches of the entire training dataset.
+In non-adaptive models, this is the time of $n$. epochs through the training set (60,000 images).
+In adaptive models, the models ran until assumed convergence.
 
 Testing time is defined as the amount of time it took to run the model on the 10,000 image testing set.
+We define testing speed as the number of digits identified per second (in digits/second).
 
-Testing accuracy is the ratio of number of correct classifications divided by the total
+Testing accuracy is the ratio of mean number of correct classifications divided by the total
 for all images in the testing set.
+We define testing efficiency as the mean number of digits identified correctly per second (in digits/second).
+
+\begin{align}
+  \mathrm{testing~speed} &= \frac{10,000}{\mathrm{testing~time}} \\
+  \mathrm{testing~accuracy} &= \frac{\mathrm{\#~labeled~correctly}}{10,000} \\
+  \mathrm{testing~efficiency} &= \mathrm{testing~accuracy} \times \mathrm{testing~speed}
+\end{align}
 
 We see that the \textsc{Conv}-family of models perform the best in accuracy,
 but take the longest to run, both in training time and in testing time.
@@ -258,6 +293,46 @@ did not make a significant difference.
     \textsc{DenseFuzz}    & 145 & 0.0625 & 0.902 \\
     \textsc{DenseAdpt}    & 22.8 & 0.059 & 0.114 \\
     \textsc{DenseFull}    & 0.114 & 0.103 & 0.117 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[h]
+  \caption{Results of simulations (20 epochs)}
+  \label{tbl:results3}
+  \centering
+  \begin{tabular}{lllll}
+    \toprule
+    Model Name & Training Time (s) & Testing Time (s) & Testing Accuracy & Testing Efficiency \\
+    \midrule
+    \textsc{Conv}         & 762 & 3.83 & 0.986 & 0 \\
+    \textsc{ConvFuzz}     & 713 & 3.48 & 0.988 & 0 \\
+    \textsc{ConvAdpt}     & 627 & 3.30 & 0.987 & 0 \\
+    \textsc{ConvFull}     & 642 & 3.34 & 0.987 & 0 \\
+    \textsc{Dense}        & 68.3 & 0.062 & 0.900 & 0 \\
+    \textsc{DenseFuzz}    & 145 & 0.0625 & 0.902 & 0 \\
+    \textsc{DenseAdpt}    & 22.8 & 0.059 & 0.114 & 0 \\
+    \textsc{DenseFull}    & 0.114 & 0.103 & 0.117 & 0 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[h]
+  \caption{Results of simulations (20 epochs) with fuzzing}
+  \label{tbl:results4}
+  \centering
+  \begin{tabular}{lll}
+    \toprule
+    Model Name & Testing Accuracy & Testing Efficiency \\
+    \midrule
+    \textsc{Conv}         & 0 & 0 \\
+    \textsc{ConvFuzz}     & 0 & 0 \\
+    \textsc{ConvAdpt}     & 0 & 0 \\
+    \textsc{ConvFull}     & 0 & 0 \\
+    \textsc{Dense}        & 0 & 0 \\
+    \textsc{DenseFuzz}    & 0 & 0 \\
+    \textsc{DenseAdpt}    & 0 & 0 \\
+    \textsc{DenseFull}    & 0 & 0 \\
     \bottomrule
   \end{tabular}
 \end{table}
