@@ -340,7 +340,75 @@ did not make a significant difference.
 
 \section{Discussion}
 
+\subsection{Convolutional neural networks: accurate and slow}
+
+The results of the model evaluations indicate that CNNs outperform feedforward neural networks
+on classifying images in the MNIST dataset, in terms of accuracy.
+The convolutional neural network achieved $< 98\%$ accuracy after 5 epochs
+for all four models tested.
+This is an order of magnitude better than the dense networks.
+However, the models took significantly longer to train, and perform about 60 times slower
+in the classification task.
+Therefore, it is better to use a convolutional neural network
+when the main objective is accuracy, or when the training/running time are unimportant.
+
+A better method might be to train two networks, both a CNN and a feedforward NN,
+and pass the input through the feedforward neural network.
+One can establish a confidence measure, such as a probability cutoff,
+as a measure of ``unsureness''.
+Images whose labels about which the feedforward network is uncertain,
+would be passed to the CNN for classification.
+This has the advantage of speeding up classification,
+while only increasing the error rate by a small amount.
+
+\subsection{Input fuzzing makes models more robust}
+
+Input fuzzing makes models more robust to noise.
+In all cases, models perform worse on classifying the fuzzed testing data
+than on the vanilla testing images.
+Models which were trained with the fuzzed loss function (\textsc{ConvFuzz} and \textsc{DenseFuzz}),
+suffered smaller hits to their accuracy, than the models trained with the normal loss function.
+This indicates that training using a fuzzy loss function improves a model's robustness to noise.
+
+While the fuzzing reduces the deleterious effect of noise on classification accuracy,
+training models with the fuzzed loss function took much longer.
+
+This is partly due to the vectorized operations to generate the fuzzy input data each iteration
+adding to the total training time,
+and because the fuzzy loss function was implemented using global variables in a script.
+Using global variables in functions makes it hard for the JIT Julia compiler to optimize vectorized operations.
+In comparison, the model training itself was extremely fast.
+
+Overall, fuzzing does not add significantly to training time, and produces a more robust model.
+
+\subsection{Adaptive learning rates are not for everything}
+
+The adaptive learning scheme comes with many theoretical advantages, but in practice, does not work well for all problems.
+Since the scheme was conditioned on the model's accuracy with the testing data,
+adaptive learning of this form is only possible when testing data is readily available during the training process.
+Furthermore, adaptive learning prevents overfitting by exiting when the accuracy is maximized, but doesn't prevent underfitting.
+The dense models failed to converge fast enough,
+and so the adaptive learning scheme assumed a local minimum had been reached,
+and training exited, resulting in underfit models.
+
+None of the models were trained long enough for the adaptive learning scheme to pay off.
+We can see after about 20 epochs, the adaptive model matches the fixed learning rate model.
+If models were trained for more than 20 epochs, the adaptive learning rate would be advantageous,
+since early exiting would save time and prevent overfitting.
+
 \section{Conclusion}
+
+In this paper, we discuss using feedforward, dense neural networks and convolutional neural networks
+on optical character recognition tasks, using the well-studied MNIST dataset of handwritten digits.
+We find that dense networks are much faster to train and during classification, but result in less accurate models than CNNs.
+In addition, while input fuzzing in the loss function adds to the computational load during training,
+resultant models are more robust to noisy inputs.
+Adaptive learning and early exiting are found to be a effective methods for preventing overfitting,
+but may be more parsimonious than necessary, resultig in underfit models.
+Furthermore, we propose a hybrid model, in which all images are classified by a dense network,
+and images for which the dense network is uncertain (low maximal probability),
+are passed to an auxiliary CNN for better classification.
+This framework has the advantage of improving classification speed without strongly decreasing the accuracy.
 
 \bibliography{bibliography}
 
