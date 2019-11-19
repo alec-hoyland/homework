@@ -18,6 +18,7 @@ data_denseFull = BSON.load("mnist_denseFull.bson")
 
 compute_testing_speed(data) = 10_000 / data[:testing_time]
 compute_testing_efficiency(data) = data[:testing_accuracy] * compute_testing_speed(data)
+compute_testing_efficiency_fuzzed(data) = data[:testing_accuracy_fuzzed] * compute_testing_speed(data)
 
 compute_testing_speed(data_conv)
 compute_testing_efficiency(data_conv)
