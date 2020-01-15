@@ -87,3 +87,54 @@ describe(chain)
 
 plot(chain)
 corner(chain, [:student, :balance, :income])
+
+## Making predictions
+
+# take the mean of each parameter's sampled values,
+# then rerun the logistic function using those mean values
+
+function prediction(x::Matrix, chain, threshold)
+    # pull the means from each parameter's sampled values in the chain
+    intercept = mean(chain[:intercept].value)
+    student = mean(chain[:student].value)
+    balance = mean(chain[:balance].value)
+    income = mean(chain[:income].value)
+
+    # retrieve the number of rows
+    n = size(x)[1]
+
+    # generate a vector to store our predictions in
+    v = Vector{Float64}(undef, n)
+
+    # calculate the logistic function for each element in the test set
+    for i in 1:n
+        num = logistic(intercept .+ student * x[i,1] + balance * x[i,2] + income * x[i,3])
+        if num >= threshold
+            v[i] = 1
+        else
+            v[i] = 0
+        end
+    end
+    return v
+end
+
+threshold = 0.10
+predictions = prediction(test, chain, threshold)
+
+# compute mean squared error
+loss = sum((predictions - test_label).^2) / length(test_label)
+
+# compute accuracy
+defaults = sum(test_label)
+not_defaults = length(test_label) - defaults
+
+predicted_defaults = sum(test_label .== predictions .== 1)
+predicted_not_defaults = sum(test_label .== predictions .== 0)
+
+println("Defaults: $defaults
+    Predictions: $predicted_defaults
+    Percentage defaults correct $(predicted_defaults/defaults)")
+
+println("Not defaults: $not_defaults
+    Predictions: $predicted_not_defaults
+    Percentage non-defaults correct $(predicted_not_defaults/not_defaults)")
