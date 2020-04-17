@@ -78,46 +78,61 @@ scatter(houses[!, :sq__ft], houses[!, :price], markersize=3, legend=false)
 
 # filter a data frame by feature value
 using Statistics
-by(houses[houses[:sq__ft] .> 0, :], :type, size)
-by(houses[houses[:sq__ft] .> 0, :], :type, x -> mean(x[:price]))
+by(houses[houses[!, :sq__ft] .> 0, :], :type, size)
+by(houses[houses[!, :sq__ft] .> 0, :], :type, x -> mean(x[:price]))
 
-# k-means clustering
+## K-Means Clustering
+
 using Clustering
-df  = houses[houses[:sq__ft] .> 0, :]; # remove entries where the square-footage is zero
+
+# remove entries where the square-footage is zero
+filtered_houses = houses[houses[!, :sq__ft] .> 0, :]; # remove entries where the square-footage is zero
+
+# cast to an array and transpose
+X = filtered_houses[:, [:latitude, :longitude]] |> Array{Float64} |> transpose
+
+# guesstimate the number of clusters
+k = length(unique(filtered_houses[:, :zip]))
+
 # perform the clustering
-X   = permutedims(convert(Array{Float64}, df[[:latitude, :longitude]]))
-k   = length(unique(df[:zip]))
-C   = kmeans(X, k)
-# add the clustering to the data frame
-insert!(df, ncol(df)+1, C.assignments, :cluster)
+C = kmeans(X, k);
 
-# plot the cluster in different colors
-clusters_figure = plot()
-for i in 1:k
-    clustered_houses = df[df[:cluster] .== i, :]
-    xvals = clustered_houses[:latitude]
-    yvals = clustered_houses[:longitude]
-    scatter!(clusters_figure, xvals, yvals, markersize=4)
-end
-xlabel!("Latitude")
-ylabel!("Longitude")
-title!("Houses color-coded by cluster")
-display(clusters_figure)
+# create a new data frame
+df = DataFrame(cluster = C.assignments, city = )
 
-unique_zips = unique(df[:zip])
-zips_figure = plot()
-for uzip in unique_zips
-    subs = df[df[:zip].==uzip,:]
-    x = subs[:latitude]
-    y = subs[:longitude]
-    scatter!(zips_figure,x,y)
-end
-xlabel!("Latitude")
-ylabel!("Longitude")
-title!("Houses color-coded by zip code")
-display(zips_figure)
 
-plot(clusters_figure,zips_figure,layout=(2, 1))
+# k   = length(unique(df[:zip]))
+# C   = kmeans(X, k)
+# # add the clustering to the data frame
+# insert!(df, ncol(df)+1, C.assignments, :cluster)
+#
+# # plot the cluster in different colors
+# clusters_figure = plot()
+# for i in 1:k
+#     clustered_houses = df[df[:cluster] .== i, :]
+#     xvals = clustered_houses[:latitude]
+#     yvals = clustered_houses[:longitude]
+#     scatter!(clusters_figure, xvals, yvals, markersize=4)
+# end
+# xlabel!("Latitude")
+# ylabel!("Longitude")
+# title!("Houses color-coded by cluster")
+# display(clusters_figure)
+#
+# unique_zips = unique(df[:zip])
+# zips_figure = plot()
+# for uzip in unique_zips
+#     subs = df[df[:zip].==uzip,:]
+#     x = subs[:latitude]
+#     y = subs[:longitude]
+#     scatter!(zips_figure,x,y)
+# end
+# xlabel!("Latitude")
+# ylabel!("Longitude")
+# title!("Houses color-coded by zip code")
+# display(zips_figure)
+#
+# plot(clusters_figure,zips_figure,layout=(2, 1))
 
 ## Nearest Neighbor with a KDTree
 using NearestNeighbors
