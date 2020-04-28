@@ -27,6 +27,7 @@ function seir_ode(dY, Y, p, t)
 end
 
 # function which integrates the differential equations
+
 function seir(β, σ, γ, μ, tspan=(0.0,100.0); S₀=0.99, E₀=0, I₀=0.01, R₀=0)
     # create a vector containing the parameters
     par         = [β, σ, γ, μ]
@@ -48,7 +49,7 @@ r0(β, σ, γ, μ) = (σ/(σ+μ))*(β/(γ+μ))
 μ = 0.000028
 σ = 0.25
 γ = 0.15
-β = 100
+β = 4
 
 sol = seir(β, σ, γ, μ)
 
