@@ -1,0 +1,7 @@
+name = "Ex"
+uuid = "2e3e7da4-7e70-11ea-1e3f-6545207489ee"
+authors = ["Alec Hoyland <alec.hoyland@posteo.net>"]
+version = "0.1.0"
+
+[deps]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"

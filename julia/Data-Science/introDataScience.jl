@@ -1,18 +1,23 @@
 ## Julia for Data Science
 
+## Downloading Data
+
 # download the data
 cd("/home/alec/code/homework/julia/")
 P = download("https://raw.githubusercontent.com/nassarhuda/easy_data/master/programming_languages.csv", "programming_languages.csv")
 
+## Reading Data
+
 # read the data
 using CSV, DataFrames
-P = CSV.File("programming_languages.csv", header=true) |> DataFrame
+# P = CSV.File("programming_languages.csv", header=true) |> DataFrame
 # can also used DelimitedFiles.readdlm()
+P = CSV.read("programming_languages.csv", header=true)
 
 # when was language X created?
 function language_created_year(P::DataFrame, language::String)
-    loc = findfirst(P[2] .== language)
-    return P[loc,1]
+    loc = findfirst(P[!, 2] .== language)
+    return P[loc, 1]
 end
 
 # what year was Julia created?
@@ -21,7 +26,7 @@ language_created_year(P, "Julia")
 # create a more robust function that handles cases
 
 function language_created_year_v2(P::DataFrame, language::String)
-    loc = findfirst(lowercase.(P[2]) .== lowercase.(language))
+    loc = findfirst(lowercase.(P[!, 2]) .== lowercase.(language))
     return P[loc, 1]
 end
 
@@ -31,22 +36,32 @@ language_created_year_v2(P, "Julia") == language_created_year_v2(P, "julia")
 using DelimitedFiles
 writedlm("programming_languages_data.txt", Matrix(P), '-')
 P2 = readdlm("programming_languages_data.txt", '-') |> DataFrame
-P == P
+P == P2
+
+## Dictionaries
 
 # store the data in a Dictionary
 dict = Dict{Integer, Vector{String}}()
 
-for i = 1:size(Matrix(P),1)
-    year,lang = Matrix(P[i,:])
+for i = 1:size(P, 1)
+    year, lang = P[i, :];
+
     if year in keys(dict)
-        dict[year] = push!(dict[year],lang)
+        dict[year] = push!(dict[year], lang);
     else
-        dict[year] = [lang]
+        dict[year] = [lang];
     end
 end
 
 # what programming languages were developed in 2003
 dict[2003] # do it as a dictionary
+
+## Playing around with DataFrames
+
+# P is a data frame
+typeof(P)
+P[!, :year]
+
 using DataFramesMeta
 @linq P |> where(:year .== 2003) |> select(pl03 = :year, :language)
 
@@ -55,53 +70,69 @@ using DataFrames, Plots, CSV; gr()
 
 # load the data
 # download("http://samplecsvs.s3.amazonaws.com/Sacramentorealestatetransactions.csv","houses.csv")
-houses = CSV.read("/home/alec/code/homework/julia/houses.csv")
+houses = CSV.read("/home/alec/code/homework/julia/Data-Science/houses.csv")
 
 # visualize the data
-scatter(houses[:sq__ft], houses[:price], markersize=3)
+scatter(houses, :sq__ft, :price, markersize=3, legend=false, xlabel="ft^2", ylabel="price (\$)")
+scatter(houses[!, :sq__ft], houses[!, :price], markersize=3, legend=false)
 
 # filter a data frame by feature value
 using Statistics
-by(houses[houses[:sq__ft] .> 0, :], :type, size)
-by(houses[houses[:sq__ft] .> 0, :], :type, x -> mean(x[:price]))
+by(houses[houses[!, :sq__ft] .> 0, :], :type, size)
+by(houses[houses[!, :sq__ft] .> 0, :], :type, x -> mean(x[:price]))
 
-# k-means clustering
+## K-Means Clustering
+
 using Clustering
-df  = houses[houses[:sq__ft] .> 0, :]; # remove entries where the square-footage is zero
+
+# remove entries where the square-footage is zero
+filtered_houses = houses[houses[!, :sq__ft] .> 0, :]; # remove entries where the square-footage is zero
+
+# cast to an array and transpose
+X = filtered_houses[:, [:latitude, :longitude]] |> Array{Float64} |> transpose
+
+# guesstimate the number of clusters
+k = length(unique(filtered_houses[:, :zip]))
+
 # perform the clustering
-X   = permutedims(convert(Array{Float64}, df[[:latitude, :longitude]]))
-k   = length(unique(df[:zip]))
-C   = kmeans(X, k)
-# add the clustering to the data frame
-insert!(df, ncol(df)+1, C.assignments, :cluster)
+C = kmeans(X, k);
 
-# plot the cluster in different colors
-clusters_figure = plot()
-for i in 1:k
-    clustered_houses = df[df[:cluster] .== i, :]
-    xvals = clustered_houses[:latitude]
-    yvals = clustered_houses[:longitude]
-    scatter!(clusters_figure, xvals, yvals, markersize=4)
-end
-xlabel!("Latitude")
-ylabel!("Longitude")
-title!("Houses color-coded by cluster")
-display(clusters_figure)
+# create a new data frame
+df = DataFrame(cluster = C.assignments, city = )
 
-unique_zips = unique(df[:zip])
-zips_figure = plot()
-for uzip in unique_zips
-    subs = df[df[:zip].==uzip,:]
-    x = subs[:latitude]
-    y = subs[:longitude]
-    scatter!(zips_figure,x,y)
-end
-xlabel!("Latitude")
-ylabel!("Longitude")
-title!("Houses color-coded by zip code")
-display(zips_figure)
 
-plot(clusters_figure,zips_figure,layout=(2, 1))
+# k   = length(unique(df[:zip]))
+# C   = kmeans(X, k)
+# # add the clustering to the data frame
+# insert!(df, ncol(df)+1, C.assignments, :cluster)
+#
+# # plot the cluster in different colors
+# clusters_figure = plot()
+# for i in 1:k
+#     clustered_houses = df[df[:cluster] .== i, :]
+#     xvals = clustered_houses[:latitude]
+#     yvals = clustered_houses[:longitude]
+#     scatter!(clusters_figure, xvals, yvals, markersize=4)
+# end
+# xlabel!("Latitude")
+# ylabel!("Longitude")
+# title!("Houses color-coded by cluster")
+# display(clusters_figure)
+#
+# unique_zips = unique(df[:zip])
+# zips_figure = plot()
+# for uzip in unique_zips
+#     subs = df[df[:zip].==uzip,:]
+#     x = subs[:latitude]
+#     y = subs[:longitude]
+#     scatter!(zips_figure,x,y)
+# end
+# xlabel!("Latitude")
+# ylabel!("Longitude")
+# title!("Houses color-coded by zip code")
+# display(zips_figure)
+#
+# plot(clusters_figure,zips_figure,layout=(2, 1))
 
 ## Nearest Neighbor with a KDTree
 using NearestNeighbors

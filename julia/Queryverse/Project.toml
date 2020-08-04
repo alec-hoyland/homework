@@ -1,0 +1,4 @@
+[deps]
+IndexedTables = "6deec6e2-d858-57c5-ab9b-e6ca5bd20e43"
+Queryverse = "612083be-0b0f-5412-89c1-4e7c75506a58"
+VegaDatasets = "0ae4a718-28b7-58ec-9efb-cded64d6d5b4"
