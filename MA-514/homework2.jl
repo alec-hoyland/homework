@@ -4,80 +4,117 @@
 using Markdown
 using InteractiveUtils
 
-# ╔═╡ 9f8d4116-7b10-11ec-3cff-477edea0524b
-using LinearAlgebra, Plots,SpecialMatrices
+# ╔═╡ 504744f0-82f4-11ec-2ea0-d38be55e4d32
+using Plots, LinearAlgebra
 
-# ╔═╡ c4986355-0cb2-4a12-ac12-2c24115ebaa5
-f(x) = x + 2x^2
+# ╔═╡ cc0004bb-9aad-4317-b27d-629285bf1080
+"""
+Exercise 4.3
+"""
 
-# ╔═╡ 34b92362-688c-440d-bf7e-2cc7cd872897
-function p(x, c)
-	r = 0
-	for i in length(x)
-		r += c[i] * x^(i-1)
+# ╔═╡ 3bc1c81a-bfcf-466d-9f4e-d81b8cfec2e3
+function plot_unit_circle(n_points=500)
+	angles = range(0, 2π, n_points)
+	x = cos.(angles)
+	y = sin.(angles)
+	p = plot(x,y)
+	return p
+end
+
+# ╔═╡ b7906a6c-f015-4e82-a246-5ad655bb024e
+function plot_ellipse(a, b, θ, n_points=500)
+	angles = range(0, 2π, n_points)
+	x = a * cos.(angles)
+	y = b * sin.(angles)
+	R = [cos(θ) -sin(θ); sin(θ) cos(θ)]
+	xy = R * [x'; y']
+	x = xy[1, :]
+	y = xy[2, :]
+	p = plot(x, y)
+	return p
+end
+
+# ╔═╡ 7750cbc4-123f-4eae-a950-17f2097bb686
+cosine_distance(x⃗, y⃗) = dot(x⃗, y⃗) / norm(x⃗) / norm(y⃗)
+
+# ╔═╡ d6e71635-70ca-4368-a960-c97c4f11d884
+function plot_u(A)
+	F = svd(A)
+	x⃗ = F.U[:, 1]
+	y⃗ = F.U[:, 2]
+	θ = atan(x⃗[2]/x⃗[1])
+	a, b = sort!([norm(x⃗), norm(y⃗)])
+	p = plot(plot_ellipse(a, b, θ), aspect_ratio=:equal)
+	for i in 1:size(F.V, 1)
+		plot!([0, x⃗[i]], [0, y⃗[i]])
 	end
-	return r
+	return p
 end
 
-# ╔═╡ 0c3b3154-a2c8-4553-b349-9ea879ed8d61
-ϵ(n, x, c) = sqrt((1/n) * sum(x -> x.^2, f.(x) - p.(x, c)))
-
-# ╔═╡ 89e5de3c-a3b2-4f2c-af77-015d189f75b8
-function solve(n)
-	x = [i/n for i in 1:n]
-	A = Vandermonde(x)
-	c̃ = A \ f.(x)
-	c = zeros(n)
-	c[2] = 1
-	c[3] = 2
-	residual = ϵ(n, x, c̃)
-	F = svd(Matrix(A))
-	return c̃, c, residual, F
+# ╔═╡ 0c5ea869-46e4-4066-9c5c-704b6009ea8b
+function plot_v(A)
+	F = svd(A)
+	p = plot(plot_unit_circle(), aspect_ratio=:equal)
+	for i in 1:size(F.V, 1)
+		plot!([0, F.V[i,1]], [0, F.V[i,2]])
+	end
+	p
 end
+	
 
-# ╔═╡ 1f4055a1-8f8b-4907-a66f-cf1c8489d21f
-get_solution_error(c̃, c) = sqrt(sum(x -> x.^2, c̃ - c)/length(c))
+# ╔═╡ 72557b21-3569-4155-827c-97a4b0d128b7
+plot_v([1 2; 0 2])
 
-# ╔═╡ 5e6a8dc2-b679-4c4b-90b7-9c2d56842f5f
-n = 5 * collect(1:8)
+# ╔═╡ b8a5dab2-4ec5-4025-a2f4-62a7f8c962c8
+plot_u([1 2; 0 2])
 
-# ╔═╡ e6ce5ca3-12c9-4b6d-a14c-d7bbe7c3a6f6
-output = solve.(n)
+# ╔═╡ cd9678fd-8e35-49b7-bdf6-a7cee1f3f2b0
+plot_v([3 0; 0 -2])
 
-# ╔═╡ d93234cc-8263-4dc0-997c-90402d79b587
-c̃ = [val[1] for val in output]
+# ╔═╡ 56fd543e-3b3e-4da7-98f2-82cf23acc304
+plot_u([3 0; 0 -2])
 
-# ╔═╡ b67e4b48-504d-49d7-8db4-2caf69802b96
-c = [val[2] for val in output]
+# ╔═╡ d0d95d83-935f-41e7-8183-4bc1db80675c
+plot_v([2 0; 0 3])
 
-# ╔═╡ 9ab07733-c769-426d-a7f4-7e4468980df9
-residual = [val[3] for val in output]
+# ╔═╡ 325bf2a0-bb83-42a2-9445-b59a2310a040
+plot_u([2 0; 0 3])
 
-# ╔═╡ ba57b200-f6f5-4d26-a3ae-7b33020a1d5a
-begin
-	F = [val[4] for val in output]
-	sing_val_ratio = [f.S[1] / f.S[end] for f in F]
-end
+# ╔═╡ d30b7d7d-7b8e-4b38-b94f-4f6830c0ebcb
+plot_v([0 2; 0 0; 0 0])
 
-# ╔═╡ 86a0fd05-e86f-4dea-ba35-9686dd095fdf
-plot(n, residual, yscale=:log10, xlabel="n", ylabel="residual", legend=false)
+# ╔═╡ e9e59b39-32ed-4f9f-99af-9986b586d642
+plot_u([0 2; 0 0; 0 0])
 
-# ╔═╡ e85ad06d-0f90-481e-b09e-21ec723ada37
-begin
-	plot(n, get_solution_error.(c̃, c), yscale=:log10, xlabel="n", ylabel="solution error (blue), singular value ratio (red)", label="solution error", legend=false)
-	plot!(n, sing_val_ratio, label="singular value ratio")
-end
+# ╔═╡ fd84ccfe-5bdf-4aa9-b9b9-a9016701411d
+plot_v([1 1; 0 0])
+
+# ╔═╡ ca460b1e-97e2-4445-98e3-159e377bc3ed
+plot_u([1 1; 0 0])
+
+# ╔═╡ 8a4b5f9f-c5dc-4abf-99cd-796d6b533044
+plot_v([1 1; 1 1])
+
+# ╔═╡ e8899caf-8bb1-4403-b2ff-ea807e6ed3eb
+plot_u([1 1; 1 1])
+
+# ╔═╡ 1d11ce26-82e2-4f2b-8dea-ddc47b1aa085
+"""Compute SVD of the Vandermonde matrices
+from numerical exercise for lecture 1 and plot σ1/σnin the same graph (with
+y-axis logarithmically scaled) as you plotted the solution error. Compare the
+graphs"""
+
+# ╔═╡ 3fdc458e-b05b-405e-9ec2-33297508bdee
+
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
-SpecialMatrices = "928aab9d-ef52-54ac-8ca1-acd7ca42c160"
 
 [compat]
-Plots = "~1.25.6"
-SpecialMatrices = "~2.0.0"
+Plots = "~1.25.7"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -116,9 +153,9 @@ version = "1.16.1+1"
 
 [[deps.ChainRulesCore]]
 deps = ["Compat", "LinearAlgebra", "SparseArrays"]
-git-tree-sha1 = "54fc4400de6e5c3e27be6047da2ef6ba355511f8"
+git-tree-sha1 = "f9982ef575e19b0e5c7a98c6e75ee496c0f73a93"
 uuid = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
-version = "1.11.6"
+version = "1.12.0"
 
 [[deps.ChangesOfVariables]]
 deps = ["ChainRulesCore", "LinearAlgebra", "Test"]
@@ -209,11 +246,6 @@ deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
 git-tree-sha1 = "b3bfd02e98aedfa5cf885665493c5598c350cd2f"
 uuid = "2e619515-83b5-522b-bb60-26c02a35a201"
 version = "2.2.10+0"
-
-[[deps.ExprTools]]
-git-tree-sha1 = "56559bbef6ca5ea0c0818fa5c90320398a6fbf8d"
-uuid = "e2ba6199-217a-4e67-a87a-7c52f15ade04"
-version = "0.1.8"
 
 [[deps.FFMPEG]]
 deps = ["FFMPEG_jll"]
@@ -322,21 +354,9 @@ git-tree-sha1 = "098e4d2c533924c921f9f9847274f2ad89e018b8"
 uuid = "83e8ac13-25f8-5344-8a64-a9f2b223428f"
 version = "0.5.0"
 
-[[deps.InlineStrings]]
-deps = ["Parsers"]
-git-tree-sha1 = "8d70835a3759cdd75881426fced1508bb7b7e1b6"
-uuid = "842dd82b-1e85-43dc-bf29-5d0ee9dffc48"
-version = "1.1.1"
-
 [[deps.InteractiveUtils]]
 deps = ["Markdown"]
 uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
-
-[[deps.Intervals]]
-deps = ["Dates", "Printf", "RecipesBase", "Serialization", "TimeZones"]
-git-tree-sha1 = "323a38ed1952d30586d0fe03412cde9399d3618b"
-uuid = "d8418881-c3e1-53bb-8760-2df7ec849ed5"
-version = "1.5.0"
 
 [[deps.InverseFunctions]]
 deps = ["Test"]
@@ -399,10 +419,6 @@ deps = ["Formatting", "InteractiveUtils", "LaTeXStrings", "MacroTools", "Markdow
 git-tree-sha1 = "a8f4f279b6fa3c3c4f1adadd78a621b13a506bce"
 uuid = "23fbe1c1-3f47-55db-b15f-69d7ec21a316"
 version = "0.15.9"
-
-[[deps.LazyArtifacts]]
-deps = ["Artifacts", "Pkg"]
-uuid = "4af54fe1-eca0-43a8-85a7-787d91b784e3"
 
 [[deps.LibCURL]]
 deps = ["LibCURL_jll", "MozillaCACerts_jll"]
@@ -518,25 +534,13 @@ version = "1.0.2"
 [[deps.Mmap]]
 uuid = "a63ad114-7e13-5084-954f-fe012c677804"
 
-[[deps.Mocking]]
-deps = ["Compat", "ExprTools"]
-git-tree-sha1 = "29714d0a7a8083bba8427a4fbfb00a540c681ce7"
-uuid = "78c3b35d-d492-501b-9361-3d52fe80e533"
-version = "0.7.3"
-
 [[deps.MozillaCACerts_jll]]
 uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
 
-[[deps.MutableArithmetics]]
-deps = ["LinearAlgebra", "SparseArrays", "Test"]
-git-tree-sha1 = "73deac2cbae0820f43971fad6c08f6c4f2784ff2"
-uuid = "d8a4904e-b15c-11e9-3269-09a3773c0cb0"
-version = "0.3.2"
-
 [[deps.NaNMath]]
-git-tree-sha1 = "f755f36b19a5116bb580de457cda0c140153f283"
+git-tree-sha1 = "b086b7ea07f8e38cf122f5016af580881ac914fe"
 uuid = "77ba4419-2d1f-58cd-9bb1-8ffee604a2e3"
-version = "0.3.6"
+version = "0.3.7"
 
 [[deps.NetworkOptions]]
 uuid = "ca575930-c2e3-43a9-ace4-1e988b2c1908"
@@ -576,9 +580,9 @@ version = "8.44.0+0"
 
 [[deps.Parsers]]
 deps = ["Dates"]
-git-tree-sha1 = "92f91ba9e5941fc781fecf5494ac1da87bdac775"
+git-tree-sha1 = "0b5cfbb704034b5b4c1869e36634438a047df065"
 uuid = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
-version = "2.2.0"
+version = "2.2.1"
 
 [[deps.Pixman_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -604,15 +608,9 @@ version = "1.1.3"
 
 [[deps.Plots]]
 deps = ["Base64", "Contour", "Dates", "Downloads", "FFMPEG", "FixedPointNumbers", "GR", "GeometryBasics", "JSON", "Latexify", "LinearAlgebra", "Measures", "NaNMath", "PlotThemes", "PlotUtils", "Printf", "REPL", "Random", "RecipesBase", "RecipesPipeline", "Reexport", "Requires", "Scratch", "Showoff", "SparseArrays", "Statistics", "StatsBase", "UUIDs", "UnicodeFun", "Unzip"]
-git-tree-sha1 = "db7393a80d0e5bef70f2b518990835541917a544"
+git-tree-sha1 = "7e4920a7d4323b8ffc3db184580598450bde8a8e"
 uuid = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
-version = "1.25.6"
-
-[[deps.Polynomials]]
-deps = ["Intervals", "LinearAlgebra", "MutableArithmetics", "RecipesBase"]
-git-tree-sha1 = "f184bc53e9add8c737e50fa82885bc3f7d70f628"
-uuid = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
-version = "2.0.24"
+version = "1.25.7"
 
 [[deps.Preferences]]
 deps = ["TOML"]
@@ -701,12 +699,6 @@ version = "1.0.1"
 deps = ["LinearAlgebra", "Random"]
 uuid = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 
-[[deps.SpecialMatrices]]
-deps = ["LinearAlgebra", "Polynomials"]
-git-tree-sha1 = "08c7b8ef9cbf1a33df2408756bb15b491cf5b372"
-uuid = "928aab9d-ef52-54ac-8ca1-acd7ca42c160"
-version = "2.0.0"
-
 [[deps.StaticArrays]]
 deps = ["LinearAlgebra", "Random", "Statistics"]
 git-tree-sha1 = "2884859916598f974858ff01df7dfc6c708dd895"
@@ -757,12 +749,6 @@ uuid = "a4e569a6-e804-4fa4-b0f3-eef7a1d5b13e"
 [[deps.Test]]
 deps = ["InteractiveUtils", "Logging", "Random", "Serialization"]
 uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
-
-[[deps.TimeZones]]
-deps = ["Dates", "Downloads", "InlineStrings", "LazyArtifacts", "Mocking", "Printf", "RecipesBase", "Serialization", "Unicode"]
-git-tree-sha1 = "0f1017f68dc25f1a0cb99f4988f78fe4f2e7955f"
-uuid = "f269a46b-ccf7-5d73-abea-4c690281aa53"
-version = "1.7.1"
 
 [[deps.URIs]]
 git-tree-sha1 = "97bbe755a53fe859669cd907f2d96aee8d2c1355"
@@ -1003,19 +989,26 @@ version = "0.9.1+5"
 """
 
 # ╔═╡ Cell order:
-# ╠═9f8d4116-7b10-11ec-3cff-477edea0524b
-# ╠═c4986355-0cb2-4a12-ac12-2c24115ebaa5
-# ╠═34b92362-688c-440d-bf7e-2cc7cd872897
-# ╠═0c3b3154-a2c8-4553-b349-9ea879ed8d61
-# ╠═89e5de3c-a3b2-4f2c-af77-015d189f75b8
-# ╠═1f4055a1-8f8b-4907-a66f-cf1c8489d21f
-# ╠═5e6a8dc2-b679-4c4b-90b7-9c2d56842f5f
-# ╠═e6ce5ca3-12c9-4b6d-a14c-d7bbe7c3a6f6
-# ╠═d93234cc-8263-4dc0-997c-90402d79b587
-# ╠═b67e4b48-504d-49d7-8db4-2caf69802b96
-# ╠═9ab07733-c769-426d-a7f4-7e4468980df9
-# ╠═ba57b200-f6f5-4d26-a3ae-7b33020a1d5a
-# ╠═86a0fd05-e86f-4dea-ba35-9686dd095fdf
-# ╠═e85ad06d-0f90-481e-b09e-21ec723ada37
+# ╠═504744f0-82f4-11ec-2ea0-d38be55e4d32
+# ╠═cc0004bb-9aad-4317-b27d-629285bf1080
+# ╠═3bc1c81a-bfcf-466d-9f4e-d81b8cfec2e3
+# ╠═b7906a6c-f015-4e82-a246-5ad655bb024e
+# ╠═7750cbc4-123f-4eae-a950-17f2097bb686
+# ╠═d6e71635-70ca-4368-a960-c97c4f11d884
+# ╠═0c5ea869-46e4-4066-9c5c-704b6009ea8b
+# ╠═72557b21-3569-4155-827c-97a4b0d128b7
+# ╠═b8a5dab2-4ec5-4025-a2f4-62a7f8c962c8
+# ╠═cd9678fd-8e35-49b7-bdf6-a7cee1f3f2b0
+# ╠═56fd543e-3b3e-4da7-98f2-82cf23acc304
+# ╠═d0d95d83-935f-41e7-8183-4bc1db80675c
+# ╠═325bf2a0-bb83-42a2-9445-b59a2310a040
+# ╠═d30b7d7d-7b8e-4b38-b94f-4f6830c0ebcb
+# ╠═e9e59b39-32ed-4f9f-99af-9986b586d642
+# ╠═fd84ccfe-5bdf-4aa9-b9b9-a9016701411d
+# ╠═ca460b1e-97e2-4445-98e3-159e377bc3ed
+# ╠═8a4b5f9f-c5dc-4abf-99cd-796d6b533044
+# ╠═e8899caf-8bb1-4403-b2ff-ea807e6ed3eb
+# ╠═1d11ce26-82e2-4f2b-8dea-ddc47b1aa085
+# ╠═3fdc458e-b05b-405e-9ec2-33297508bdee
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002

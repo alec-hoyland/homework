@@ -4,79 +4,100 @@
 using Markdown
 using InteractiveUtils
 
-# ╔═╡ 9f8d4116-7b10-11ec-3cff-477edea0524b
-using LinearAlgebra, Plots,SpecialMatrices
+# ╔═╡ 0cb93746-86b1-11ec-1f71-d7a3d6c9b21a
+using LinearAlgebra, Plots, SpecialMatrices, PlotlyJS
 
-# ╔═╡ c4986355-0cb2-4a12-ac12-2c24115ebaa5
-f(x) = x + 2x^2
+# ╔═╡ 896a6854-e66a-46a6-8d0f-f7e9738ca5b8
+gr()
 
-# ╔═╡ 34b92362-688c-440d-bf7e-2cc7cd872897
-function p(x, c)
-	r = 0
-	for i in length(x)
-		r += c[i] * x^(i-1)
-	end
-	return r
-end
+# ╔═╡ dd5f716a-e19a-4eaf-8a7b-82f9b7aeb9e4
+x = collect(-128:128)/128
 
-# ╔═╡ 0c3b3154-a2c8-4553-b349-9ea879ed8d61
-ϵ(n, x, c) = sqrt((1/n) * sum(x -> x.^2, f.(x) - p.(x, c)))
+# ╔═╡ c086fb40-0c1c-4c86-a1ae-69a2a0462b77
+A = Vandermonde(x)[:, 1:4]
 
-# ╔═╡ 89e5de3c-a3b2-4f2c-af77-015d189f75b8
-function solve(n)
-	x = [i/n for i in 1:n]
-	A = Vandermonde(x)
-	c̃ = A \ f.(x)
-	c = zeros(n)
-	c[2] = 1
-	c[3] = 2
-	residual = ϵ(n, x, c̃)
-	F = svd(Matrix(A))
-	return c̃, c, residual, F
-end
+# ╔═╡ 1e4c3c95-f566-4dd2-ad38-81d18c9b04c2
+F = qr(A)
 
-# ╔═╡ 1f4055a1-8f8b-4907-a66f-cf1c8489d21f
-get_solution_error(c̃, c) = sqrt(sum(x -> x.^2, c̃ - c)/length(c))
+# ╔═╡ b80f0fe5-ee5a-4efa-a0ee-c93674969ac5
+Q = F.Q * diagm(1 ./ F.Q[257, :])
 
-# ╔═╡ 5e6a8dc2-b679-4c4b-90b7-9c2d56842f5f
-n = 5 * collect(1:8)
+# ╔═╡ 4b94f2d1-f832-49fa-8a37-a9a242805c23
+Plots.plot(x, Q[:, 2:5], xlim=(-1,1), ylim=(-1, 1), xlabel="x", ylabel="L(x)", title="Legendre Polynomials", aspect_ratio=:equal)
 
-# ╔═╡ e6ce5ca3-12c9-4b6d-a14c-d7bbe7c3a6f6
-output = solve.(n)
-
-# ╔═╡ d93234cc-8263-4dc0-997c-90402d79b587
-c̃ = [val[1] for val in output]
-
-# ╔═╡ b67e4b48-504d-49d7-8db4-2caf69802b96
-c = [val[2] for val in output]
-
-# ╔═╡ 9ab07733-c769-426d-a7f4-7e4468980df9
-residual = [val[3] for val in output]
-
-# ╔═╡ ba57b200-f6f5-4d26-a3ae-7b33020a1d5a
+# ╔═╡ f6edea2e-a8be-4857-950e-3571c956a759
 begin
-	F = [val[4] for val in output]
-	sing_val_ratio = [f.S[1] / f.S[end] for f in F]
+	"""Vandermonde matrix from homework #1"""
+	n = 80
+	x2 = [i/n for i in 1:n]
+    A2 = Vandermonde(x2)
 end
 
-# ╔═╡ 86a0fd05-e86f-4dea-ba35-9686dd095fdf
-plot(n, residual, yscale=:log10, xlabel="n", ylabel="residual", legend=false)
+# ╔═╡ 4f3122b5-cf16-4468-9cf0-fa1afe28431b
+#Classical GS
+function qrcgs(A)
+  (m,n) = size(A)
+  Q = zeros(m,n)
+  R = zeros(n,n)
+  for j=1:m
+    aj = A[:,j]
+    vj = aj
+    for i = 1:j-1
+      R[i,j] = dot(Q[:,i], aj)
+      vj -= Q[:,i] * R[i,j]
+    end
+    R[j,j] = norm(vj)
+    Q[:,j] = vj / R[j,j]
+  end
+    return Q,R
+end
 
-# ╔═╡ e85ad06d-0f90-481e-b09e-21ec723ada37
+# ╔═╡ 14fb76a2-1614-472b-95f1-2d7cd4ad90c4
+#Modified GS
+function qrmgs(A)
+  (m,n) = size(A)
+  Q = zeros(m,n)
+  R = zeros(n,n)
+  for j = 1:m
+    aj = A[:,j]
+    vj = aj
+    for i = 1:j-1
+      R[i,j] = dot(Q[:,i], vj)
+      vj -= Q[:,i]*R[i,j]
+    end
+    R[j,j] = norm(vj)
+    Q[:,j] = vj / R[j,j]
+  end
+    return Q,R
+end
+
+# ╔═╡ cb1f54e9-f8a1-45c3-af04-93f38c80cc64
+(QC, RC) = qrcgs(A2)
+
+# ╔═╡ 638b4f43-4664-4f25-8fef-0b9788803050
+(QM, RM) = qrmgs(A2)
+
+# ╔═╡ 7d082285-3431-49ef-8348-14a29a34d4ff
 begin
-	plot(n, get_solution_error.(c̃, c), yscale=:log10, xlabel="n", ylabel="solution error (blue), singular value ratio (red)", label="solution error", legend=false)
-	plot!(n, sing_val_ratio, label="singular value ratio")
+	j = 1:80
+	Plots.scatter(j, diag(RC), markershape=:xcross, yscale=:log10, 				xlabel="j", ylabel="r_{jj}", labels="Gram-Schmidt")
+	Plots.scatter!(j, diag(RM), label="Modified Gram-Schmidt", yscale=:log10, markershape=:xcross)
+	Plots.plot!(j, 2.0 .^ (-j), linestyle=:dash, label="")
+	Plots.plot!(j, [eps() for _ in j], linestyle=:dash, label="machine eps")
+	Plots.plot!(j, [sqrt(eps()) for _ in j], linestyle=:dash, label="sqrt machine eps")
 end
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+PlotlyJS = "f0f68f2c-4968-5e81-91da-67840de0976a"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 SpecialMatrices = "928aab9d-ef52-54ac-8ca1-acd7ca42c160"
 
 [compat]
-Plots = "~1.25.6"
+PlotlyJS = "~0.18.8"
+Plots = "~1.25.7"
 SpecialMatrices = "~2.0.0"
 """
 
@@ -99,8 +120,26 @@ uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
 [[deps.Artifacts]]
 uuid = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
 
+[[deps.AssetRegistry]]
+deps = ["Distributed", "JSON", "Pidfile", "SHA", "Test"]
+git-tree-sha1 = "b25e88db7944f98789130d7b503276bc34bc098e"
+uuid = "bf4720bc-e11a-5d0c-854e-bdca1663c893"
+version = "0.1.0"
+
 [[deps.Base64]]
 uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
+
+[[deps.BinDeps]]
+deps = ["Libdl", "Pkg", "SHA", "URIParser", "Unicode"]
+git-tree-sha1 = "1289b57e8cf019aede076edab0587eb9644175bd"
+uuid = "9e28174c-4ba2-5203-b857-d8d62c4213ee"
+version = "1.0.2"
+
+[[deps.Blink]]
+deps = ["Base64", "BinDeps", "Distributed", "JSExpr", "JSON", "Lazy", "Logging", "MacroTools", "Mustache", "Mux", "Reexport", "Sockets", "WebIO", "WebSockets"]
+git-tree-sha1 = "08d0b679fd7caa49e2bca9214b131289e19808c0"
+uuid = "ad839575-38b3-5650-b840-f874b8c74a25"
+version = "0.12.5"
 
 [[deps.Bzip2_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -116,9 +155,9 @@ version = "1.16.1+1"
 
 [[deps.ChainRulesCore]]
 deps = ["Compat", "LinearAlgebra", "SparseArrays"]
-git-tree-sha1 = "54fc4400de6e5c3e27be6047da2ef6ba355511f8"
+git-tree-sha1 = "f9982ef575e19b0e5c7a98c6e75ee496c0f73a93"
 uuid = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
-version = "1.11.6"
+version = "1.12.0"
 
 [[deps.ChangesOfVariables]]
 deps = ["ChainRulesCore", "LinearAlgebra", "Test"]
@@ -206,9 +245,9 @@ version = "2.2.3+0"
 
 [[deps.Expat_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
-git-tree-sha1 = "b3bfd02e98aedfa5cf885665493c5598c350cd2f"
+git-tree-sha1 = "ae13fcbc7ab8f16b0856729b050ef0c446aa3492"
 uuid = "2e619515-83b5-522b-bb60-26c02a35a201"
-version = "2.2.10+0"
+version = "2.4.4+0"
 
 [[deps.ExprTools]]
 git-tree-sha1 = "56559bbef6ca5ea0c0818fa5c90320398a6fbf8d"
@@ -226,6 +265,9 @@ deps = ["Artifacts", "Bzip2_jll", "FreeType2_jll", "FriBidi_jll", "JLLWrappers",
 git-tree-sha1 = "d8a578692e3077ac998b50c0217dfd67f21d1e5f"
 uuid = "b22a6f82-2f65-5046-a5b2-351ab43fb4e5"
 version = "4.4.0+0"
+
+[[deps.FileWatching]]
+uuid = "7b1f6079-737a-58dc-b8bc-7a2ca5c1b5ee"
 
 [[deps.FixedPointNumbers]]
 deps = ["Statistics"]
@@ -257,11 +299,17 @@ git-tree-sha1 = "aa31987c2ba8704e23c6c8ba8a4f769d5d7e4f91"
 uuid = "559328eb-81f9-559d-9380-de523a88c83c"
 version = "1.0.10+0"
 
+[[deps.FunctionalCollections]]
+deps = ["Test"]
+git-tree-sha1 = "04cb9cfaa6ba5311973994fe3496ddec19b6292a"
+uuid = "de31a74c-ac4f-5751-b3fd-e18cd04993ca"
+version = "0.5.0"
+
 [[deps.GLFW_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Libglvnd_jll", "Pkg", "Xorg_libXcursor_jll", "Xorg_libXi_jll", "Xorg_libXinerama_jll", "Xorg_libXrandr_jll"]
-git-tree-sha1 = "0c603255764a1fa0b61752d2bec14cfbd18f7fe8"
+git-tree-sha1 = "51d2dfe8e590fbd74e7a842cf6d13d8a2f45dc01"
 uuid = "0656b61e-2033-5cc2-a64a-77c0f6c09b89"
-version = "3.3.5+1"
+version = "3.3.6+0"
 
 [[deps.GR]]
 deps = ["Base64", "DelimitedFiles", "GR_jll", "HTTP", "JSON", "Libdl", "LinearAlgebra", "Pkg", "Printf", "Random", "RelocatableFolders", "Serialization", "Sockets", "Test", "UUIDs"]
@@ -316,6 +364,12 @@ git-tree-sha1 = "129acf094d168394e80ee1dc4bc06ec835e510a3"
 uuid = "2e76f6c2-a576-52d4-95c1-20adfe4de566"
 version = "2.8.1+1"
 
+[[deps.Hiccup]]
+deps = ["MacroTools", "Test"]
+git-tree-sha1 = "6187bb2d5fcbb2007c39e7ac53308b0d371124bd"
+uuid = "9fb69e20-1954-56bb-a84f-559cc56a8ff7"
+version = "0.2.2"
+
 [[deps.IniFile]]
 deps = ["Test"]
 git-tree-sha1 = "098e4d2c533924c921f9f9847274f2ad89e018b8"
@@ -324,9 +378,9 @@ version = "0.5.0"
 
 [[deps.InlineStrings]]
 deps = ["Parsers"]
-git-tree-sha1 = "8d70835a3759cdd75881426fced1508bb7b7e1b6"
+git-tree-sha1 = "61feba885fac3a407465726d0c330b3055df897f"
 uuid = "842dd82b-1e85-43dc-bf29-5d0ee9dffc48"
-version = "1.1.1"
+version = "1.1.2"
 
 [[deps.InteractiveUtils]]
 deps = ["Markdown"]
@@ -361,9 +415,15 @@ version = "1.0.0"
 
 [[deps.JLLWrappers]]
 deps = ["Preferences"]
-git-tree-sha1 = "22df5b96feef82434b07327e2d3c770a9b21e023"
+git-tree-sha1 = "abc9885a7ca2052a736a600f7fa66209f96506e1"
 uuid = "692b3bcd-3c85-4b1f-b108-f13ce0eb3210"
-version = "1.4.0"
+version = "1.4.1"
+
+[[deps.JSExpr]]
+deps = ["JSON", "MacroTools", "Observables", "WebIO"]
+git-tree-sha1 = "bd6c034156b1e7295450a219c4340e32e50b08b1"
+uuid = "97c1335a-c9c5-57fe-bc5d-ec35cebe8660"
+version = "0.5.3"
 
 [[deps.JSON]]
 deps = ["Dates", "Mmap", "Parsers", "Unicode"]
@@ -376,6 +436,12 @@ deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
 git-tree-sha1 = "d735490ac75c5cb9f1b00d8b5509c11984dc6943"
 uuid = "aacddb02-875f-59d6-b918-886e6ef4fbf8"
 version = "2.1.0+0"
+
+[[deps.Kaleido_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
+git-tree-sha1 = "2ef87eeaa28713cb010f9fb0be288b6c1a4ecd53"
+uuid = "f7e6163d-2fa5-5f23-b69c-1db539e41963"
+version = "0.1.0+0"
 
 [[deps.LAME_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -399,6 +465,12 @@ deps = ["Formatting", "InteractiveUtils", "LaTeXStrings", "MacroTools", "Markdow
 git-tree-sha1 = "a8f4f279b6fa3c3c4f1adadd78a621b13a506bce"
 uuid = "23fbe1c1-3f47-55db-b15f-69d7ec21a316"
 version = "0.15.9"
+
+[[deps.Lazy]]
+deps = ["MacroTools"]
+git-tree-sha1 = "1370f8202dac30758f3c345f9909b97f53d87d3f"
+uuid = "50d2b5c4-7a5e-59d5-8109-a42b560f39c0"
+version = "0.15.1"
 
 [[deps.LazyArtifacts]]
 deps = ["Artifacts", "Pkg"]
@@ -527,19 +599,36 @@ version = "0.7.3"
 [[deps.MozillaCACerts_jll]]
 uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
 
+[[deps.Mustache]]
+deps = ["Printf", "Tables"]
+git-tree-sha1 = "21d7a05c3b94bcf45af67beccab4f2a1f4a3c30a"
+uuid = "ffc61752-8dc7-55ee-8c37-f3e9cdd09e70"
+version = "1.0.12"
+
 [[deps.MutableArithmetics]]
 deps = ["LinearAlgebra", "SparseArrays", "Test"]
 git-tree-sha1 = "73deac2cbae0820f43971fad6c08f6c4f2784ff2"
 uuid = "d8a4904e-b15c-11e9-3269-09a3773c0cb0"
 version = "0.3.2"
 
+[[deps.Mux]]
+deps = ["AssetRegistry", "Base64", "HTTP", "Hiccup", "Pkg", "Sockets", "WebSockets"]
+git-tree-sha1 = "82dfb2cead9895e10ee1b0ca37a01088456c4364"
+uuid = "a975b10e-0019-58db-a62f-e48ff68538c9"
+version = "0.7.6"
+
 [[deps.NaNMath]]
-git-tree-sha1 = "f755f36b19a5116bb580de457cda0c140153f283"
+git-tree-sha1 = "b086b7ea07f8e38cf122f5016af580881ac914fe"
 uuid = "77ba4419-2d1f-58cd-9bb1-8ffee604a2e3"
-version = "0.3.6"
+version = "0.3.7"
 
 [[deps.NetworkOptions]]
 uuid = "ca575930-c2e3-43a9-ace4-1e988b2c1908"
+
+[[deps.Observables]]
+git-tree-sha1 = "fe29afdef3d0c4a8286128d4e45cc50621b1e43d"
+uuid = "510215fc-4207-5dde-b226-833fc4488ee2"
+version = "0.4.0"
 
 [[deps.Ogg_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -574,11 +663,23 @@ git-tree-sha1 = "b2a7af664e098055a7529ad1a900ded962bca488"
 uuid = "2f80f16e-611a-54ab-bc61-aa92de5b98fc"
 version = "8.44.0+0"
 
+[[deps.Parameters]]
+deps = ["OrderedCollections", "UnPack"]
+git-tree-sha1 = "34c0e9ad262e5f7fc75b10a9952ca7692cfc5fbe"
+uuid = "d96e819e-fc66-5662-9728-84c9c7592b0a"
+version = "0.12.3"
+
 [[deps.Parsers]]
 deps = ["Dates"]
-git-tree-sha1 = "92f91ba9e5941fc781fecf5494ac1da87bdac775"
+git-tree-sha1 = "0b5cfbb704034b5b4c1869e36634438a047df065"
 uuid = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
-version = "2.2.0"
+version = "2.2.1"
+
+[[deps.Pidfile]]
+deps = ["FileWatching", "Test"]
+git-tree-sha1 = "1be8660b2064893cd2dae4bd004b589278e4440d"
+uuid = "fa939f87-e72e-5be4-a000-7fc836dbe307"
+version = "1.2.0"
 
 [[deps.Pixman_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -602,11 +703,23 @@ git-tree-sha1 = "6f1b25e8ea06279b5689263cc538f51331d7ca17"
 uuid = "995b91a9-d308-5afd-9ec6-746e21dbc043"
 version = "1.1.3"
 
+[[deps.PlotlyBase]]
+deps = ["ColorSchemes", "Dates", "DelimitedFiles", "DocStringExtensions", "JSON", "LaTeXStrings", "Logging", "Parameters", "Pkg", "REPL", "Requires", "Statistics", "UUIDs"]
+git-tree-sha1 = "180d744848ba316a3d0fdf4dbd34b77c7242963a"
+uuid = "a03496cd-edff-5a9b-9e67-9cda94a718b5"
+version = "0.8.18"
+
+[[deps.PlotlyJS]]
+deps = ["Base64", "Blink", "DelimitedFiles", "JSExpr", "JSON", "Kaleido_jll", "Markdown", "Pkg", "PlotlyBase", "REPL", "Reexport", "Requires", "WebIO"]
+git-tree-sha1 = "53d6325e14d3bdb85fd387a085075f36082f35a3"
+uuid = "f0f68f2c-4968-5e81-91da-67840de0976a"
+version = "0.18.8"
+
 [[deps.Plots]]
 deps = ["Base64", "Contour", "Dates", "Downloads", "FFMPEG", "FixedPointNumbers", "GR", "GeometryBasics", "JSON", "Latexify", "LinearAlgebra", "Measures", "NaNMath", "PlotThemes", "PlotUtils", "Printf", "REPL", "Random", "RecipesBase", "RecipesPipeline", "Reexport", "Requires", "Scratch", "Showoff", "SparseArrays", "Statistics", "StatsBase", "UUIDs", "UnicodeFun", "Unzip"]
-git-tree-sha1 = "db7393a80d0e5bef70f2b518990835541917a544"
+git-tree-sha1 = "7e4920a7d4323b8ffc3db184580598450bde8a8e"
 uuid = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
-version = "1.25.6"
+version = "1.25.7"
 
 [[deps.Polynomials]]
 deps = ["Intervals", "LinearAlgebra", "MutableArithmetics", "RecipesBase"]
@@ -709,9 +822,9 @@ version = "2.0.0"
 
 [[deps.StaticArrays]]
 deps = ["LinearAlgebra", "Random", "Statistics"]
-git-tree-sha1 = "2884859916598f974858ff01df7dfc6c708dd895"
+git-tree-sha1 = "a635a9333989a094bddc9f940c04c549cd66afcf"
 uuid = "90137ffa-7385-5640-81b9-e52037218182"
-version = "1.3.3"
+version = "1.3.4"
 
 [[deps.Statistics]]
 deps = ["LinearAlgebra", "SparseArrays"]
@@ -764,6 +877,12 @@ git-tree-sha1 = "0f1017f68dc25f1a0cb99f4988f78fe4f2e7955f"
 uuid = "f269a46b-ccf7-5d73-abea-4c690281aa53"
 version = "1.7.1"
 
+[[deps.URIParser]]
+deps = ["Unicode"]
+git-tree-sha1 = "53a9f49546b8d2dd2e688d216421d050c9a31d0d"
+uuid = "30578b45-9adc-5946-b283-645ec420af67"
+version = "0.4.1"
+
 [[deps.URIs]]
 git-tree-sha1 = "97bbe755a53fe859669cd907f2d96aee8d2c1355"
 uuid = "5c2747f8-b7ea-4ff2-ba2e-563bfd36b1d4"
@@ -772,6 +891,11 @@ version = "1.3.0"
 [[deps.UUIDs]]
 deps = ["Random", "SHA"]
 uuid = "cf7118a7-6976-5b1a-9a39-7adc72f591a4"
+
+[[deps.UnPack]]
+git-tree-sha1 = "387c1f73762231e86e0c9c5443ce3b4a0a9a0c2b"
+uuid = "3a884ed6-31ef-47d7-9d2a-63182c4928ed"
+version = "1.0.2"
 
 [[deps.Unicode]]
 uuid = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
@@ -798,6 +922,24 @@ deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
 git-tree-sha1 = "66d72dc6fcc86352f01676e8f0f698562e60510f"
 uuid = "2381bf8a-dfd0-557d-9999-79630e7b1b91"
 version = "1.23.0+0"
+
+[[deps.WebIO]]
+deps = ["AssetRegistry", "Base64", "Distributed", "FunctionalCollections", "JSON", "Logging", "Observables", "Pkg", "Random", "Requires", "Sockets", "UUIDs", "WebSockets", "Widgets"]
+git-tree-sha1 = "5fe32e4086d49f7ab9b087296742859f3ae6d62a"
+uuid = "0f1e0344-ec1d-5b48-a673-e5cf874b6c29"
+version = "0.8.16"
+
+[[deps.WebSockets]]
+deps = ["Base64", "Dates", "HTTP", "Logging", "Sockets"]
+git-tree-sha1 = "f91a602e25fe6b89afc93cf02a4ae18ee9384ce3"
+uuid = "104b5d7c-a370-577a-8038-80a2059c5097"
+version = "1.5.9"
+
+[[deps.Widgets]]
+deps = ["Colors", "Dates", "Observables", "OrderedCollections"]
+git-tree-sha1 = "80661f59d28714632132c73779f8becc19a113f2"
+uuid = "cc8bc4a8-27d6-5769-a93b-9d913e69aa62"
+version = "0.6.4"
 
 [[deps.XML2_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Libiconv_jll", "Pkg", "Zlib_jll"]
@@ -1003,19 +1145,18 @@ version = "0.9.1+5"
 """
 
 # ╔═╡ Cell order:
-# ╠═9f8d4116-7b10-11ec-3cff-477edea0524b
-# ╠═c4986355-0cb2-4a12-ac12-2c24115ebaa5
-# ╠═34b92362-688c-440d-bf7e-2cc7cd872897
-# ╠═0c3b3154-a2c8-4553-b349-9ea879ed8d61
-# ╠═89e5de3c-a3b2-4f2c-af77-015d189f75b8
-# ╠═1f4055a1-8f8b-4907-a66f-cf1c8489d21f
-# ╠═5e6a8dc2-b679-4c4b-90b7-9c2d56842f5f
-# ╠═e6ce5ca3-12c9-4b6d-a14c-d7bbe7c3a6f6
-# ╠═d93234cc-8263-4dc0-997c-90402d79b587
-# ╠═b67e4b48-504d-49d7-8db4-2caf69802b96
-# ╠═9ab07733-c769-426d-a7f4-7e4468980df9
-# ╠═ba57b200-f6f5-4d26-a3ae-7b33020a1d5a
-# ╠═86a0fd05-e86f-4dea-ba35-9686dd095fdf
-# ╠═e85ad06d-0f90-481e-b09e-21ec723ada37
+# ╠═0cb93746-86b1-11ec-1f71-d7a3d6c9b21a
+# ╠═896a6854-e66a-46a6-8d0f-f7e9738ca5b8
+# ╠═dd5f716a-e19a-4eaf-8a7b-82f9b7aeb9e4
+# ╠═c086fb40-0c1c-4c86-a1ae-69a2a0462b77
+# ╠═1e4c3c95-f566-4dd2-ad38-81d18c9b04c2
+# ╠═b80f0fe5-ee5a-4efa-a0ee-c93674969ac5
+# ╠═4b94f2d1-f832-49fa-8a37-a9a242805c23
+# ╠═f6edea2e-a8be-4857-950e-3571c956a759
+# ╠═4f3122b5-cf16-4468-9cf0-fa1afe28431b
+# ╠═14fb76a2-1614-472b-95f1-2d7cd4ad90c4
+# ╠═cb1f54e9-f8a1-45c3-af04-93f38c80cc64
+# ╠═638b4f43-4664-4f25-8fef-0b9788803050
+# ╠═7d082285-3431-49ef-8348-14a29a34d4ff
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
