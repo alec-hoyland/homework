@@ -40,16 +40,44 @@ cosine_distance(x⃗, y⃗) = dot(x⃗, y⃗) / norm(x⃗) / norm(y⃗)
 # ╔═╡ d6e71635-70ca-4368-a960-c97c4f11d884
 function plot_u(A)
 	F = svd(A)
+	E = F.U
 	x⃗ = F.U[:, 1]
 	y⃗ = F.U[:, 2]
 	θ = atan(x⃗[2]/x⃗[1])
-	a, b = sort!([norm(x⃗), norm(y⃗)])
+	a, b = F.S .* sort!([norm(x⃗), norm(y⃗)])
 	p = plot(plot_ellipse(a, b, θ), aspect_ratio=:equal)
 	for i in 1:size(F.V, 1)
 		plot!([0, x⃗[i]], [0, y⃗[i]])
 	end
 	return p
 end
+
+# ╔═╡ 9e72cf80-4d29-4aa0-a48c-999c4a939fa7
+function plot_u2(A, n_points=500)
+	F = svd(A)
+	M = F.U * diagm(F.S)
+
+	angles = range(0, 2π, n_points)
+	x = cos.(angles)
+	y = sin.(angles)
+	X = hcat(x, y)
+
+	ellipse = M * X'
+	# p = plot(X[:, 1], X[:, 2], aspect_ratio=:equal)
+	p = plot(ellipse[1, :], ellipse[2, :], aspect_ratio=:equal)
+
+	E = diagm([1, 1])
+	vecs = M * E
+	for i in 1:size(E, 1)
+		plot!(p, [0, vecs[1, i]], [0, vecs[2, i]])
+	end
+
+	return p
+end
+
+
+# ╔═╡ cac818b8-3f95-47a1-8d20-acecbfceb297
+plot_u2([1 2; 0 2])
 
 # ╔═╡ 0c5ea869-46e4-4066-9c5c-704b6009ea8b
 function plot_v(A)
@@ -66,43 +94,31 @@ end
 plot_v([1 2; 0 2])
 
 # ╔═╡ b8a5dab2-4ec5-4025-a2f4-62a7f8c962c8
-plot_u([1 2; 0 2])
+plot_u2([1 2; 0 2])
 
 # ╔═╡ cd9678fd-8e35-49b7-bdf6-a7cee1f3f2b0
 plot_v([3 0; 0 -2])
 
 # ╔═╡ 56fd543e-3b3e-4da7-98f2-82cf23acc304
-plot_u([3 0; 0 -2])
+plot_u2([3 0; 0 -2])
 
 # ╔═╡ d0d95d83-935f-41e7-8183-4bc1db80675c
 plot_v([2 0; 0 3])
 
 # ╔═╡ 325bf2a0-bb83-42a2-9445-b59a2310a040
-plot_u([2 0; 0 3])
-
-# ╔═╡ d30b7d7d-7b8e-4b38-b94f-4f6830c0ebcb
-plot_v([0 2; 0 0; 0 0])
-
-# ╔═╡ e9e59b39-32ed-4f9f-99af-9986b586d642
-plot_u([0 2; 0 0; 0 0])
+plot_u2([2 0; 0 3])
 
 # ╔═╡ fd84ccfe-5bdf-4aa9-b9b9-a9016701411d
 plot_v([1 1; 0 0])
 
 # ╔═╡ ca460b1e-97e2-4445-98e3-159e377bc3ed
-plot_u([1 1; 0 0])
+plot_u2([1 1; 0 0])
 
 # ╔═╡ 8a4b5f9f-c5dc-4abf-99cd-796d6b533044
 plot_v([1 1; 1 1])
 
 # ╔═╡ e8899caf-8bb1-4403-b2ff-ea807e6ed3eb
-plot_u([1 1; 1 1])
-
-# ╔═╡ 1d11ce26-82e2-4f2b-8dea-ddc47b1aa085
-"""Compute SVD of the Vandermonde matrices
-from numerical exercise for lecture 1 and plot σ1/σnin the same graph (with
-y-axis logarithmically scaled) as you plotted the solution error. Compare the
-graphs"""
+plot_u2([1 1; 1 1])
 
 # ╔═╡ 3fdc458e-b05b-405e-9ec2-33297508bdee
 
@@ -995,6 +1011,8 @@ version = "0.9.1+5"
 # ╠═b7906a6c-f015-4e82-a246-5ad655bb024e
 # ╠═7750cbc4-123f-4eae-a950-17f2097bb686
 # ╠═d6e71635-70ca-4368-a960-c97c4f11d884
+# ╠═9e72cf80-4d29-4aa0-a48c-999c4a939fa7
+# ╠═cac818b8-3f95-47a1-8d20-acecbfceb297
 # ╠═0c5ea869-46e4-4066-9c5c-704b6009ea8b
 # ╠═72557b21-3569-4155-827c-97a4b0d128b7
 # ╠═b8a5dab2-4ec5-4025-a2f4-62a7f8c962c8
@@ -1002,13 +1020,10 @@ version = "0.9.1+5"
 # ╠═56fd543e-3b3e-4da7-98f2-82cf23acc304
 # ╠═d0d95d83-935f-41e7-8183-4bc1db80675c
 # ╠═325bf2a0-bb83-42a2-9445-b59a2310a040
-# ╠═d30b7d7d-7b8e-4b38-b94f-4f6830c0ebcb
-# ╠═e9e59b39-32ed-4f9f-99af-9986b586d642
 # ╠═fd84ccfe-5bdf-4aa9-b9b9-a9016701411d
 # ╠═ca460b1e-97e2-4445-98e3-159e377bc3ed
 # ╠═8a4b5f9f-c5dc-4abf-99cd-796d6b533044
 # ╠═e8899caf-8bb1-4403-b2ff-ea807e6ed3eb
-# ╠═1d11ce26-82e2-4f2b-8dea-ddc47b1aa085
 # ╠═3fdc458e-b05b-405e-9ec2-33297508bdee
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
