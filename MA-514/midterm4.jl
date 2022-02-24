@@ -4,124 +4,77 @@
 using Markdown
 using InteractiveUtils
 
-# ╔═╡ 7e5785cb-6b82-49d9-9d2e-94301c949812
-using LinearAlgebra, Plots
+# ╔═╡ f8838adb-af6a-4e9e-ac78-b04a2308e61d
+using LinearAlgebra, Plots, BandedMatrices, SparseArrays
 
-# ╔═╡ 342e0f86-94f3-11ec-016b-0328ada784e8
-md"## Midterm Problem #3"
+# ╔═╡ 201be4f2-95be-11ec-13ea-471a39c5e1f9
+md"## Midterm Problem #4"
 
-# ╔═╡ f4d04c71-be81-4395-8567-5aef7ec012aa
-md"### Part 2"
-
-# ╔═╡ 9afad8be-7490-46ce-b516-fe1ef6aa7d46
-f(x) = sin(2x)
-
-# ╔═╡ f0fbbbcf-7f64-466c-90c8-85f4f0477638
-m = 50
-
-# ╔═╡ 12318602-6a95-4918-a63c-fc8803756bf5
-n = 10
-
-# ╔═╡ 43b2ad4a-6ec5-4838-8223-261f1b42093f
-md"Form the least squares matrix $A$ over the support $x$."
-
-# ╔═╡ 4ec0e3e9-e660-4a23-9c8d-e2af4e0e2026
-x = [-1 + 2i/m for i in 0:m]
-
-# ╔═╡ 659ea2e9-451e-4932-a889-4f969d54ef69
-begin 
-	A = zeros(length(x), n)
-	for i ∈ 1:length(x), j ∈ 1:n
-		A[i, j] = exp((j-1) * x[i])
+# ╔═╡ bae0c6a6-fc15-4bba-828d-85d9e0d409a6
+function build_matrix(m::Int, l::Int)
+	A = spzeros(m, m)
+	for i in 1:m, j in 1:m
+		if abs(i - j) <= l
+			A[i, j] = 2. ^(-2. * abs(i - j))
+		end
 	end
-	A
+	return A
 end
 
-# ╔═╡ 51a365bf-1f38-4b37-9086-bea9790e30b9
-md"Solve the least-squares problem by normal equations."
+# ╔═╡ 551ffc6a-c5fb-4c3d-83fb-eeb39fbfa652
+m = 100:10:1000
 
-# ╔═╡ 105b38e2-3a87-4b63-98c8-0d4067d79cd1
-y = f.(x)
+# ╔═╡ 012b58af-18a6-46dc-981c-dce5f94addee
+l = [1, 10, 30, 50]
 
-# ╔═╡ c004ced6-05f1-4f3c-a591-279f422c0ec0
-ĉ_normal = (A'A)^(-1) * A'y
+# ╔═╡ 157ea4a2-86eb-4e7c-a4a6-6b3cfe01067e
+md"With a dense matrix without any matrix type hinting"
 
-# ╔═╡ a74de270-d8b7-44ac-a19b-988a9e72561a
-md"Solve the least-squares problem by QR factorization."
-
-# ╔═╡ 1c1e9f85-348c-4038-a411-024b3c0dad65
-#Modified GS
-function qrmgs(A)
-  (m,n) = size(A)
-  Q = zeros(m,n)
-  R = zeros(n,n)
-  for j = 1:n
-    aj = A[:,j]
-    vj = aj
-    for i = 1:j-1
-      R[i,j] = dot(Q[:,i], vj)
-      vj -= Q[:,i]*R[i,j]
-    end
-    R[j,j] = norm(vj)
-    Q[:,j] = vj / R[j,j]
-  end
-    return Q,R
-end
-
-# ╔═╡ 33f53b60-2247-48a9-8bef-e3f96de2e970
-Q, R = qrmgs(A)
-
-# ╔═╡ 3bdd1ae7-66d4-4aa0-94ae-b0688bf75811
-ĉ_qr = inv(R) * Q' * y
-
-# ╔═╡ 13adde60-dbc1-4f26-a98b-bf65780f58ba
-md"Solve least-squares problem with SVD."
-
-# ╔═╡ a675d3f7-ae66-4197-af0b-f4a4e4578e1d
-F = svd(A)
-
-# ╔═╡ cd16dbe4-97aa-4b20-af00-59d3a1ed1809
-ĉ_svd = F.Vt * inv(diagm(F.S)) * F.U' * y
-
-# ╔═╡ 3a664bf4-acb5-44b7-b6b5-c2f21ff17d89
-norm(ĉ_svd .- ĉ_qr), norm(ĉ_svd .- ĉ_normal)
-
-# ╔═╡ ea990b62-06c3-4781-a901-0f4d6ac7196f
-md"When I use an exponential basis, I get terrible results with either normal equations or QR. I would expect QR to do badly here on general principle based on the singular values, which drop off sharply after the first two or three, indicating that the matrix is of effectively low rank. If I use a sinusoidal basis, I find that QR does fail in this predicable way."
-
-# ╔═╡ bb469ddd-341b-4e56-aba7-58e817aeac6a
-p = [6, 7, 8]
-
-# ╔═╡ 2a4a5d3d-e9d8-4514-94de-d495ec94405b
-function truncated_svd(F::SVD, y, p::Int)
-	r = fill!(similar(F.V[:, 1]), 0)
-	for i in 1:p
-		r += (1/F.S[i]) * F.V[:, i] * F.U[:, i]' * y
+# ╔═╡ a4640571-a750-4462-a1ee-d2d8eb5e5f44
+function timeit(m::Union{Array{Int}, StepRange}, l::Array{Int})
+	times = zeros(length(m), length(l));
+	for i in 1:length(m), j in 1:length(l)
+		A = Matrix(build_matrix(m[i], l[j]))
+		times[i, j] = @elapsed cholesky(A) 
 	end
-	return r
+	return times
 end
 
-# ╔═╡ 79106dc9-a7e2-42a1-870c-d1feb7182724
-md"The norm of the difference between the truncated SVD solution and the full SVD solution decays with $σ$, the singular values."
+# ╔═╡ c5619c33-6bee-4f04-8a50-02c9ed82cda5
+time = timeit(m, l)
 
-# ╔═╡ 0caa176f-e4a5-4019-8381-4a4a34a60f0c
-r = [norm(truncated_svd(F, y, p_) - ĉ_svd) for p_ in p]
+# ╔═╡ d1f9f7c2-9edb-4b38-8676-ac8f51b4c457
+plot(time, xlabel="m", ylabel="elapsed time (s)", yscale=:log10, labels=l', legend_title="l")
 
-# ╔═╡ fb92d8c3-4feb-45e5-89f1-3b0576968e7c
-begin
-	plot(p, r ./ maximum(r), xlabel="p", ylabel="a.u.", label="normalized residual", title="truncated svd of increasing terms")
+# ╔═╡ b3c28d65-25ce-42dc-b4dc-265121cc78a9
+md"With a sparse symmetric matrix"
+
+# ╔═╡ c91d0bbf-30f2-4648-85a2-85b5680152db
+function timeit2(m::Union{Array{Int}, StepRange}, l::Array{Int})
+	times = zeros(length(m), length(l));
+	for i in 1:length(m), j in 1:length(l)
+		A = Symmetric(build_matrix(m[i], l[j]))
+		times[i, j] = @elapsed cholesky(A) 
+	end
+	return times
 end
 
-# ╔═╡ 49b1f598-4159-49cc-8868-b2f9d4cbf029
-plot(p, F.S[p .+ 1] ./ F.S[1], label="normalized singular value")
+# ╔═╡ cd07b6ba-6a8f-40e2-8636-46c57f45c5f0
+time2 = timeit2(m, l);
+
+# ╔═╡ f288e724-8e1a-4cdf-82ce-5300186adedd
+plot(time2, xlabel="m", ylabel="elapsed time (s)", yscale=:log10, labels=l', legend_title="l")
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
+BandedMatrices = "aae01518-5342-5314-be14-df237901396f"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 
 [compat]
+BandedMatrices = "~0.16.11"
 Plots = "~1.25.11"
 """
 
@@ -141,8 +94,20 @@ version = "3.3.3"
 [[deps.ArgTools]]
 uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
 
+[[deps.ArrayLayouts]]
+deps = ["FillArrays", "LinearAlgebra", "SparseArrays"]
+git-tree-sha1 = "56c347caf09ad8acb3e261fe75f8e09652b7b05b"
+uuid = "4c555306-a7a7-4459-81d9-ec55ddd5c99a"
+version = "0.7.10"
+
 [[deps.Artifacts]]
 uuid = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
+
+[[deps.BandedMatrices]]
+deps = ["ArrayLayouts", "FillArrays", "LinearAlgebra", "Random", "SparseArrays"]
+git-tree-sha1 = "ce68f8c2162062733f9b4c9e3700d5efc4a8ec47"
+uuid = "aae01518-5342-5314-be14-df237901396f"
+version = "0.16.11"
 
 [[deps.Base64]]
 uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
@@ -161,9 +126,9 @@ version = "1.16.1+1"
 
 [[deps.ChainRulesCore]]
 deps = ["Compat", "LinearAlgebra", "SparseArrays"]
-git-tree-sha1 = "7dd38532a1115a215de51775f9891f0f3e1bac6a"
+git-tree-sha1 = "c9a6160317d1abe9c44b3beb367fd448117679ca"
 uuid = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
-version = "1.12.1"
+version = "1.13.0"
 
 [[deps.ChangesOfVariables]]
 deps = ["ChainRulesCore", "LinearAlgebra", "Test"]
@@ -267,6 +232,12 @@ git-tree-sha1 = "d8a578692e3077ac998b50c0217dfd67f21d1e5f"
 uuid = "b22a6f82-2f65-5046-a5b2-351ab43fb4e5"
 version = "4.4.0+0"
 
+[[deps.FillArrays]]
+deps = ["LinearAlgebra", "Random", "SparseArrays", "Statistics"]
+git-tree-sha1 = "deed294cde3de20ae0b2e0355a6c4e1c6a5ceffc"
+uuid = "1a297f60-69ca-5386-bcde-b61e274b549b"
+version = "0.12.8"
+
 [[deps.FixedPointNumbers]]
 deps = ["Statistics"]
 git-tree-sha1 = "335bfdceacc84c5cdf16aadc768aa5ddfc5383cc"
@@ -357,10 +328,9 @@ uuid = "2e76f6c2-a576-52d4-95c1-20adfe4de566"
 version = "2.8.1+1"
 
 [[deps.IniFile]]
-deps = ["Test"]
-git-tree-sha1 = "098e4d2c533924c921f9f9847274f2ad89e018b8"
+git-tree-sha1 = "f550e6e32074c939295eb5ea6de31849ac2c9625"
 uuid = "83e8ac13-25f8-5344-8a64-a9f2b223428f"
-version = "0.5.0"
+version = "0.5.1"
 
 [[deps.InteractiveUtils]]
 deps = ["Markdown"]
@@ -424,9 +394,9 @@ version = "1.3.0"
 
 [[deps.Latexify]]
 deps = ["Formatting", "InteractiveUtils", "LaTeXStrings", "MacroTools", "Markdown", "Printf", "Requires"]
-git-tree-sha1 = "2a8650452c07a9c89e6a58f296fd638fadaca021"
+git-tree-sha1 = "a6552bfeab40de157a297d84e03ade4b8177677f"
 uuid = "23fbe1c1-3f47-55db-b15f-69d7ec21a316"
-version = "0.15.11"
+version = "0.15.12"
 
 [[deps.LibCURL]]
 deps = ["LibCURL_jll", "MozillaCACerts_jll"]
@@ -546,9 +516,9 @@ uuid = "a63ad114-7e13-5084-954f-fe012c677804"
 uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
 
 [[deps.NaNMath]]
-git-tree-sha1 = "b086b7ea07f8e38cf122f5016af580881ac914fe"
+git-tree-sha1 = "737a5957f387b17e74d4ad2f440eb330b39a62c5"
 uuid = "77ba4419-2d1f-58cd-9bb1-8ffee604a2e3"
-version = "0.3.7"
+version = "1.0.0"
 
 [[deps.NetworkOptions]]
 uuid = "ca575930-c2e3-43a9-ace4-1e988b2c1908"
@@ -622,9 +592,9 @@ version = "1.25.11"
 
 [[deps.Preferences]]
 deps = ["TOML"]
-git-tree-sha1 = "2cf929d64681236a2e074ffafb8d568733d2e6af"
+git-tree-sha1 = "de893592a221142f3db370f48290e3a2ef39998f"
 uuid = "21216c6a-2e73-6563-6e65-726566657250"
-version = "1.2.3"
+version = "1.2.4"
 
 [[deps.Printf]]
 deps = ["Unicode"]
@@ -651,9 +621,9 @@ version = "1.2.1"
 
 [[deps.RecipesPipeline]]
 deps = ["Dates", "NaNMath", "PlotUtils", "RecipesBase"]
-git-tree-sha1 = "37c1631cb3cc36a535105e6d5557864c82cd8c2b"
+git-tree-sha1 = "995a812c6f7edea7527bb570f0ac39d0fb15663c"
 uuid = "01d81517-befc-4cb6-b9ec-a95719d0359c"
-version = "0.5.0"
+version = "0.5.1"
 
 [[deps.Reexport]]
 git-tree-sha1 = "45e428421666073eab6f2da5c9d310d99bb12f9b"
@@ -709,9 +679,9 @@ uuid = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 
 [[deps.StaticArrays]]
 deps = ["LinearAlgebra", "Random", "Statistics"]
-git-tree-sha1 = "95c6a5d0e8c69555842fc4a927fc485040ccc31c"
+git-tree-sha1 = "6354dfaf95d398a1a70e0b28238321d5d17b2530"
 uuid = "90137ffa-7385-5640-81b9-e52037218182"
-version = "1.3.5"
+version = "1.4.0"
 
 [[deps.Statistics]]
 deps = ["LinearAlgebra", "SparseArrays"]
@@ -790,9 +760,9 @@ version = "1.19.0+0"
 
 [[deps.Wayland_protocols_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
-git-tree-sha1 = "66d72dc6fcc86352f01676e8f0f698562e60510f"
+git-tree-sha1 = "4528479aa01ee1b3b4cd0e6faef0e04cf16466da"
 uuid = "2381bf8a-dfd0-557d-9999-79630e7b1b91"
-version = "1.23.0+0"
+version = "1.25.0+0"
 
 [[deps.XML2_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Libiconv_jll", "Pkg", "Zlib_jll"]
@@ -998,32 +968,18 @@ version = "0.9.1+5"
 """
 
 # ╔═╡ Cell order:
-# ╠═342e0f86-94f3-11ec-016b-0328ada784e8
-# ╠═f4d04c71-be81-4395-8567-5aef7ec012aa
-# ╠═7e5785cb-6b82-49d9-9d2e-94301c949812
-# ╠═9afad8be-7490-46ce-b516-fe1ef6aa7d46
-# ╠═f0fbbbcf-7f64-466c-90c8-85f4f0477638
-# ╠═12318602-6a95-4918-a63c-fc8803756bf5
-# ╠═43b2ad4a-6ec5-4838-8223-261f1b42093f
-# ╠═4ec0e3e9-e660-4a23-9c8d-e2af4e0e2026
-# ╠═659ea2e9-451e-4932-a889-4f969d54ef69
-# ╠═51a365bf-1f38-4b37-9086-bea9790e30b9
-# ╠═105b38e2-3a87-4b63-98c8-0d4067d79cd1
-# ╠═c004ced6-05f1-4f3c-a591-279f422c0ec0
-# ╠═a74de270-d8b7-44ac-a19b-988a9e72561a
-# ╠═1c1e9f85-348c-4038-a411-024b3c0dad65
-# ╠═33f53b60-2247-48a9-8bef-e3f96de2e970
-# ╠═3bdd1ae7-66d4-4aa0-94ae-b0688bf75811
-# ╠═13adde60-dbc1-4f26-a98b-bf65780f58ba
-# ╠═a675d3f7-ae66-4197-af0b-f4a4e4578e1d
-# ╠═cd16dbe4-97aa-4b20-af00-59d3a1ed1809
-# ╠═3a664bf4-acb5-44b7-b6b5-c2f21ff17d89
-# ╠═ea990b62-06c3-4781-a901-0f4d6ac7196f
-# ╠═bb469ddd-341b-4e56-aba7-58e817aeac6a
-# ╠═2a4a5d3d-e9d8-4514-94de-d495ec94405b
-# ╠═79106dc9-a7e2-42a1-870c-d1feb7182724
-# ╠═0caa176f-e4a5-4019-8381-4a4a34a60f0c
-# ╠═fb92d8c3-4feb-45e5-89f1-3b0576968e7c
-# ╠═49b1f598-4159-49cc-8868-b2f9d4cbf029
+# ╠═201be4f2-95be-11ec-13ea-471a39c5e1f9
+# ╠═f8838adb-af6a-4e9e-ac78-b04a2308e61d
+# ╠═bae0c6a6-fc15-4bba-828d-85d9e0d409a6
+# ╠═551ffc6a-c5fb-4c3d-83fb-eeb39fbfa652
+# ╠═012b58af-18a6-46dc-981c-dce5f94addee
+# ╠═157ea4a2-86eb-4e7c-a4a6-6b3cfe01067e
+# ╠═a4640571-a750-4462-a1ee-d2d8eb5e5f44
+# ╠═c5619c33-6bee-4f04-8a50-02c9ed82cda5
+# ╠═d1f9f7c2-9edb-4b38-8676-ac8f51b4c457
+# ╠═b3c28d65-25ce-42dc-b4dc-265121cc78a9
+# ╠═c91d0bbf-30f2-4648-85a2-85b5680152db
+# ╠═cd07b6ba-6a8f-40e2-8636-46c57f45c5f0
+# ╠═f288e724-8e1a-4cdf-82ce-5300186adedd
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
