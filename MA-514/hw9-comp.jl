@@ -100,6 +100,9 @@ begin
 	plot!(ks, errs2, label="b2")
 end
 
+# ╔═╡ 7de00f21-1249-4ce8-8483-a7a0cb305a50
+md"I would have expected for the vector of ones to have lead to a much faster convergence, since the method should have solved the eigenproblem exactly. I am confused by this result and don't have an explanation for it."
+
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
@@ -1008,5 +1011,6 @@ version = "0.9.1+5"
 # ╠═69f80b8d-2324-4334-9a85-990fb6ccc545
 # ╠═48f8915f-a380-411f-a306-98182797b4fb
 # ╠═d7f9f714-331e-4e04-9470-962e2ebf0ebc
+# ╠═7de00f21-1249-4ce8-8483-a7a0cb305a50
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
