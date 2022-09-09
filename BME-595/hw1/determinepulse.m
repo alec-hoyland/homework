@@ -18,9 +18,10 @@ function p = determinepulse(V,tau)
 %              (0) between tau/2 and -tau/2.
 %
 
-%<your code goes here - determine phase angle>
+phase_angle = angle(V);
+p = zeros(length(V), 1);
 
-%<your code goes here - implement pulse phase logic>
-
+p((phase_angle > (-tau/2)) & (phase_angle < 0)) = 1;
+p((phase_angle > 0) & (phase_angle < (tau/2))) = -1;
 return
 %eof

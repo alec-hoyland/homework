@@ -17,7 +17,8 @@ function V = rotatevec(V,thetadot)
 %              by an amount specified by the input thetadot
 %
 
-%<your code goes here>
+eit = cos(thetadot) + 1i * sin(thetadot);
+V = V * eit;
 
 return
 %eof
