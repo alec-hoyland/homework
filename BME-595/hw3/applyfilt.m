@@ -1,4 +1,4 @@
-function [y F] = applyfilt(in,F)
+function [y, F] = applyfilt(input, F)
 %
 % Name: applyfilt
 %
@@ -19,12 +19,14 @@ function [y F] = applyfilt(in,F)
 
 % Determine output on basis of recent inputs (including 'in')
 % and the filter coefficients
-y = %<your code goes here>
+
+F.in = input;
+F.out = F.b .* F.in;
+y = F.out;
 
 % Update recent inputs
 %    'in' is now the most recent
 %    least recent is discarded
-F.in = %<your code goes here>
 
 return
 %eof

@@ -20,18 +20,18 @@ function F = makefiltlp(fc,Fs)
 F = makefilt(2);
 
 % Determine filter cutoff frequency, as a fraction of the Nyquist frequency
-theta = %<your code goes here>
+theta = 2 * fc / Fs;
 
 % Calculate filter coefficients (b)
 % Store them in the filter struct
-%<your code goes here>
-%<your code goes here>
-%<your code goes here>
-%<your code goes here>
+A = 0.08 * theta * sinc(theta);
+F.b(1) = A / (2 * A + theta);
+F.b(2) = theta / (2 * A + theta);
+F.b(3) = F.b(1);
 
 % Set the normalization term (a)
 % Store them in the filter struct
-F.a(1) = %<your code goes here>
+F.a(1) = 1;
 
 return
 %eof
