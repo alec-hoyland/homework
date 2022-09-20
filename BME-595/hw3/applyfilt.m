@@ -3,7 +3,7 @@ function [y, F] = applyfilt(input, F)
 % Name: applyfilt
 %
 % Inputs:
-%    in - Cutoff frequency (Hz)
+%    input - scalar input
 %    F - a struct, representing a digital filter
 % Outputs:
 %    y - the current filter output
@@ -20,13 +20,20 @@ function [y, F] = applyfilt(input, F)
 % Determine output on basis of recent inputs (including 'in')
 % and the filter coefficients
 
-F.in = input;
-F.out = F.b .* F.in;
-y = F.out;
+% Add new input (M+1 x 1 vector)
+inputs = [input; F.in];
 
-% Update recent inputs
-%    'in' is now the most recent
-%    least recent is discarded
+% Compute the new output
+F.out = sum(F.b .* inputs) / F.a;
+
+% Set y to be the latest output
+y = F.out(1);
+
+% Shift inputs right by one step
+F.in(2:end) = F.in(1:end-1);
+
+% Add new most recent input
+F.in(1) = input;
 
 return
 %eof
