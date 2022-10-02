@@ -1,0 +1,208 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Diaz Essay
+% LaTeX Template
+% Version 2.0 (13/1/19)
+%
+% This template originates from:
+% http://www.LaTeXTemplates.com
+%
+% Authors:
+% Vel (vel@LaTeXTemplates.com)
+% Nicolas Diaz (nsdiaz@uc.cl)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[11pt]{diazessay} % Font size (can be 10pt, 11pt or 12pt)
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\title{\textbf{What is Neuroengineering?} \\ {\Large\itshape An Ode to Dynamic Clamp}} % Title and subtitle
+
+\author{\textbf{Alec Hoyland} \\ \textit{BME 595}} % Author and institution
+
+\date{\today} % Date, use \date{} for no date
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Print the title section
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT AND KEYWORDS
+%----------------------------------------------------------------------------------------
+
+%\renewcommand{\abstractname}{Summary} % Uncomment to change the name of the abstract to something else
+
+% \begin{abstract}
+% Morbi tempor congue porta. Proin semper, leo vitae faucibus dictum, metus mauris lacinia lorem, ac congue leo felis eu turpis. Sed nec nunc pellentesque, gravida eros at, porttitor ipsum. Praesent consequat urna a lacus lobortis ultrices eget ac metus. In tempus hendrerit rhoncus. Mauris dignissim turpis id sollicitudin lacinia. Praesent libero tellus, fringilla nec ullamcorper at, ultrices id nulla. Phasellus placerat a tellus a malesuada.
+% \end{abstract}
+
+% \hspace*{3.6mm}\textit{Keywords:} lorem, ipsum, dolor, sit amet, lectus % Keywords
+
+\vspace{30pt} % Vertical whitespace between the abstract and first section
+
+%----------------------------------------------------------------------------------------
+%	ESSAY BODY
+%----------------------------------------------------------------------------------------
+
+Generally defined, \textit{engineering} is the application of science and mathematics to solve problems.
+One might note that this is a rather vague definition, depending on one's definition of what constitutes a ``problem.''
+Physicist Freeman Dyson, in his book, ``Disturbing the Universe,''
+wrote that \cite{dysonDisturbingUniverse1979}:
+
+\begin{quote}
+	A good scientist is a person with original ideas. A good engineer is a person who makes a design
+	that works with as few original ideas as possible.''
+\end{quote}
+
+It might be better then to consider engineering as a particular philosophy towards invention and discovery.
+For example, while a scientist might concern themselves with understanding the physical, chemical, or biological
+mechanisms at play that describe, explain, or influence phenomena,
+an engineer might concern themselves with exploiting these processes to device a tool or other utility
+that serves a human need.
+The creativity and intellectual effort in engineering is in devising a performant tool for an application.
+A scientist studies gas phase combustive flows; a team of engineers builds on that original research
+to build a jet engine.
+
+What then is \textit{neuroengineering}? Etymologically, neuroengineering is analogous to neuroscience,
+which is the scientific study of the nervous system (including the brain, spinal cord, and peripheral nervous system)
+and its functions.
+As such, neuroscience makes no claim towards the methodology or formalisms used.
+It can involve physiological and anatomical studies, both naturalistic and perturbative,
+investigations of the biophysical mechanisms using both experimental and theoretical computational methods,
+and anything else.
+Eric Kandel, author of the prodigious tome ``Principles of Neural Science,'' wrote that \cite{kandelPrinciplesNeuralScience2013a}:
+
+\begin{quote}
+	The last frontier of the biological sciences\textemdash{}their ultimate challenge\textemdash{}is to understand
+	the biological basis of consciousness and the mental processes by which we perceive, act, learn, and remember.
+\end{quote}
+
+In his view, any scientific effort that advances human knowledge towards that goal is under the umbrella of the neural sciences.
+Important to this definition is the term ``biological basis.''
+Just as nothing in evolutionary or developmental biology makes sense except in light of evolution
+(and vice versa) \cite{reiskindNothingEvolutionMakes2021},
+neuroscience differentiates itself from previous philosophical and psychological efforts (\textit{e.g.,} 
+philosophy of mind, classical psychology),
+by understanding that nothing in cognitive science makes sense
+except in light of the biological processes of the nervous system.
+Cognitive processes do not arise from thin air, instead they are emergent properties
+born of neural computation in the neural substrate.
+
+By extension, neuroengineering is thence engineering given the biological basis of higher
+order neurological processes such as descending motor control and cognition.
+Like neuroscience, neuroengineering spans a panoply of subfields and disciplines,
+co-related by their focus on solving problems relating to the nervous system.
+
+As with neuroscience, neuroengineering encompasses a variety of approaches and subfields.
+Unlike, neuroscience however, which might describe subfields in terms of their progenitor fields
+(\textit{e.g.,} electrophysiology being a subfield of physiology and also a neuroscientific field),
+neuroengineering may be better partitioned by problem domain.
+
+For instance, one productive field of engineering research designs new tools and assays
+that further scientific investigations.
+For example, development of microscopy and cell staining techniques (\textit{e.g.,} Golgi staining, trichromic staining)
+in the 19th and 20th century led to the first detailed anatomical drawing of neuronal projections
+by Ram\'{o}n y Cajal \cite{SantiagoRamonCajal}.
+
+More recently, advances in electrophysiology have allowed scientists to directly measure
+the membrane potential of cells \textit{in-vitro}, as well as add or remove membrane currents.
+Using techniques such as patch clamp \cite{neherPatchClampTechnique1992},
+an electrode records current passing through the cell membrane.
+Fusing this ideal with computational modeling resulted in the development of dynamic clamp,
+a method by which a new current defined by a system of differential equations,
+could be injected into a neuron, updating the current based on the membrane potential of the cell
+(being recorded by patch clamp) \cite{prinzDynamicClampComes2004}.
+This allows for addition of a novel current, or to test a mathematical model of a known current
+by knocking out the ion channels responsible for the real current
+and replacing it with the dynamic clamp version.
+
+These techniques fit neatly into the neuroengineering domain of ``monitoring neural function'',
+but rely on a technological stack built by wildly-differing disciplines.
+Dynamic clamp's creators, Larry Abbott, a high-energy physicist turned computational neuroscientist,
+and Eve Marder, an electrophysiologist, worked together to create a tool that fuses both experimental
+and computational approaches to create a new tool that enabled neuroscientists to perform more interesting
+and informative experiments.
+machines for physically pulling glass to form electrodes with microscopic tips,
+analog-to-digital audio-recording equipment hijacked by neuroscientists to report
+membrane potential at 44.1 kHz, advances in optics for the microscopes necessary,
+and chemistry for the media required to keep the cells alive while recording.
+
+In many ways, neuroengineering is simply engineering applied to neuroscience problems,
+and by necessity is perhaps more interdiscplinary than neuroscience.
+Dynamic clamp research did not discover anything new about biology and only proved that the technique is possible,
+however, it accelerated electrophysiology research decades
+by tying computational models to real neurons,
+giving experimentalists a phenomenal new tool in their toolbox,
+and theorists the ability to proof their models in a real system.
+It is a series of practical, well-tested tools orchestrated well together.
+
+
+
+
+% Cras gravida, est vel interdum euismod, tortor mi lobortis mi, quis adipiscing elit lacus ut orci. Phasellus nec fringilla nisi, ut vestibulum neque. Aenean non risus eu nunc accumsan condimentum at sed ipsum.
+% \begin{wrapfigure}{l}{0.42\textwidth} % Inline image example, use an 'r' column type to position the figure on the right
+% 	\includegraphics[width=\linewidth]{fish.png}
+% 	\caption{An example fish.}
+% \end{wrapfigure}
+% Aliquam fringilla non diam sed varius. Suspendisse tellus felis, hendrerit non bibendum ut, adipiscing vitae diam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lobortis purus eget nisl scelerisque, commodo rhoncus lacus porta. Vestibulum vitae turpis tincidunt, varius dolor in, dictum lectus. Aenean ac ornare augue, ac facilisis purus. Sed leo lorem, molestie sit amet fermentum id, suscipit ut sem. Vestibulum orci arcu, vehicula sed tortor id, ornare dapibus lorem. Praesent aliquet iaculis lacus nec fermentum. Morbi eleifend blandit dolor, pharetra hendrerit neque ornare vel. Nulla ornare, nisl eget imperdiet ornare, libero enim interdum mi, ut lobortis quam velit bibendum nibh.
+
+% \begin{itemize}
+% 	\item First bullet point item
+% 	\item Second bullet point item
+% 	\item Third bullet point item
+% \end{itemize}
+
+% Morbi tempor congue porta. Proin semper, leo vitae faucibus dictum, metus mauris lacinia lorem, ac congue leo felis eu turpis. Sed nec nunc pellentesque, gravida eros at, porttitor ipsum. Praesent consequat urna a lacus lobortis ultrices eget ac metus. In tempus hendrerit rhoncus. Mauris dignissim turpis id sollicitudin lacinia. Praesent libero tellus, fringilla nec ullamcorper at, ultrices id nulla. Phasellus placerat a tellus a malesuada.
+
+% \begin{enumerate}
+% 	\item First numbered list item
+% 	\item Second numbered list item
+% \end{enumerate}
+
+% %------------------------------------------------
+
+% \section*{Conclusion}
+
+% Fusce in nibh augue. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In dictum accumsan sapien, ut hendrerit nisi. Phasellus ut nulla mauris. Phasellus sagittis nec odio sed posuere. Vestibulum porttitor dolor quis suscipit bibendum. Mauris risus lectus, cursus vitae hendrerit posuere, congue ac est. Suspendisse commodo eu eros non cursus. Mauris ultrices venenatis dolor, sed aliquet odio tempor pellentesque. Duis ultricies, mauris id lobortis vulputate, tellus turpis eleifend elit, in gravida leo tortor ultricies est. Maecenas vitae ipsum at dui sodales condimentum a quis dui. Nam mi sapien, lobortis ac blandit eget, dignissim quis nunc.
+
+% Donec luctus tincidunt mauris, non ultrices ligula aliquam id. Sed varius, magna a faucibus congue, arcu tellus pellentesque nisl, vel laoreet magna eros et magna. Vivamus lobortis elit eu dignissim ultrices. Fusce erat nulla, ornare at dolor quis, rhoncus venenatis velit. Donec sed elit mi. Sed semper tellus a convallis viverra. Maecenas mi lorem, placerat sit amet sem quis, adipiscing tincidunt turpis. Cras a urna et tellus dictum eleifend. Fusce dignissim lectus risus, in bibendum tortor lacinia interdum.
+
+% \begin{table}[h] % [h] forces the table to be output where it is defined in the code (it suppresses floating)
+% 	\caption{Example table.}
+% 	\centering
+% 	\begin{tabular}{l l r}
+% 		\toprule
+% 		\multicolumn{2}{c}{Name} \\
+% 		\cmidrule(r){1-2}
+% 		First Name & Last Name & Grade \\
+% 		\midrule
+% 		John & Doe & $7.5$ \\
+% 		Richard & Miles & $5$ \\
+% 		\bottomrule
+% 	\end{tabular}
+% \end{table}
+
+% Fusce eleifend porttitor arcu, id accumsan elit pharetra eget. Mauris luctus velit sit amet est sodales rhoncus. Donec cursus suscipit justo, sed tristique ipsum fermentum nec. Ut tortor ex, ullamcorper varius congue in, efficitur a tellus. Vivamus ut rutrum nisi. Phasellus sit amet enim efficitur, aliquam nulla id, lacinia mauris. Quisque viverra libero ac magna maximus efficitur. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vestibulum mollis eros in tellus fermentum, vitae tristique justo finibus. Sed quis vehicula nibh. Etiam nulla justo, pellentesque id sapien at, semper aliquam arcu. Integer at commodo arcu. Quisque dapibus ut lacus eget vulputate.
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+
+\bibliographystyle{IEEEtran}
+
+\bibliography{mybib.bib}
+
+%----------------------------------------------------------------------------------------
+
+\end{document}
