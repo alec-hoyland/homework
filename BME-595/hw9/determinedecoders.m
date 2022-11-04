@@ -27,7 +27,7 @@ function PHI = determinedecoders(A,X)
    Gamma = A' * A;
 
 % Determine Decoders
-   PHI = inv(Upsilon) * Gamma;
+   PHI = inv(Gamma) * Upsilon;
 
 return
 %eof
