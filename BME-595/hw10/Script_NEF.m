@@ -14,11 +14,11 @@ J_BIAS = [0.1200 0.4433 0.0143 0.2450 0.0840];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generate Neurons - Neurogenesis?!? (makelifn)
 
-N1 = % <your code here: create neuron #1>
-N2 = % <your code here: create neuron #2>
-N3 = % <your code here: create neuron #3>
-N4 = % <your code here: create neuron #4>
-N5 = % <your code here: create neuron #5>
+N1 = makelifn(ALPHA(1), PHI0(1), J_BIAS(1));
+N2 = makelifn(ALPHA(2), PHI0(2), J_BIAS(2));
+N3 = makelifn(ALPHA(3), PHI0(3), J_BIAS(3));
+N4 = makelifn(ALPHA(4), PHI0(4), J_BIAS(4));
+N5 = makelifn(ALPHA(5), PHI0(5), J_BIAS(5));
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -33,11 +33,11 @@ x = rand(1,1); % "stimulus recording"
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Encode Physical Value Into Spike Rates (ratelifn)
 
-a1 = % <your code here: record spiking rate - neuron #1>
-a2 = % <your code here: record spiking rate - neuron #2>
-a3 = % <your code here: record spiking rate - neuron #3>
-a4 = % <your code here: record spiking rate - neuron #4>
-a5 = % <your code here: record spiking rate - neuron #5>
+a1 = ratelifn(N1, x);
+a2 = ratelifn(N2, x);
+a3 = ratelifn(N3, x);
+a4 = ratelifn(N4, x);
+a5 = ratelifn(N5, x);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -54,22 +54,22 @@ maxval = 1.0; % maximum considered value
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Characterize Activation Functions of Population (responselifn)
 
-[A1 X] = % <your code here: characterize spiking behavior - neuron #1>
-[A2 X] = % <your code here: characterize spiking behavior - neuron #2>
-[A3 X] = % <your code here: characterize spiking behavior - neuron #3>
-[A4 X] = % <your code here: characterize spiking behavior - neuron #4>
-[A5 X] = % <your code here: characterize spiking behavior - neuron #5>
+[A1, X] = responselifn(N1, minval, maxval, res);
+[A2, X] = responselifn(N2, minval, maxval, res);
+[A3, X] = responselifn(N3, minval, maxval, res);
+[A4, X] = responselifn(N4, minval, maxval, res);
+[A5, X] = responselifn(N5, minval, maxval, res);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Compile activation functions into a single matrix
 %   appropriate as input to 'determinedecoders'
 
-A = % <your code here: compile activation functions of all neurons>
+A = [A1, A2, A3, A4, A5];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Determine Decoders for Population (determinedecoders)
 
-PHI = % <your code here: determine decoders for neural population>
+PHI = determinedecoders(A, X);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Visualize Neuron Response Functions
@@ -87,12 +87,12 @@ axis([minval maxval 0 600])
 % Compile recorded spiking rates (above) into a vector
 %   appropriate as input to 'decodespikerate'
 
-Ax = % <your code here: compile recorded spiking rates of all neurons>
+Ax = [a1, a2, a3, a4, a5]';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Decode Recorded Spike Rates (decodespikerate)
 
-x_hat = % <your code here: decode the encoded value>
+x_hat = decodespikerate(Ax, PHI);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Print Results of Decoding
