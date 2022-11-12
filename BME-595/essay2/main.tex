@@ -1,0 +1,251 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Diaz Essay
+% LaTeX Template
+% Version 2.0 (13/1/19)
+%
+% This template originates from:
+% http://www.LaTeXTemplates.com
+%
+% Authors:
+% Vel (vel@LaTeXTemplates.com)
+% Nicolas Diaz (nsdiaz@uc.cl)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[11pt]{diazessay} % Font size (can be 10pt, 11pt or 12pt)
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\title{\textbf{Signal Transduction in the Ear} \\ {\Large\itshape Essay \#2}} % Title and subtitle
+
+\author{\textbf{Alec Hoyland} \\ \textit{BME 595}} % Author and institution
+
+\date{\today} % Date, use \date{} for no date
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Print the title section
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT AND KEYWORDS
+%----------------------------------------------------------------------------------------
+
+%\renewcommand{\abstractname}{Summary} % Uncomment to change the name of the abstract to something else
+
+% \begin{abstract}
+% Morbi tempor congue porta. Proin semper, leo vitae faucibus dictum, metus mauris lacinia lorem, ac congue leo felis eu turpis. Sed nec nunc pellentesque, gravida eros at, porttitor ipsum. Praesent consequat urna a lacus lobortis ultrices eget ac metus. In tempus hendrerit rhoncus. Mauris dignissim turpis id sollicitudin lacinia. Praesent libero tellus, fringilla nec ullamcorper at, ultrices id nulla. Phasellus placerat a tellus a malesuada.
+% \end{abstract}
+
+% \hspace*{3.6mm}\textit{Keywords:} lorem, ipsum, dolor, sit amet, lectus % Keywords
+
+\vspace{30pt} % Vertical whitespace between the abstract and first section
+
+%----------------------------------------------------------------------------------------
+%	ESSAY BODY
+%----------------------------------------------------------------------------------------
+
+From the outer ear to the auditory nerve,
+sound transduces to neural coding
+before being passed down the nerve to higher
+order processing in the cortex,
+relying on a series of intermediate representations.
+In any signal processing system,
+the goal is to transmit the salient information through the system,
+minimizing undesirable content
+(such as noise or unwanted frequencies).
+In this context, a representation contains the information content
+of the signal that is not the original signal itself.
+As one example, a Fourier spectrum is the frequency representation of a stationary time series.
+As another, the LLVM compiler induces a human-readable ``intermediate representation''
+from coding languages such as Rust, Julia, or CUDA,
+which can then be optimized over several passes
+(producing new intermediate representations)
+before finally transforming into assembly code and binary machine code.
+In the context of signal transduction in the ear,
+representations transform physical sound waves
+through intermediate representations
+into a neural code passed down the auditory nerve.
+
+Sound begins as vibrations of molecules in the air
+which form longitudinal pressure waves
+of compression and rarefaction that interact with the outer ear.
+These sound waves reach the outer ear, the pinna,
+which amplifies high-frequency content. 
+The waves translate from the medium of air to the medium
+of flesh through the auditory canal (meatus)
+to the eardrum (tympanic membrane), which vibrates like a drum.
+at this point, the sound percept remains in the form
+of mechanical vibration, albeit
+with amplification of higher frequencies.
+
+Mechanical vibrations of the tympanic membrane transmit
+to the three ossicles of the middle ear, the malleus, incus, and stapes,
+which match impedance and amplify pressure onto the oval and round
+windows on the exterior of the cochlea.
+If the pressure at the two membranous windows were approximately equal,
+most sound would be reflected.
+Instead, due to the shapes of the ossicles,
+the pressure amplifies as a function of decreasing surface area
+and torque caused by lever action of the ossicles. 
+This is a form of impedance-matching, which minimizes sound reflecting
+back (rather than admitting to) the cochlea through the oval and round windows.
+This impedance-matching is most effective between 500 and 5000 Hz,
+which matches the most important frequencies of human speech.
+The representation of sound at the membranous windows
+remains in the form of mechanical vibration,
+albeit with filtered frequency amplitudes.
+
+Vibrations of the oval window cause the basilar membrane of the cochlea
+to vibrate in turn, which begins the first steps of the sensorineural cascade.
+The basilar membrane vibrates as a traveling wave that moves
+from the base (near the oval window) to the apex.
+At the base of the membrane, it is narrow and stiff
+and becomes progressively wider and less stiff towards the apex.
+As such, high-frequency sounds produce maximum displacement
+of the basilar membrane near the base.
+Low frequency noises, in contrast, produce little vibration closer to the base
+and much more closer to the apex.
+The basilar membrane acts like an (imperfect) analog Fourier transform,
+or equivalently, a parallel array (filter bank) of bandpass filters.
+The basilar membrane also introduces some nonlinearities
+depending on the physiological health of the listener
+(cadaver basilar membranes vibrate differently than the membranes of living people).
+Frequency amplitude of vibrations at the oval window
+monotonically (but not linearly) correspond to vibrations along the spatial map
+of the basilar membrane.
+In this way, frequencies of the mechanical vibration
+are represented spatially along the basilar membrane
+with corresponding nonlinear transformation of the amplitudes into
+local displacements of the basilar membrane.
+This representation has the advantage
+of separating out frequency content.
+
+Hair cells affixed to the basilar membrane use stereocilia to detect displacement
+of the membrane, beginning neural transduction
+of the heretofore mechanical process.
+Outer hair cells serve to produce sharper tuning of the cochlea.
+The cells stiffen in response to electrical and chemical stimulation
+to fine-tune downstream processing from the basilar membrane.
+The inner hair cells, further from the cochlea,
+and transduce mechanical movements into neural activity.
+Deflection of the stereocilia opens mechanically-gated ion channels,
+fluxing potassium into the cells, depolarizing the cells,
+and producing action potentials, or spikes.
+Neurotransmitters released by the action potential
+diffuse across the synaptic cleft to about twenty neurons
+whose efferent nerve bundles form the auditory nerve,
+inducing a neural representation of sound.
+
+Approximately 30,000 neurons in each auditory nerve
+convey information from the cochlea to the brain,
+The nerve fibers have heterogeneous spike rates and sensitivities.
+Firing rates of efferent neurons vary nonlinearly
+based on baseline firing rate
+and sensitivity to both sound frequency and loudness.
+Furthermore, neuron spiking is stochastic,
+so there is variation in spike timing.
+The representation of sound at this stage is in the
+spike timing and firing rates of auditory neurons.
+The population of neurons, with different synaptic inputs
+and biophysical properties (resulting in different tuning curves),
+encodes the vibrational information from the basilar membrane
+into neural information.
+This encoding can be flexibly manipulated by afferent connections
+and later decoded by another population of neurons
+to extract information about the encoded sounds.
+
+The population coding representation carries many different
+facets of information from the original sound.
+Firing rates convey information about frequency content and loudness
+via the instantaneous firing rates of the population of neurons
+with different input and tuning properties.
+Note that the nervous system uses the spike-information directly.
+Instantaneous firing rate is a useful mathematical construct for analysis
+solely.
+Neurons also carry information in the explicit temporal patterning
+of spikes as well.
+In response to a pure tone for instance, nerve spikes can phase-lock
+to the stimulus so that interspike intervals appear as multiples
+of the period of the stimulus.
+Neural responses can also adapt to background noise,
+attenuating the neural response to sounds that last longer than
+even a few tens of milliseconds. 
+
+The ear does more than just ferry a signal to its destination.
+Instead, it transforms it through a series of intermediate representations,
+amplifying useful frequencies,
+extracting salient frequency content,
+and transforming it to a neural code of action potentials
+produces by a heterogeneous population of neurons.
+This system is flexible, sensitive to modulation from higher-order
+control from the cortex,
+and preserves the most salient information the brain needs
+from the sound wave.
+
+% Cras gravida, est vel interdum euismod, tortor mi lobortis mi, quis adipiscing elit lacus ut orci. Phasellus nec fringilla nisi, ut vestibulum neque. Aenean non risus eu nunc accumsan condimentum at sed ipsum.
+% \begin{wrapfigure}{l}{0.42\textwidth} % Inline image example, use an 'r' column type to position the figure on the right
+% 	\includegraphics[width=\linewidth]{fish.png}
+% 	\caption{An example fish.}
+% \end{wrapfigure}
+% Aliquam fringilla non diam sed varius. Suspendisse tellus felis, hendrerit non bibendum ut, adipiscing vitae diam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lobortis purus eget nisl scelerisque, commodo rhoncus lacus porta. Vestibulum vitae turpis tincidunt, varius dolor in, dictum lectus. Aenean ac ornare augue, ac facilisis purus. Sed leo lorem, molestie sit amet fermentum id, suscipit ut sem. Vestibulum orci arcu, vehicula sed tortor id, ornare dapibus lorem. Praesent aliquet iaculis lacus nec fermentum. Morbi eleifend blandit dolor, pharetra hendrerit neque ornare vel. Nulla ornare, nisl eget imperdiet ornare, libero enim interdum mi, ut lobortis quam velit bibendum nibh.
+
+% \begin{itemize}
+% 	\item First bullet point item
+% 	\item Second bullet point item
+% 	\item Third bullet point item
+% \end{itemize}
+
+% Morbi tempor congue porta. Proin semper, leo vitae faucibus dictum, metus mauris lacinia lorem, ac congue leo felis eu turpis. Sed nec nunc pellentesque, gravida eros at, porttitor ipsum. Praesent consequat urna a lacus lobortis ultrices eget ac metus. In tempus hendrerit rhoncus. Mauris dignissim turpis id sollicitudin lacinia. Praesent libero tellus, fringilla nec ullamcorper at, ultrices id nulla. Phasellus placerat a tellus a malesuada.
+
+% \begin{enumerate}
+% 	\item First numbered list item
+% 	\item Second numbered list item
+% \end{enumerate}
+
+% %------------------------------------------------
+
+% \section*{Conclusion}
+
+% Fusce in nibh augue. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In dictum accumsan sapien, ut hendrerit nisi. Phasellus ut nulla mauris. Phasellus sagittis nec odio sed posuere. Vestibulum porttitor dolor quis suscipit bibendum. Mauris risus lectus, cursus vitae hendrerit posuere, congue ac est. Suspendisse commodo eu eros non cursus. Mauris ultrices venenatis dolor, sed aliquet odio tempor pellentesque. Duis ultricies, mauris id lobortis vulputate, tellus turpis eleifend elit, in gravida leo tortor ultricies est. Maecenas vitae ipsum at dui sodales condimentum a quis dui. Nam mi sapien, lobortis ac blandit eget, dignissim quis nunc.
+
+% Donec luctus tincidunt mauris, non ultrices ligula aliquam id. Sed varius, magna a faucibus congue, arcu tellus pellentesque nisl, vel laoreet magna eros et magna. Vivamus lobortis elit eu dignissim ultrices. Fusce erat nulla, ornare at dolor quis, rhoncus venenatis velit. Donec sed elit mi. Sed semper tellus a convallis viverra. Maecenas mi lorem, placerat sit amet sem quis, adipiscing tincidunt turpis. Cras a urna et tellus dictum eleifend. Fusce dignissim lectus risus, in bibendum tortor lacinia interdum.
+
+% \begin{table}[h] % [h] forces the table to be output where it is defined in the code (it suppresses floating)
+% 	\caption{Example table.}
+% 	\centering
+% 	\begin{tabular}{l l r}
+% 		\toprule
+% 		\multicolumn{2}{c}{Name} \\
+% 		\cmidrule(r){1-2}
+% 		First Name & Last Name & Grade \\
+% 		\midrule
+% 		John & Doe & $7.5$ \\
+% 		Richard & Miles & $5$ \\
+% 		\bottomrule
+% 	\end{tabular}
+% \end{table}
+
+% Fusce eleifend porttitor arcu, id accumsan elit pharetra eget. Mauris luctus velit sit amet est sodales rhoncus. Donec cursus suscipit justo, sed tristique ipsum fermentum nec. Ut tortor ex, ullamcorper varius congue in, efficitur a tellus. Vivamus ut rutrum nisi. Phasellus sit amet enim efficitur, aliquam nulla id, lacinia mauris. Quisque viverra libero ac magna maximus efficitur. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vestibulum mollis eros in tellus fermentum, vitae tristique justo finibus. Sed quis vehicula nibh. Etiam nulla justo, pellentesque id sapien at, semper aliquam arcu. Integer at commodo arcu. Quisque dapibus ut lacus eget vulputate.
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+
+% \bibliographystyle{IEEEtran}
+
+% \bibliography{mybib.bib}
+
+%----------------------------------------------------------------------------------------
+
+\end{document}
